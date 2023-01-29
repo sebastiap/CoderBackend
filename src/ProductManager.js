@@ -1,5 +1,5 @@
 import fs  from 'fs';
-const archivo = './ejemplo.txt';
+const archivo = 'products.txt';
 
 //Esto es solo para borrarlo rapido
 // fs.writeFileSync(archivo,"[]");
@@ -8,7 +8,7 @@ export default class ProductManager{
     constructor(){
         this.products = [];
         this.idIndex = 0 ;
-        this.path ="./"
+        this.path ="./data/"
     }
     
     addProduct = async(product) => {
@@ -33,7 +33,7 @@ export default class ProductManager{
                 return;
             }
             // Agrega el producto al arreglo de productos
-            console.log(products);
+            // console.log(products);
             products.push(product);
 
             console.log("Se agrego correctamente el producto con id", product.id);
@@ -49,7 +49,8 @@ export default class ProductManager{
 
     getProducts = async() => {
         try{        
-            if (fs.existsSync(archivo)) {
+            // console.log(this.path + archivo);
+            if (fs.existsSync(this.path + archivo)) {
                 const data = await fs.promises.readFile(this.path + archivo,'utf-8');
                 const prods = await JSON.parse(data);
                 return prods;
