@@ -20,5 +20,6 @@ La entrega actual corresponde a la clase 6.
 ## Contenido
 
 * Clases
-* Uso de Archivos
+* Uso de Archivos - (Libreria fs)
 * Express
+* path (Libreria path y  funcion fileURLToPath)

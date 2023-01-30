@@ -1,14 +1,15 @@
 import fs  from 'fs';
-const archivo = 'products.txt';
+// const archivo = 'products.json';
 
 //Esto es solo para borrarlo rapido
 // fs.writeFileSync(archivo,"[]");
 
 export default class ProductManager{
-    constructor(){
+    constructor(path){
         this.products = [];
         this.idIndex = 0 ;
-        this.path ="./data/"
+        this.path = path;
+
     }
     
     addProduct = async(product) => {
@@ -37,7 +38,7 @@ export default class ProductManager{
             products.push(product);
 
             console.log("Se agrego correctamente el producto con id", product.id);
-            await fs.promises.writeFile(this.path + archivo,JSON.stringify(products));
+            await fs.promises.writeFile(this.path,JSON.stringify(products));
             return product;
 
 
@@ -50,8 +51,8 @@ export default class ProductManager{
     getProducts = async() => {
         try{        
             // console.log(this.path + archivo);
-            if (fs.existsSync(this.path + archivo)) {
-                const data = await fs.promises.readFile(this.path + archivo,'utf-8');
+            if (fs.existsSync(this.path)) {
+                const data = await fs.promises.readFile(this.path,'utf-8');
                 const prods = await JSON.parse(data);
                 return prods;
             }
@@ -94,7 +95,7 @@ export default class ProductManager{
         allProducts[SearchedProductindex] = product;
          // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
-        await fs.writeFileSync(this.path + archivo,JSON.stringify(allProducts));
+        await fs.writeFileSync(this.path,JSON.stringify(allProducts));
         console.log("Se actualizo satisfactoriamente el producto con id", id);
 
         return allProducts;
@@ -116,7 +117,7 @@ export default class ProductManager{
 
         // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
-        await fs.writeFileSync(this.path + archivo,JSON.stringify(allProducts));
+        await fs.writeFileSync(this.path,JSON.stringify(allProducts));
         return allProducts;
     }
 }

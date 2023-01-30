@@ -1,8 +1,16 @@
 import express from "express";
 import ProductManager from "./src/ProductManager.js";
+import path from 'path';
+import { fileURLToPath } from "url";
 
 const app = express();
-const manager = new ProductManager;
+// Se agrega esto para asegurarnos que corra donde corra este codigo
+// se utilize el path relativo a donde este corriendo
+const filename = fileURLToPath(import.meta.url);
+const dirname = path.dirname(filename);
+
+
+const manager = new ProductManager(path.join(dirname,"/data",'products.json'));
 app.use(express.urlencoded({extended:true}));
 app.get('/products/:idproducto',async(req,res) =>{
 const producto = parseInt(req.params.idproducto);
