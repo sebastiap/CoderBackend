@@ -26,12 +26,14 @@ export default class ProductManager{
             const existingProduct = products.find((prod)=> prod.code === product.code);
             if (existingProduct){
                 console.error('El código del producto ya existe');
-                return;
+                return 1;
             }
     
-            if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock){
-                console.log("Producto invalido. Falta ingresar algun campo.");
-                return;
+            if (!product.title || !product.description || !product.price || !product.status 
+                || !product.category || !product.code || !product.stock)
+                {
+                console.error("Producto invalido. Falta ingresar algun campo.");
+                return 2;
             }
             // Agrega el producto al arreglo de productos
             // console.log(products);
@@ -44,6 +46,7 @@ export default class ProductManager{
 
         } catch (error) {
             console.log("error:" , error);
+            return 3;
         }
 
     }
@@ -89,7 +92,7 @@ export default class ProductManager{
         console.log("Encontre para updetear :", SearchedProductindex)
         if (SearchedProductindex < 0 ) {
             console.error('No existe con ese id');
-            return;
+            return 4;
         }
         product.id = id;
         allProducts[SearchedProductindex] = product;
@@ -109,7 +112,7 @@ export default class ProductManager{
         // console.log("Encontre para eliminar :", SearchedProductindex)
         if (SearchedProductindex < 0 ) {
             console.error('No existe un producto con ese id');
-            return;
+            return 4;
         }
         allProducts.splice(SearchedProductindex, 1);
         console.log("Se elimino satisfactoriamente el producto con id", id);
