@@ -31,8 +31,9 @@ export default class CartManager {
     // POST cart
     createCart = async (products) => {
         const allCarts = await this.getCarts();
-        const jsonProducts = JSON.parse(products);
-        let newCart = {"id":this.idIndex, "products":jsonProducts};
+        // const jsonProducts = JSON.parse(products);
+
+        let newCart = {"id":this.idIndex, "products":products};
         console.log(newCart);
         allCarts.push(newCart);
         await fs.promises.writeFile(this.path,JSON.stringify(allCarts))

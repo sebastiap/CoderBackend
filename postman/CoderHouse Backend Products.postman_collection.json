@@ -102,50 +102,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "title",
-							"value": "producto con Post",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "Este es un producto insertado con post",
-							"type": "text"
-						},
-						{
-							"key": "price",
-							"value": "3200",
-							"type": "text"
-						},
-						{
-							"key": "thumbnail",
-							"value": "Sin imagen",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "code",
-							"value": "Post01",
-							"type": "text"
-						},
-						{
-							"key": "stock",
-							"value": "25",
-							"type": "text"
-						},
-						{
-							"key": "category",
-							"value": "Misc",
-							"type": "text"
-						},
-						{
-							"key": "status",
-							"value": "True",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n\"title\":\"Producto con Post\",\r\n\"description\":\"Este es un producto insertado con post\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/products/",
@@ -229,7 +192,7 @@
 					"variable": [
 						{
 							"key": "pid",
-							"value": "13"
+							"value": "11"
 						}
 					]
 				}
@@ -260,7 +223,7 @@
 					"variable": [
 						{
 							"key": "pid",
-							"value": "12"
+							"value": "11"
 						}
 					]
 				}
@@ -273,14 +236,13 @@
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "products",
-							"value": "[{\"id\":1,\"quantity\":2},{\"id\":2,\"quantity\":4}]",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\"products\":[{\"id\":5,\"quantity\":5}]}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/carts/",
@@ -357,7 +319,7 @@
 					"variable": [
 						{
 							"key": "cid",
-							"value": "1"
+							"value": "4"
 						},
 						{
 							"key": "pid",
