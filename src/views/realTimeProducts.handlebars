@@ -1,0 +1,41 @@
+<div class="container">
+    <div class="listDiv">
+        <h1>Lista de Productos Actuales </h1>
+        <div id="Listado">
+
+            {{#each productos}}
+            <div class="productDiv">
+                <p class="title"><b>{{this.title}}</b></p>
+                <p>{{this.description}}</p>
+                <p><b>Precio:</b> {{this.price}}</p>
+                <p><b>Codigo de Producto:</b> {{this.code}}</p>
+                <p><b>Stock Disponible: </b> {{this.stock}}</p>
+                <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Borrar">
+            </div>
+            {{/each }}
+        </div>
+    <a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
+    </div>
+    <div class="formDiv">
+        <h1> Insertar un nuevo producto </h1>
+        <form id="productForm">
+            <label for="title">Nombre del Nuevo Producto</label><br>
+            <input type="text" id="title" name="title" value="Nuevo Producto"><br>
+            <label for="description">Descripcion:</label><br>
+            <input type="text" id="description" name="description" value="Un producto nuevo"><br><br>
+            <label for="price">Precio:</label><br>
+            <input type="text" id="price" name="price" value="150"><br><br>
+            <label for="thumbnail">Imagen:</label><br>
+            <input type="text" id="thumbnail" name="thumbnail" value=""><br><br>
+            <label for="code">Codigo de Producto:</label><br>
+            <input type="text" id="code" name="code" value=""><br><br>
+            <label for="stock">Stock:</label><br>
+            <input type="text" id="stock" name="stock" value=""><br><br>
+            <input class="submitbutton" type="submit" value="Agregar Producto">
+        </form>
+        <p id="mensajeError"></p>
+        <p id="mensajeConfirmacion"></p>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/js/realtimeproducts.js" ></script>

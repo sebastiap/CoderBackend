@@ -1,0 +1,91 @@
+body {
+    background-color: bisque;
+
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    gap:1rem;
+}
+
+.listDiv {
+    background-color:#C1666B;
+    /* display: flex; */
+    /* flex-direction: row; */
+}
+.listDiv h1 {
+    margin-left: 2rem;
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#Listado{
+    margin-left: 5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr;
+    row-gap: 1.5rem;
+
+}
+
+.title{
+    background-color: #48A9A6;
+    font-size:2rem;
+}
+
+.productDiv {
+    background-color:#E4DFDA;
+    border-radius: 5%;
+    width: 80%;
+    text-align: center;
+}
+
+.button {
+    padding: 10px 24px;
+    background-color: black;
+    color: antiquewhite;
+    margin-bottom: 1rem;
+    border-radius: 10%;
+}
+
+.submitbutton{
+    padding: 10px 24px;
+    background-color: slateblue;
+    color: antiquewhite;
+    margin-bottom: 1rem;
+    border-radius: 10%;
+}
+
+.pagebutton{
+    padding: 10px 24px;
+    background-color: brown;
+    color: antiquewhite;
+    margin-bottom: 1rem;
+    /* border-radius: 10%; */
+    width: 100%;
+}
+
+
+
+
+.formDiv {
+    background-color:#2C666E;
+    text-align: center;
+    color: aliceblue;
+}
+
+.formDiv input{
+    margin-bottom: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+#mensajeError{
+    color: #EF3E36;
+    font-weight:bolder;
+}
+

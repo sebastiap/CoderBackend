@@ -14,9 +14,6 @@ El BackEnd comprende toda la parte lógica y de manejo de información. Es decir
 * Manejo de información en general
 
 
-
-
-
 ## Entrega Actual 
 La entrega actual corresponde a la clase 8.
 
@@ -28,3 +25,5 @@ La entrega actual corresponde a la clase 8.
 * path (Libreria path y  funcion fileURLToPath)
 * Router y Middleware
 * Uso de Postman
+* Plantillas con Handlebars
+* WebSockets

@@ -70,6 +70,8 @@ export default class ProductManager{
 
     }
 
+ 
+
     getProductById =  async(id) => {
         const allProducts =  await this.getProducts();
         
@@ -86,15 +88,18 @@ export default class ProductManager{
 
     updateProduct = async(id,product) => {
         //Recibe todo el producto
+        try {
         const allProducts = await this.getProducts();
         console.log("Productos al momento de updetear :", allProducts)
         const SearchedProductindex = allProducts.findIndex((prod)=> prod.id === id);
         console.log("Encontre para updetear :", SearchedProductindex)
-        if (SearchedProductindex < 0 ) {
+        if (SearchedProductindex == -1 ) {
             console.error('No existe con ese id');
             return 4;
         }
         product.id = id;
+        // Otra forma seria con spread operator 
+        // product = {id:id,...product}
         allProducts[SearchedProductindex] = product;
          // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
@@ -102,6 +107,9 @@ export default class ProductManager{
         console.log("Se actualizo satisfactoriamente el producto con id", id);
 
         return allProducts;
+    } catch (error) {
+            return 3;
+    }
 
     }
     deleteProduct = async(id) => {
@@ -110,7 +118,7 @@ export default class ProductManager{
         // console.log("Productos al momento de eliminar :", allProducts)
         const SearchedProductindex = allProducts.findIndex((prod)=> prod.id === id);
         // console.log("Encontre para eliminar :", SearchedProductindex)
-        if (SearchedProductindex < 0 ) {
+        if (SearchedProductindex ==-1 ) {
             console.error('No existe un producto con ese id');
             return 4;
         }
@@ -123,6 +131,47 @@ export default class ProductManager{
         await fs.writeFileSync(this.path,JSON.stringify(allProducts));
         return allProducts;
     }
+
+    // SocketSyncMethods
+    getProductsSocket = () => {
+        try{        
+            if (fs.existsSync(this.path)) {
+                const data =  fs.readFileSync(this.path,'utf-8');
+                const prods = JSON.parse(data);
+                return prods;
+            }
+            else {
+                console.warn("El archivo no existia al momento de ejecucion.");
+                return [];
+            }
+        }
+            catch(error){ 
+                console.log("error:" , error); 
+        }
+
+    }
+
+    deleteProductfromSocket = (id) => {
+        const allProducts = this.getProductsSocket();
+
+        // console.log("Productos al momento de eliminar :", allProducts)
+        const SearchedProductindex = allProducts.findIndex((prod)=> prod.id === id);
+        // console.log("Encontre para eliminar :", SearchedProductindex)
+        if (SearchedProductindex ==-1 ) {
+            console.error('No existe un producto con ese id');
+            return 4;
+        }
+        allProducts.splice(SearchedProductindex, 1);
+        console.log("Se elimino satisfactoriamente el producto con id", id);
+        // console.log("Los productos que quedaron son :", allProducts);
+
+        // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
+        // fs.truncateSync(this.path + archivo);
+        fs.writeFileSync(this.path,JSON.stringify(allProducts));
+        return allProducts;
+    }
+
+
 }
 
 const test = async () => {
