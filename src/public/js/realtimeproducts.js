@@ -28,6 +28,7 @@ const ActualizarLista = (lista) => {
 
     lista.forEach(producto => { contenido += `<div class="productDiv"><p class="title">${producto.title}</p>
     <p>${producto.description}</p>
+    <img src=${producto.thumbnail} width="100em" height="100em" alt="imagen" />
     <p><b>Precio:</b> ${producto.price}</p>
     <p><b>Codigo de Producto:</b> ${producto.code}</p>
     <p><b>Stock Disponible::</b> ${producto.stock}</p>
@@ -42,13 +43,10 @@ socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
     console.log("Actualice la lista");
-
       ActualizarLista(data);
 
 
 })
-
-
 
 myform.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -58,12 +56,9 @@ myform.addEventListener("submit", (e) => {
 }
     
     socket.emit("Ingresar Nuevo Producto",producto);
-  
-    // handle submit
   });
 
   socket.on("error_al_insertar", (error) => {
-    // TODO que te muestre el error real
     mensajeError.innerHTML = error;
     mensajeConfirmacion.innerHTML = "";
   })

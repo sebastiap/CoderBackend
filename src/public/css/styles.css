@@ -1,6 +1,7 @@
 body {
     background-color: bisque;
-
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -11,8 +12,6 @@ body {
 
 .listDiv {
     background-color:#C1666B;
-    /* display: flex; */
-    /* flex-direction: row; */
 }
 .listDiv h1 {
     margin-left: 2rem;
@@ -30,6 +29,7 @@ body {
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr;
     row-gap: 1.5rem;
+    padding-bottom: 1rem;
 
 }
 
@@ -65,7 +65,7 @@ body {
     padding: 10px 24px;
     background-color: brown;
     color: antiquewhite;
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     /* border-radius: 10%; */
     width: 100%;
 }

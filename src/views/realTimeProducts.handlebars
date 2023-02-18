@@ -1,3 +1,5 @@
+<div>
+<a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
 <div class="container">
     <div class="listDiv">
         <h1>Lista de Productos Actuales </h1>
@@ -7,6 +9,7 @@
             <div class="productDiv">
                 <p class="title"><b>{{this.title}}</b></p>
                 <p>{{this.description}}</p>
+                <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
                 <p><b>Precio:</b> {{this.price}}</p>
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
@@ -14,7 +17,6 @@
             </div>
             {{/each }}
         </div>
-    <a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
     </div>
     <div class="formDiv">
         <h1> Insertar un nuevo producto </h1>
@@ -36,6 +38,7 @@
         <p id="mensajeError"></p>
         <p id="mensajeConfirmacion"></p>
     </div>
+</div>
 </div>
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/js/realtimeproducts.js" ></script>

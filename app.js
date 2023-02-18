@@ -40,13 +40,26 @@ app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
 
+//Funciones Genericas
+const validarURL = (listadoProductos) => {
+    //Validar por formulario o que la URL empiece con http
+    let nuevoListado = [];
+    listadoProductos.map((product => { 
+        if (product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
+        product.thumbnail = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
+    }}
+    
+    ))
+    return listadoProductos;
+
+}
+
 // Home
 
-// import ProductManager from "./src/managers/ProductManager.js";
-// let manager = new ProductManager();
 app.get('/', async (req, res) => {
- // TODO sacar esto si uso axios
- let productos = await manager.getProducts();
+ let getproductos = await manager.getProducts();
+ console.log(getproductos);
+ let productos = validarURL(getproductos);
  res.render('home',{productos,style:"styles.css"})
 }
 )
@@ -122,17 +135,18 @@ io.on('connection',  (socket) => {
     socket.on('Client_Connect', message => {
         console.log(message);
         let valor  = manager.getProductsSocket();
+        valor = validarURL(valor);
         socket.emit('Listado de Productos Actualizados',valor);
     });
 
     // Un cliente pide borrar un producto
     socket.on("Producto Borrado" , data =>{
-        // let result = BorrarProducto(data);
 
         // Sin Asincronismo
         manager.deleteProductfromSocket(data);
 
         let valor  = manager.getProductsSocket();
+        valor = validarURL(valor);
         socket.emit('Listado de Productos Actualizados', valor);
             
         
@@ -143,9 +157,11 @@ io.on('connection',  (socket) => {
             axios.post("http://localhost:8080/api/products/",producto)
             .then(function () {
                 let valor  = manager.getProductsSocket();
+                valor = validarURL(valor);
                 socket.emit('Listado de Productos Actualizados',valor);
                 socket.emit('Producto_Agregado',"Se ha insertado el nuevo producto exitosamente.");
             })
+            // TODO Verificar que me sirve realmente de aca
             .catch(function (error) {
                 socket.emit("error_al_insertar", error.response.data.message);
                 if (error.response) {

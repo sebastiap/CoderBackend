@@ -24,7 +24,6 @@ router.get("/",async(req,res) =>{
         }
         fileproductos = fileproductos.slice(0, n);
     }
-    // console.log("result interno: " + fileproductos[1].title);
     res.send(fileproductos);
 })
 
@@ -48,7 +47,6 @@ router.post('/', async (req,res) => {
     const product = req.body;
 
     let result = await manager.addProduct(product);
-    // console.log("result", result);
     if (result === 1){
         res.status(400).send({status:'error', message:'The code is already in used in another Product'});
     }
@@ -69,22 +67,21 @@ router.put('/:pid', async (req,res) => {
     const id = parseInt(req.params.pid);
     const productToUpdate = req.body;
     let result = await manager.updateProduct(id,productToUpdate);
-    console.log("result", result);
-    // if (result === 1){
-    //     res.status(400).send({status:'error', message:'The code is already in used in another Product'});
-    // }
-    // else if (result === 2){
-    //     res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
-    //     }
-    // else if (result === 3) {
-    //     res.status(400).send({status:'error', message:'Some error occurred'});
-    // }
-    // else if (result === 4) {
-    //     res.status(400).send({status:'error', message:'A product with the specified id was not found'});
-    // }
-    // else {    
+    if (result === 1){
+        res.status(400).send({status:'error', message:'The code is already in used in another Product'});
+    }
+    else if (result === 2){
+        res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
+        }
+    else if (result === 3) {
+        res.status(400).send({status:'error', message:'Some error occurred'});
+    }
+    else if (result === 4) {
+        res.status(400).send({status:'error', message:'A product with the specified id was not found'});
+    }
+    else {    
         res.send({status: 'success',message: 'Product with the specified id was successfully updated'});
-    // }
+    }
 } catch (error) {
         console.log(error.message);
 }

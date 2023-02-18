@@ -1,7 +1,5 @@
 import fs  from 'fs';
-// const archivo = 'products.json';
-
-//Esto es solo para borrarlo rapido
+//Esto es solo para borrarlo rapido y testear
 // fs.writeFileSync(archivo,"[]");
 
 export default class ProductManager{
@@ -36,7 +34,6 @@ export default class ProductManager{
                 return 2;
             }
             // Agrega el producto al arreglo de productos
-            // console.log(products);
             products.push(product);
 
             console.log("Se agrego correctamente el producto con id", product.id);
@@ -53,7 +50,6 @@ export default class ProductManager{
 
     getProducts = async() => {
         try{        
-            // console.log(this.path + archivo);
             if (fs.existsSync(this.path)) {
                 const data = await fs.promises.readFile(this.path,'utf-8');
                 const prods = await JSON.parse(data);
@@ -87,7 +83,6 @@ export default class ProductManager{
     }
 
     updateProduct = async(id,product) => {
-        //Recibe todo el producto
         try {
         const allProducts = await this.getProducts();
         console.log("Productos al momento de updetear :", allProducts)
@@ -114,17 +109,13 @@ export default class ProductManager{
     }
     deleteProduct = async(id) => {
         const allProducts = await this.getProducts();
-
-        // console.log("Productos al momento de eliminar :", allProducts)
         const SearchedProductindex = allProducts.findIndex((prod)=> prod.id === id);
-        // console.log("Encontre para eliminar :", SearchedProductindex)
         if (SearchedProductindex ==-1 ) {
             console.error('No existe un producto con ese id');
             return 4;
         }
         allProducts.splice(SearchedProductindex, 1);
         console.log("Se elimino satisfactoriamente el producto con id", id);
-        // console.log("Los productos que quedaron son :", allProducts);
 
         // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
