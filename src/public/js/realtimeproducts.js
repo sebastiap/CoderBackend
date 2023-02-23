@@ -64,6 +64,14 @@ myform.addEventListener("submit", (e) => {
   })
 
   socket.on('Producto_Agregado',message =>{
+    code.value = "";
+    stock.value = "";
+    title.value = "";
+    description.value = "";
+    price.value = "";
+    thumbnail.value = "";
+    img.value = "";
+    console.log("stock",stock , "code",code);
     mensajeConfirmacion.innerHTML = message;
   });
 

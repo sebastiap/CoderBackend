@@ -1,5 +1,8 @@
 <div>
-<a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
+<div class="ChatHeader">
+    <a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
+    <a href="http://localhost:8080/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Ir al Chat"></a>
+</div>
 <div class="container">
     <div class="listDiv">
         <h1>Lista de Productos Actuales </h1>
@@ -22,17 +25,17 @@
         <h1> Insertar un nuevo producto </h1>
         <form id="productForm">
             <label for="title">Nombre del Nuevo Producto</label><br>
-            <input type="text" id="title" name="title" value="Nuevo Producto"><br>
+            <input type="text" id="title" name="title" placeholder="Ingrese nombre del producto"><br>
             <label for="description">Descripcion:</label><br>
-            <input type="text" id="description" name="description" value="Un producto nuevo"><br><br>
+            <input type="text" id="description" name="description" placeholder="Agregue una descripcion."><br><br>
             <label for="price">Precio:</label><br>
-            <input type="text" id="price" name="price" value="150"><br><br>
+            <input type="text" id="price" name="price" placeholder="Agregue el precio..."><br><br>
             <label for="thumbnail">Imagen:</label><br>
-            <input type="text" id="thumbnail" name="thumbnail" value=""><br><br>
+            <input type="text" id="thumbnail" name="thumbnail" placeholder="Ingrese aqui la url de la imagen del producto."><br><br>
             <label for="code">Codigo de Producto:</label><br>
-            <input type="text" id="code" name="code" value=""><br><br>
+            <input type="text" id="code" name="code" placeholder="Ingrese codigo del producto."><br><br>
             <label for="stock">Stock:</label><br>
-            <input type="text" id="stock" name="stock" value=""><br><br>
+            <input type="text" id="stock" name="stock" placeholder="Ingrese Stock disponible."><br><br>
             <input class="submitbutton" type="submit" value="Agregar Producto">
         </form>
         <p id="mensajeError"></p>

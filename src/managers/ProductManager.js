@@ -1,4 +1,7 @@
+import { randomInt } from 'crypto';
 import fs  from 'fs';
+import {productModel} from './dao/models/product.model.js'
+
 //Esto es solo para borrarlo rapido y testear
 // fs.writeFileSync(archivo,"[]");
 
@@ -162,7 +165,103 @@ export default class ProductManager{
         return allProducts;
     }
 
+        // MongoDBMethods
+        // let result = productModel.create({"title":"Regalo","description":"Un producto para regalar","price":"150","thumbnail":"https://img.freepik.com/foto-gratis/regalo-amarillo-lazo-rojo_1203-2121.jpg?w=2000","stock":"4","code":"REG123","category":"Misc","status":true,"id":22});
+        addProductDB = async(product) => {
+            // Valida que no se repita el campo "code"
+            try {
+                if (!product.title || !product.description || !product.price || !product.status 
+                    || !product.category || !product.code || !product.stock)
+                    {
+                    console.error("Producto invalido. Falta ingresar algun campo.");
+                    return 2;
+                }
+    
+                const existingProduct = await productModel.find({code:product.code});
+                if (existingProduct.length > 0){
+                    console.error('El código del producto ya existe');
+                    return 1;
+                }
 
+                const total = productModel.find().sort({"_id":-1}).limit(1);
+                console.log(total);
+                product.id = randomInt(1000);
+
+                let result = await productModel.create(product);
+                return result;
+    
+    
+            } catch (error) {
+                console.log("Error al insertar en MongoDB:" , error);
+                return 3;
+            }
+    
+        }
+    
+        getProductsDB = async() => {
+            try{        
+               let resultDB = await productModel.find();
+               return resultDB;
+            }
+                catch(error){ 
+                    console.log("Error al consultar en MongoDB:" , error); 
+            }
+    
+        }
+    
+     
+    
+        // getProductByIdDB =  async(id) => {
+        // try {
+        //     const SearchedProduct = await productModel.findOne({id:id} );
+        //     console.error("s",SearchedProduct);
+        //     if (SearchedProduct != []){
+        //         return SearchedProduct;
+        //     }
+        //     else{
+        //         console.error('Error al consultar en MongoDB:');
+        //         return 1;
+        //     }
+        // } catch (error) {
+        //     console.error('Not found');
+        //     return;
+        // }      
+          
+      
+        // }
+    
+        updateProductDB = async(pid,product) => {
+            try {
+            product.id = pid;
+            let updatedProduct = await productModel.replaceOne({_id: pid}, product);
+            if (updatedProduct.modifiedCount != 1) {
+                return 4;
+            }
+            console.log("update", updatedProduct);
+            return updatedProduct;
+        } catch (error) {
+            console.log("error", error);
+                return 3;
+        }
+    
+        }
+        deleteProductDB = async(id) => {
+            try {
+                let resultDB = await productModel.deleteOne({id: id});
+                console.log(resultDB);
+                if (resultDB.deletedCount === 0){
+                    console.error('No existia un producto con ese id para ser borrado.');
+                    return 4;
+                } 
+                else{
+                    return 1;
+                }
+                return resultDB;
+            } catch (error) {
+                console.error('Error al borrar en MongoDB:');
+            }
+
+        }
 }
 
 const test = async () => {

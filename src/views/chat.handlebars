@@ -1,0 +1,20 @@
+<div class="ChatHeader">
+    <a href="http://localhost:8080/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Real Time Products"></a>
+    <a href="http://localhost:8080/"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Home"></a>
+</div>
+<div >
+    <h1>Bienvenidos al Chat</h1>
+    <p>Sean respetuosos unos con otros. Por su seguridad, todos los mensajes intercambiados en el chat estan siendo guardados en nuestros servidores.</p>
+    <div class="ChatDiv">
+        <div class="ChatBox">
+            <p style="margin-left: 10px;" id="messagelogs"></p>
+        </div>
+        <div class="ChatButtonDiv">
+            <input class="ChatInput" type="text" id="chatbox">
+            <input class="ChatButton" type="button" id="chatbutton" value="Enviar" onclick="enviar()">
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>
+<script src="/js/chat.js" ></script>

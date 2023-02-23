@@ -70,9 +70,6 @@ body {
     width: 100%;
 }
 
-
-
-
 .formDiv {
     background-color:#2C666E;
     text-align: center;
@@ -87,5 +84,44 @@ body {
 #mensajeError{
     color: #EF3E36;
     font-weight:bolder;
+}
+
+.ChatHeader{
+display: grid;
+grid-template-columns: 1fr 1fr;
+}
+.ChatDiv{
+/* margin-right: 2rem; */
+}
+.ChatBox{
+    height: 500px;
+    width: 96.5%;
+    background-color: #E4DFDA;
+    /* color:slateblue; */
+    margin: 2rem;
+    border: 1px solid black;
+    overflow: hidden;
+
+}
+
+.ChatInput{
+    height: 50px;
+    width: 86%;
+    margin-left: 2rem;
+    font-size: 20px;
+}
+
+.ChatButtonDiv{
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-right: 2rem;
+}
+.ChatButton{
+    height: 50px;
+    width: 200px;
+    font-size: 20px;
+    background-color: #48A9A6;
+    /* color: brown; */
 }
 

@@ -12,3 +12,6 @@ Al decir que una API es REST significa que tambien se acuerda un formato para la
 
 ## Diferencia entre Objeto Javascript y JSON
 https://es.stackoverflow.com/questions/164943/cu%C3%A1l-es-la-diferencia-entre-json-y-un-objeto
+
+## MongoDB no se lleva bien con filtrar por id
+MongoDB administra su propio id con _id, las busquedas que realicemos con el campo id, no llegas a bien puerto pues ignora dicho campo. De hecho, no lo graba aunque lo incluyamos.
