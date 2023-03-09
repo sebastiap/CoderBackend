@@ -34,7 +34,7 @@
 			},
 			"response": [
 				{
-					"name": "Get Products",
+					"name": "Get Products Limit",
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
@@ -64,7 +64,7 @@
 					"body": null
 				},
 				{
-					"name": "Get Products",
+					"name": "Get Products Nro 1",
 					"originalRequest": {
 						"method": "GET",
 						"header": [
@@ -103,7 +103,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n\"title\":\"Producto con Post\",\r\n\"description\":\"Este es un producto insertado con post\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+					"raw": "{\r\n\"title\":\"Postal Personalizada\",\r\n\"description\":\"Una Postal con tus imagenes favoritas\",\r\n\"price\":3200,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/f/f7/Postal_a%C3%B1o_1898%2C_de_Costa_Rica.jpg\",\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -124,7 +124,41 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Post Incomplete Product",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"title\":\"Postal Personalizada\",\r\n\"description\":\"Una Postal con tus imagenes favoritas\",\r\n\"price\":3200,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/f/f7/Postal_a%C3%B1o_1898%2C_de_Costa_Rica.jpg\",\r\n\"code\":\"Post01\",\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								""
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "Update Product",
@@ -132,50 +166,13 @@
 				"method": "PUT",
 				"header": [],
 				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "title",
-							"value": "producto con Post",
-							"type": "text"
-						},
-						{
-							"key": "description",
-							"value": "Este es un producto insertado con post",
-							"type": "text"
-						},
-						{
-							"key": "price",
-							"value": "3500",
-							"type": "text"
-						},
-						{
-							"key": "thumbnail",
-							"value": "Sin imagen",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "code",
-							"value": "Post02",
-							"type": "text"
-						},
-						{
-							"key": "stock",
-							"value": "25",
-							"type": "text"
-						},
-						{
-							"key": "category",
-							"value": "Misc",
-							"type": "text"
-						},
-						{
-							"key": "status",
-							"value": "True",
-							"type": "text"
+					"mode": "raw",
+					"raw": "{\r\n\"title\":\"Producto Updateado\",\r\n\"description\":\"Este es un producto actualizado con update en MongoDB\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
 						}
-					]
+					}
 				},
 				"url": {
 					"raw": "http://localhost:8080/api/products/:pid",
@@ -192,22 +189,58 @@
 					"variable": [
 						{
 							"key": "pid",
-							"value": "11"
+							"value": "603"
 						}
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Update non existing Product",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"title\":\"Producto Updateado\",\r\n\"description\":\"Este es un producto actualizado con update en MongoDB\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/products/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "pid",
+									"value": "299"
+								}
+							]
+						}
+					},
+					"_postman_previewlanguage": null,
+					"header": null,
+					"cookie": [],
+					"body": null
+				}
+			]
 		},
 		{
 			"name": "Delete Product",
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": []
-				},
 				"url": {
 					"raw": "http://localhost:8080/api/products/:pid",
 					"protocol": "http",
@@ -223,7 +256,7 @@
 					"variable": [
 						{
 							"key": "pid",
-							"value": "11"
+							"value": "603"
 						}
 					]
 				}
@@ -237,7 +270,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"products\":[{\"id\":5,\"quantity\":5}]}",
+					"raw": "{\"products\":[{\"id\":7,\"quantity\":5},{\"id\":0,\"quantity\":1}]}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -297,7 +330,7 @@
 					"urlencoded": [
 						{
 							"key": "quantity",
-							"value": "7",
+							"value": "17",
 							"type": "text"
 						}
 					]
@@ -319,11 +352,38 @@
 					"variable": [
 						{
 							"key": "cid",
-							"value": "4"
+							"value": "0"
 						},
 						{
 							"key": "pid",
 							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Cart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/carts/:cid",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"carts",
+						":cid"
+					],
+					"variable": [
+						{
+							"key": "cid",
+							"value": "0"
 						}
 					]
 				}

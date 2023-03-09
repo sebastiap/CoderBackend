@@ -4,7 +4,6 @@ let title = document.getElementById("title");
 let description = document.getElementById("description");
 let price = document.getElementById("price");
 let thumbnail = document.getElementById("thumbnail");
-let img = document.getElementById("img");
 let stock = document.getElementById("stock");
 let code = document.getElementById("code");
 let mensajeError = document.getElementById("mensajeError");
@@ -15,16 +14,12 @@ const Borro = (id) => {
 };
 
 
-const Crear = (event) => {
-    event.preventDefault();
-    return false;
-}
-;
 const ActualizarLista = (lista) => {
     let div = document.getElementById("Listado");
+    let npdiv = document.getElementById("NoProdHero");
     let contenido = "";
     mensajeError.innerHTML = "";
-    mensajeConfirmacion.innerHTML = ""
+    // mensajeConfirmacion.innerHTML = ""
 
     lista.forEach(producto => { contenido += `<div class="productDiv"><p class="title">${producto.title}</p>
     <p>${producto.description}</p>
@@ -33,7 +28,10 @@ const ActualizarLista = (lista) => {
     <p><b>Codigo de Producto:</b> ${producto.code}</p>
     <p><b>Stock Disponible::</b> ${producto.stock}</p>
     </p><input class="button" type="button" onclick="Borro(${producto.id})" name="" value="Borrar"></div>`});
-    div.innerHTML = `   ${contenido}  `;
+    if (lista.length > 0) 
+    {div.innerHTML = `   ${contenido}  `;
+    npdiv.innerHTML = '<div></div>'}
+
 }
 ;
 
@@ -42,7 +40,6 @@ const socket = io();
 socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
-    console.log("Actualice la lista");
       ActualizarLista(data);
 
 
@@ -59,20 +56,43 @@ myform.addEventListener("submit", (e) => {
   });
 
   socket.on("error_al_insertar", (error) => {
+    Swal.fire({
+      title: "Error al Insertar",
+      text: `El error reportado es el siguiente : ${error}`,
+      icon:"error",
+      confirmButtonColor: 'slateblue',
+      allowOutsideClick: false,
+  })
     mensajeError.innerHTML = error;
     mensajeConfirmacion.innerHTML = "";
   })
 
   socket.on('Producto_Agregado',message =>{
+    Swal.fire({
+      title: 'Nuevo producto insertado.',
+      toast: true,
+      icon:"success",
+      text: message,
+      position:"top-end",
+      showConfirmButton: false,
+      timer:3000
+  })
     code.value = "";
     stock.value = "";
     title.value = "";
     description.value = "";
     price.value = "";
     thumbnail.value = "";
-    img.value = "";
-    console.log("stock",stock , "code",code);
-    mensajeConfirmacion.innerHTML = message;
+
   });
 
-
+  socket.on('Borrado confirmado', message => {
+    Swal.fire({
+      title: 'Producto Borrado',
+      toast: true,
+      icon:"info",
+      text: message,
+      position:"top-end",
+      showConfirmButton: false,
+      timer:3000
+  })})

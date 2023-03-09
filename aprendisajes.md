@@ -15,3 +15,8 @@ https://es.stackoverflow.com/questions/164943/cu%C3%A1l-es-la-diferencia-entre-j
 
 ## MongoDB no se lleva bien con filtrar por id
 MongoDB administra su propio id con _id, las busquedas que realicemos con el campo id, no llegas a bien puerto pues ignora dicho campo. De hecho, no lo graba aunque lo incluyamos.
+
+## Que es Dao?
+En software de computadores, un objeto de acceso a datos (en inglés, data access object, abreviado DAO) es un componente de software que suministra una interfaz común entre la aplicación y uno o más dispositivos de almacenamiento de datos, tales como una Base de datos o un archivo. El término se aplica frecuentemente al Patrón de diseño Object.
+
+

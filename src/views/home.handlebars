@@ -1,9 +1,6 @@
-<div class="ChatHeader">
-    <a href="http://localhost:8080/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="Ir a Real Time Products"></a>
-    <a href="http://localhost:8080/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Ir al Chat"></a>
-</div>
-    <div class="listDiv">
-        <h1>Lista de Productos Actuales </h1>
+    <div class="listDivHome">
+        <b class="maintitle">Lista de Productos Actuales </b>
+        {{#if productos}} 
         <div id="Listado">
 
             {{#each productos}}
@@ -13,9 +10,43 @@
                 <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
                 <p><b>Precio:</b> {{this.price}}</p>
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
-                <p><b>Stock Disponible::</b> {{this.stock}}</p>
+                <p><b>Stock Disponible:</b> {{this.stock}}</p>
             </div>
             {{/each }}
         </div>
+        {{else }}
+        <div class="noProducts">
+             <img width="500" height="500" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRpR1TplGuLj3Zt_fXf1hQCZ5AE-ajk0JovKA&usqp=CAU">
+             <p class="animate__fadeInTopLeft">NO HAY PRODUCTOS PARA MOSTRAR ACTUALMENTE</p>
+        </div>
+        {{/if}}
     </div>
+    {{#if messages}} 
+    <div class="NewsHero">
+        <div class="News">
+            <h1>Proximamente mas funciones!</h1>
+            <img src="http://widefuture.com/wp-content/uploads/2016/08/flat8_prev.jpg"/>
+        </div>
+        <div class="NewsHeroChat">
+
+        
+        <h1> Ultimos Mensajes del chat:</h1>
+        <div class="MiniChatBox">
+            <p style="margin-left: 10px;" id="messagelogs">
+                        
+                            {{#each messages}}
+                                <p >- {{this.user}} : {{this.message}} </p>
+                            {{/each }}
+            </p>
+        </div>
+        </div >
+    {{/if}}
+        </div>
+        {{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
+    </div>
+      <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <script src="/js/index.js" ></script>
 

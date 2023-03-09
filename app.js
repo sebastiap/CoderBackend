@@ -15,10 +15,9 @@ import axios from "axios";
 
 //Mongoose para conectarme en Mongo Atlas
 import mongoose from "mongoose";
-import { messageModel } from "./src/managers/dao/models/message.model.js";
-// import { productModel } from "./src/managers/dao/models/product.model.js";
-import { cartModel } from "./src/managers/dao/models/cart.model.js";
-import messageManager from "./src/managers/MessageManager.js";
+
+// Manejo de los mensajes del chat
+import messageManager from "./src/dao/dbManagers/MessageManager.js";
 
 
 const app = express();
@@ -59,10 +58,10 @@ mongoose.connect("mongodb+srv://prueba:prueba@cluster0.mpljszi.mongodb.net/ecomm
 //Funciones Genericas
 const validarURL = (listadoProductos) => {
     //Validar por formulario o que la URL empiece con http
-    let nuevoListado = [];
     listadoProductos.map((product => { 
-        if (product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
-        product.thumbnail = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
+        if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
+        // product.thumbnail = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
+        product.thumbnail = "https://picsum.photos/200/300";
     }}
     
     ))
@@ -70,33 +69,24 @@ const validarURL = (listadoProductos) => {
 
 }
 
+// Chat Variables
+let messages  = [];
+let msgmanager = new messageManager();
+
 // Home
 
 app.get('/', async (req, res) => {
 
- // BORRAR - Implementacion anterior con fs
-// let productos = validarURL(getproductos);
-// mongoose.connect("mongodb+srv://prueba:prueba@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority", error => {
-//     if (error) {
-//         console.log("Cannot Connect to Database", error);
-//         process.exit();
-//     }
-    
-    
-// });
+let productosDB = await manager.get();
+let messagesDB = await msgmanager.getLast();
+let productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
+messages = messagesDB.map(sms => ({user:sms.user, message: sms.message})).reverse();
+res.render('home',{productos,messages,style:"styles.css"})
 
-let productos = await manager.getProductsDB();
-res.render('home',{productos,style:"styles.css"})
-// TODO pasar a los managers
-// let result = messageModel.create({user:"algo@gmail.com",message:"un mensaje mas"});
-// let result = cartModel.create({id:2,products:["1","2"]});
-// manager.addProductDB({"title":"Regalo","description":"Un producto para regalar","price":"150","thumbnail":"https://img.freepik.com/foto-gratis/regalo-amarillo-lazo-rojo_1203-2121.jpg?w=2000","stock":"4","code":"REG1234","category":"Misc","status":true,"id":24})
-// manager.deleteProductDB(22);
 }
-)
+);
 
-let messages  = [];
-let msgmanager = new messageManager();
+// Chat
 app.get('/chat', async (req, res) => {
 
     res.render('chat',{messages,style:"styles.css"})
@@ -110,84 +100,37 @@ app.get('/realtimeproducts', async (req, res) => {
    }
    )
 
-
-// app.post('/realtimeproducts', async (req, res) => {
-//     console.log ("hice una especie de POST")
-//     // let result = await  ProductManager.addProduct(req)
-//     let productos  = manager.getProductsSocket();
-//         res.render('realTimeProducts',{productos,style:"styles.css"})
-//    }
-// )
-
-// // TODO Ver si lo uso
-// app.delete('/realtimeproducts/:pid', (req, res) => {
-//     const id = parseInt(req.params.pid);
-//     let result = manager.deleteProductfromSocket(id);
-//     if (result === 4) {
-//         return res.status(400).send({status:'error',message:'A product with the specified id was not found'});
-//      }
-//      else{
-//         let productos  = manager.getProductsSocket();
-//         // console.log("productos", productos)
-//         res.render('realTimeProducts',{productos,style:"styles.css"})
-//      }
-//    }
-// )
-
-
-// const esperarProductos = async(resultado) => {
-//     async () => await axios.get("http://localhost:8080/api/products/")
-//     let result =  await axios.get("http://localhost:8080/api/products/");
-//     console.log("result interno: " + result);
-//     resultado = result;
-//     return resultado;
-// };
-
-// const BorrarProducto = async(data) => {
-//     // let result = await manager.deleteProduct(data).then((resultado) => {return resultado});
-//     // await axios.delete("http://localhost:8080/api/products/" + data)
-//     await axios.delete("http://localhost:8080/realtimeproducts/" + data)
-//     .then(() => {
-//         let valor  = manager.getProductsSocket();
-//         socket.emit('Listado de Productos Actualizados',valor);
-//     })
-//     .catch(() => { 
-//         if (error.response) {
-//             console.log(error.response.data);
-//             console.log(error.response.status);
-//             console.log(error.response.headers);
-//         }
-
-//     });
-//     // console.log("Borre?", result.data);
-//     return result;
-// }
-
 // Al crear esta instancia del Servidor de Socket IO, lo que estoy logrando es que este servidor 
 // obtenga un habilidad adicional para utilizar Sockets
 const io = new Server(httpServer);
+let prodids = [];
 
 io.on('connection',  (socket) => {
 
     // Un cliente se conecta
     socket.on('Client_Connect', message => {
         console.log(message);
-        let valor  = manager.getProductsSocket();
-        valor = validarURL(valor);
-        socket.emit('Listado de Productos Actualizados',valor);
+        let valor  = manager.getFromSocket().then((res) => {
+        let mapProd = res.map(prod => (
+            {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id}));
+        let productos = validarURL(mapProd);
+
+        socket.emit('Listado de Productos Actualizados',productos);
+    });
     });
 
     // Un cliente pide borrar un producto
     socket.on("Producto Borrado" ,async data =>{
 
-        // Sin Asincronismo
-        manager.deleteProductfromSocket(data);
-     
+        manager.delete(data).then(result =>{
 
-        let valor  = manager.getProductsSocket();
-        valor = validarURL(valor);
-        socket.emit('Listado de Productos Actualizados', valor);
-            
+            let result2 = manager.getFromSocket().then((res) => {
+                let valor = validarURL(res);
+                socket.emit('Listado de Productos Actualizados',valor);
+                socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${data}`);
+            });
+            return result2;
+    })
         
     })
     // Un cliente ingresa un nuevo producto
@@ -195,10 +138,11 @@ io.on('connection',  (socket) => {
         try {
             axios.post("http://localhost:8080/api/products/",producto)
             .then(function () {
-                let valor  = manager.getProductsSocket();
-                valor = validarURL(valor);
-                socket.emit('Producto_Agregado',"Se ha insertado el nuevo producto exitosamente.");
-                socket.emit('Listado de Productos Actualizados',valor);
+                manager.getFromSocket().then((res) => {
+                    let valor = validarURL(res);
+                    socket.emit('Producto_Agregado',"Se ha insertado el nuevo producto exitosamente.");
+                    socket.emit('Listado de Productos Actualizados',valor);
+                });;
             })
             // TODO Verificar que me sirve realmente de aca
             .catch(function (error) {
@@ -230,7 +174,7 @@ io.on('connection',  (socket) => {
     // Chat Sockets
     socket.on("message", (data) => {
         messages.push(data);
-        msgmanager.postMessages(data);
+        msgmanager.post(data);
         io.emit("message_logs",messages)
     })
 

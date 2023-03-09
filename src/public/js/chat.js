@@ -1,7 +1,7 @@
 // Forma to de messages user
 // {user:correoDelUsuario, message: mensaje del usuario}
 const socket = io();
-const coloresChat =["#C1666B","green","slateblue","#48A9A6","bisque","blue","aliceblue"]
+const coloresChat =["#C1666B","green","slateblue","#48A9A6","red","blue","aliceblue"]
 let user;
 let color;
 
@@ -16,7 +16,6 @@ Swal.fire({
 }).then((result) => {
     user = result.value;
     color =  coloresChat[Math.floor(Math.random() * coloresChat.length)];
-    // console.log(user,"se autentico");
     socket.emit("authenticated",user);
 });
 

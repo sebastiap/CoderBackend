@@ -2,6 +2,25 @@ body {
     background-color: bisque;
     margin: 0;
     padding: 0;
+    position: relative;
+}
+
+.header{
+background-color: #2C666E;
+width: 100%;
+height: 7vh;
+display: flex;
+justify-content:space-between;
+align-items: center;
+
+}
+
+.headerButtonContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content:space-between;
+    align-items:space-around;
+    padding: 5vh;
 }
 
 .container {
@@ -10,16 +29,97 @@ body {
     gap:1rem;
 }
 
-.listDiv {
-    background-color:#C1666B;
+.noProducts{
+    width:100%;
+    height:80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    animation: noproductsAnimation 1 ease-in 2s;
+    font-size: 3.5em;
 }
-.listDiv h1 {
+
+.listDiv {
+    background: linear-gradient(270deg, #C1666B, rgba(255,144,168,1));
+    min-height: 94vh;
+}
+
+.listDivHome {
+    margin: 0;
+    background: radial-gradient(ellipse at 58% 125%,#d9395c, rgba(255,144,168,1));
+    min-height: 94vh;
+}
+.listDivHome > b {
+    font-size: 5em;
+    padding: 2rem;
+}
+
+.NewsHero{
+display: grid;
+grid-template-columns: 60% 40%;
+}
+
+.NewsHeroChat{
+display: flex;
+flex-direction: column;
+justify-content: flex-end;
+align-items: flex-end;
+}
+
+.News{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+    
+
+
+@keyframes titleAnimation {
+from { transform: translateX(-300px)};
+
+to{
+    transform: translateX(0px)
+}
+}
+
+@keyframes noproductsAnimation {
+    from { transform: translateY(-100px)};
+    
+    to{
+        transform: translateY(0px);
+    }
+    }
+
+.listDiv h1,.listDivHome > b {
     margin-left: 2rem;
     margin-right: 2rem;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    /* animation: name duration timing-function delay iteration-count direction fill-mode; */
+    animation: titleAnimation 2s ease-out 0s;
+}
+
+#NoProdHero h2,#NoProdHero img {
+    text-align: center;
+    animation: noproductsAnimation 1s ease-in 0s;
+    
+}
+
+
+#NoProdHero .noPdiv {
+display: flex;
+flex-direction: row;
+justify-content: center;
+align-items: center;
+}
+#NoProdHero .noPdiv img {
+width: 50vh;
+height: 70vh;
+border: 1px solid #844b4e;
 }
 
 #Listado{
@@ -33,6 +133,12 @@ body {
 
 }
 
+.maintitle{
+    text-shadow: 3px 3px 3px#2C666E;
+    /* font-size: 5rem; */
+}
+
+
 .title{
     background-color: #48A9A6;
     font-size:2rem;
@@ -43,14 +149,31 @@ body {
     border-radius: 5%;
     width: 80%;
     text-align: center;
+    box-shadow: -5px 5px 5px black;
+    margin-bottom: 3em;
 }
 
 .button {
     padding: 10px 24px;
-    background-color: black;
+    background-color: slateblue;
     color: antiquewhite;
     margin-bottom: 1rem;
     border-radius: 10%;
+}
+
+.button:hover {
+    background-color: #2C666E;
+    border-color:  black;
+    color: white;
+    /* border-radius: 20%; */
+}
+
+.pagebutton{
+    padding: 10px 24px;
+    margin: 1vh;
+    background-color: brown;
+    color: antiquewhite;
+    /* width: 100%; */
 }
 
 .submitbutton{
@@ -59,26 +182,79 @@ body {
     color: antiquewhite;
     margin-bottom: 1rem;
     border-radius: 10%;
+    transition: all 0.3s ease;
+    border: 2px solid #060808;
 }
 
-.pagebutton{
-    padding: 10px 24px;
-    background-color: brown;
-    color: antiquewhite;
-    /* margin-bottom: 1rem; */
-    /* border-radius: 10%; */
-    width: 100%;
+.submitbutton:hover{
+    transform: translateY(-10px);
+    border: 1px solid #515758;
 }
+
+
 
 .formDiv {
-    background-color:#2C666E;
-    text-align: center;
-    color: aliceblue;
+    background-color: #2C666E;
+    opacity: 0.8;
+    background-image:  linear-gradient(#45919b 1px, transparent 1px), linear-gradient(to right, #45919b 1px, #2C666E 1px);
+    background-size: 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 2rem;
+    color: rgb(3, 4, 4);
+    /* margin-bottom: 7vh; */
+    /* margin:auto; */
+}
+
+.formDiv h1{
+    color: #e9a8ab;
+    text-shadow: 3px 3px 3px#844b4e;
+
+}
+
+
+.formContainer{
+display: grid;
+gap: 1em;
+}
+
+.formGroup{
+    position: relative;
+    }
+
+.formInput{
+ width: 100%;
+ border: none;
+ outline: none;
+}
+
+.formLabel {
+cursor: pointer;
+position: absolute;
+top: 0px;
+left: 10px;
+transform: translateY(25px);
+animation: transform 2s linear;
+transition: transform 0.5s, color 1s;
+color: #515758;
+font-size: 0.7em;
+}
+
+.formInput:focus ~ .formLabel,
+.formInput:not(:placeholder-shown)~ .formLabel{
+    transform: translateY(-25px)  scale(0.9);
+    transform-origin: left;
+    color: #e9a8ab;
 }
 
 .formDiv input{
-    margin-bottom: 0.5rem;
-    margin-top: 0.5rem;
+    width: 80%;
+    padding: 1rem 1rem;
+    margin: 0.5rem ;
+    font-size: 1.5rem;
+    border: 0;
+    outline: 0;
 }
 
 #mensajeError{
@@ -86,29 +262,41 @@ body {
     font-weight:bolder;
 }
 
-.ChatHeader{
-display: grid;
-grid-template-columns: 1fr 1fr;
-}
+
 .ChatDiv{
 /* margin-right: 2rem; */
 }
 .ChatBox{
-    height: 500px;
+    height: 70vh;
     width: 96.5%;
     background-color: #E4DFDA;
     /* color:slateblue; */
     margin: 2rem;
     border: 1px solid black;
     overflow: hidden;
+    font-size: 2rem;
+    overflow-y: scroll;
+}
 
+.MiniChatBox{
+    height: 35vh; 
+    width: 35vh;
+    background-color: #E4DFDA;
+    /* color:slateblue; */
+    margin: 2rem;
+    border: 1px solid black;
+    overflow: hidden;
+    font-size: 1.5rem;
+    overflow-y: scroll;
+    margin-bottom: 10vh;
 }
 
 .ChatInput{
     height: 50px;
     width: 86%;
     margin-left: 2rem;
-    font-size: 20px;
+    font-size: 26px;
+    margin-bottom: 10vh;
 }
 
 .ChatButtonDiv{
@@ -117,11 +305,29 @@ justify-content: space-between;
 align-items: center;
 margin-right: 2rem;
 }
+
+
 .ChatButton{
     height: 50px;
     width: 200px;
     font-size: 20px;
     background-color: #48A9A6;
-    /* color: brown; */
+    margin-bottom: 10vh;
+
 }
 
+
+.footer{
+    background-color: #2C666E;
+    width: 100%;
+    height: 7vh;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    font-size: 2rem;
+    color: rgb(160, 166, 155);
+    /* z-index: 1; */
+
+    }
