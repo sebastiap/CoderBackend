@@ -15,6 +15,7 @@ const Borro = (id) => {
 
 
 const ActualizarLista = (lista) => {
+    let ltitle = document.getElementById("Ltitle");
     let div = document.getElementById("Listado");
     let npdiv = document.getElementById("NoProdHero");
     let contenido = "";
@@ -29,8 +30,20 @@ const ActualizarLista = (lista) => {
     <p><b>Stock Disponible::</b> ${producto.stock}</p>
     </p><input class="button" type="button" onclick="Borro(${producto.id})" name="" value="Borrar"></div>`});
     if (lista.length > 0) 
-    {div.innerHTML = `   ${contenido}  `;
+    {ltitle.innerHTML = 'Lista de Productos Actuales';
+    div.innerHTML = `   ${contenido}  `;
     npdiv.innerHTML = '<div></div>'}
+    else {
+      ltitle.innerHTML = 'No hay productos disponibles en este momento.';
+      div.innerHTML = '';
+      npdiv.innerHTML =  `<div id="NoProdHero">
+      <div class="noPdiv">
+          <img src="https://img.freepik.com/free-vector/add-cart-concept-illustration_114360-1435.jpg?w=826&t=st=1678233850~exp=1678234450~hmac=e83dfbf30df5a067add1aca70bb273e7fabf6de157bde44f9f84358889d3f9f1" />
+      </div>
+      <h2> Que tal si cargamos uno ? </h2>
+      <h2> Usa el formulario de la derecha para cargar uno nuevo.</h2>
+  </div>`;
+    }
 
 }
 ;

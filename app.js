@@ -95,7 +95,7 @@ app.get('/chat', async (req, res) => {
 
 // realTimeProducts
 app.get('/realtimeproducts', async (req, res) => {
-    let productos  = [];
+    let productos = [];
     res.render('realTimeProducts',{productos,style:"styles.css"})
    }
    )

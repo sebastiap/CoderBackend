@@ -38,7 +38,11 @@ export default class ProductManager{
     get = async() => {
         try{        
            let resultDB = await productModel.find();
-           this.maxid = Math.max(...resultDB.map(o => o.id));
+           let max = Math.max(...resultDB.map(o => o.id));
+           if (!max || max == null || max == -Infinity) {
+            max = 0;
+           }
+           this.maxid = max;
            return resultDB;
         }
             catch(error){ 
