@@ -20,7 +20,6 @@ const ActualizarLista = (lista) => {
     let npdiv = document.getElementById("NoProdHero");
     let contenido = "";
     mensajeError.innerHTML = "";
-    // mensajeConfirmacion.innerHTML = ""
 
     lista.forEach(producto => { contenido += `<div class="productDiv"><p class="title">${producto.title}</p>
     <p>${producto.description}</p>

@@ -45,7 +45,7 @@ app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
-mongoose.connect("mongodb+srv://prueba:prueba@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority", error => {
+mongoose.connect("mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority", error => {
     if (error) {
         console.log("Cannot Connect to Database", error);
         process.exit();

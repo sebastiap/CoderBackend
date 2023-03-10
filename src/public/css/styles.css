@@ -22,6 +22,15 @@ align-items: center;
     align-items:space-around;
     padding: 5vh;
 }
+.headerLogo{
+    margin:0;
+    display: flex;
+    flex-direction: row;
+    justify-content:flex-start;
+    align-items:flex-end;
+    padding: 1vh;
+    margin-top: 1.6vh;
+}
 
 .container {
     display: grid;
@@ -171,8 +180,8 @@ margin-bottom: 5vh;
 .pagebutton{
     padding: 10px 24px;
     margin: 1vh;
-    background-color: brown;
-    color: antiquewhite;
+    background-color: bisque;
+    color: black;
     /* width: 100%; */
 }
 
@@ -191,8 +200,6 @@ margin-bottom: 5vh;
     border: 1px solid #515758;
 }
 
-
-
 .formDiv {
     background-color: #2C666E;
     opacity: 0.8;
@@ -208,6 +215,7 @@ margin-bottom: 5vh;
 }
 
 .formDiv h1{
+    margin:0.2em;
     color: #e9a8ab;
     text-shadow: 3px 3px 3px#844b4e;
 
@@ -270,7 +278,6 @@ font-size: 0.7em;
     height: 70vh;
     width: 96.5%;
     background-color: #E4DFDA;
-    /* color:slateblue; */
     margin: 2rem;
     border: 1px solid black;
     overflow: hidden;
@@ -282,7 +289,6 @@ font-size: 0.7em;
     height: 35vh; 
     width: 35vh;
     background-color: #E4DFDA;
-    /* color:slateblue; */
     margin: 2rem;
     border: 1px solid black;
     overflow: hidden;
@@ -328,6 +334,10 @@ margin-right: 2rem;
     bottom: 0;
     font-size: 2rem;
     color: rgb(160, 166, 155);
-    /* z-index: 1; */
-
     }
+
+@media (min-width: 768px) {
+
+
+    
+}
