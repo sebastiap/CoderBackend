@@ -16,6 +16,9 @@ export const manager = new ProductManager(path.join(dirname,"../../data",'produc
 router.get("/",async(req,res) =>{
 
     let limit = req.query.limit;
+    let page = req.query.page;
+    let sort = req.query.sort;
+    let query = req.query.query;
     let fileproductos = await manager.get();
     if (limit){
         let n = fileproductos.length;

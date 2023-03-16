@@ -99,6 +99,17 @@ app.get('/realtimeproducts', async (req, res) => {
     res.render('realTimeProducts',{productos,style:"styles.css"})
    }
    )
+app.get('/products', async (req, res) => {
+    let productos = [];
+    res.render('realTimeProducts',{productos,style:"styles.css"})
+   }
+   )
+
+app.get('/carts/:cid', async (req, res) => {
+    let cartId = req.params.cartId;
+    res.render('realTimeProducts',{productos,style:"styles.css"})
+   }
+   )
 
 // Al crear esta instancia del Servidor de Socket IO, lo que estoy logrando es que este servidor 
 // obtenga un habilidad adicional para utilizar Sockets

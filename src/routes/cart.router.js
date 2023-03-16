@@ -36,7 +36,6 @@ router.post('/:cid/product/:pid',async (req, res) => {
         res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + ''});
     };
 });
-    //TODO Borrar esto para la entrega
     // DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
     router.delete('/:cid/products/:pid', async (req, res) => {
         const cartId = parseInt(req.params.cid);
