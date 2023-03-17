@@ -20,13 +20,35 @@ router.get("/",async(req,res) =>{
     let sort = req.query.sort;
     let query = req.query.query;
     let fileproductos = await manager.get();
-    if (limit){
-        let n = fileproductos.length;
-        if (n > limit) {
-            n = limit;
-        }
-        fileproductos = fileproductos.slice(0, n);
+    if (!limit){
+        limit = 10;
     }
+    if (!page){
+        page = 10;
+    }
+    if (!query){
+        // Se deberá poder buscar productos por categoría o por disponibilidad, 
+        // y se deberá poder realizar un ordenamiento de estos productos de manera ascendente o descendente por precio.
+        query = {};
+    }
+    if (!sort){
+        sort = {};
+    }
+//    return {
+//         status:success/error
+//     payload: Resultado de los productos solicitados
+//     totalPages: Total de páginas
+//     prevPage: Página anterior
+//     nextPage: Página siguiente
+//     page: Página actual
+//     hasPrevPage: Indicador para saber si la página previa existe
+//     hasNextPage: Indicador para saber si la página siguiente existe.
+//     prevLink: Link directo a la página previa (null si hasPrevPage=false)
+//     nextLink: Link directo a la página siguiente (null si hasNextPage=false)
+//     }
+    
+
+    fileproductos = fileproductos.slice(0, limit);
     res.send(fileproductos);
 })
 

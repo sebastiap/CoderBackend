@@ -1,0 +1,86 @@
+<div>
+<div class="container">
+    <div class="listDiv">
+        {{#if productos}}
+        <h1 id="Ltitle">Lista de Productos Actuales </h1>
+        <div id="Listado">
+            
+            {{#each productos}}
+            <div class="productDiv">
+                <p class="title"><b>{{this.title}}</b></p>
+                <p>{{this.description}}</p>
+                <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
+                <p><b>Precio:</b> {{this.price}}</p>
+                <p><b>Codigo de Producto:</b> {{this.code}}</p>
+                <p><b>Stock Disponible: </b> {{this.stock}}</p>
+                <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Borrar">
+            </div>
+            {{/each }}
+        </div>
+        {{else }}
+        <h1 id="Ltitle"></h1>
+        <div id="Listado">
+        </div>
+        <div id="NoProdHero">
+            {{!-- <h1>No hay productos disponibles en este momento. </h1>
+            <div class="noPdiv">
+                <img src="https://img.freepik.com/free-vector/add-cart-concept-illustration_114360-1435.jpg?w=826&t=st=1678233850~exp=1678234450~hmac=e83dfbf30df5a067add1aca70bb273e7fabf6de157bde44f9f84358889d3f9f1" />
+            </div>
+            <h2> Que tal si cargamos uno ? </h2>
+            <h2> Usa el formulario de la derecha para cargar uno nuevo.</h2> --}}
+        </div>
+        {{/if }}
+    </div>
+    <div class="formDiv">
+        <h1> Nuevo producto </h1>
+        <form id="productForm">
+             <div class="formContainer">
+                <div class="formGroup">   
+                    <input class="formInput" type="text" id="title" name="title" placeholder=" ">
+                    <label for="title" class="formLabel">Nombre</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="description" name="description" placeholder=" ">
+                    <label for="description" class="formLabel">Descripcion</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="price" name="price" placeholder=" ">
+                    <label for="price" class="formLabel">Precio</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="thumbnail" name="thumbnail" placeholder=" ">
+                    <label for="thumbnail" class="formLabel">URL de la imagen</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="code" name="code" placeholder=" ">
+                    <label for="code" class="formLabel">Codigo</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="stock" name="stock" placeholder=" ">
+                    <label for="stock" class="formLabel">Stock Disponible</label>
+                    <span class="formLine"></span>
+                </div>
+                {{!-- <label for="description">Descripcion:</label><br> --}}
+                {{!-- <input type="text" id="description" name="description" placeholder="Agregue una descripcion."><br><br> --}}
+                {{!-- <label for="price">Precio:</label><br> --}}
+                {{!-- <input type="text" id="price" name="price" placeholder="Agregue el precio del producto."><br><br>
+                <input type="text" id="thumbnail" name="thumbnail" placeholder="Ingrese aqui la url de la imagen del producto."><br><br>
+                <input type="text" id="code" name="code" placeholder="Ingrese codigo del producto."><br><br>
+                <input type="text" id="stock" name="stock" placeholder="Ingrese Stock disponible."><br><br> --}}
+                <input class="submitbutton" type="submit" value="Agregar Producto">
+            </div>
+        </form>
+        <p id="mensajeError"></p>
+        <p id="mensajeConfirmacion"></p>
+    </div>
+</div>
+{{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/js/realtimeproducts.js" ></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>

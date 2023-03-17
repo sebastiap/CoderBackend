@@ -1,0 +1,35 @@
+<div>
+<div class="container">
+    <div class="listDiv">
+        {{#if productos}}
+        <h1 id="Ltitle">Lista de Productos Actuales </h1>
+        <div id="Listado">
+            
+            {{#each productos}}
+            <div class="productDiv">
+                <p class="title"><b>{{this.title}}</b></p>
+                <p>{{this.description}}</p>
+                <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
+                <p><b>Precio:</b> {{this.price}}</p>
+                <p><b>Codigo de Producto:</b> {{this.code}}</p>
+                <p><b>Stock Disponible: </b> {{this.stock}}</p>
+                <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Borrar">
+            </div>
+            {{/each }}
+        </div>
+        {{else }}
+        <h1 id="Ltitle"></h1>
+        <div id="Listado">
+        </div>
+        <div id="NoProdHero">
+        </div>
+        {{/if }}
+    </div>
+    <div class="formDiv">
+    </div>
+</div>
+{{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/js/realtimeproducts.js" ></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>

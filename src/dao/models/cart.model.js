@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 const cartCollection = 'carts';
 const cartSchema = mongoose.Schema({
-    "id":{type:Number,unique:true},
-    "products":{
+    products:{
         type: [
         {            
             product:{
@@ -11,7 +10,7 @@ const cartSchema = mongoose.Schema({
                 ref:'products'
             },
             quantity:Number
-        }
+        },
         ],
         default:[]
     }

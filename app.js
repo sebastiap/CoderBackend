@@ -18,6 +18,7 @@ import mongoose from "mongoose";
 
 // Manejo de los mensajes del chat
 import messageManager from "./src/dao/dbManagers/MessageManager.js";
+import CartManager from "./src/dao/dbManagers/CartManager.js";
 
 
 const app = express();
@@ -73,6 +74,9 @@ const validarURL = (listadoProductos) => {
 let messages  = [];
 let msgmanager = new messageManager();
 
+//Cart
+let cartmanager = new CartManager();
+
 // Home
 
 app.get('/', async (req, res) => {
@@ -100,14 +104,16 @@ app.get('/realtimeproducts', async (req, res) => {
    }
    )
 app.get('/products', async (req, res) => {
-    let productos = [];
-    res.render('realTimeProducts',{productos,style:"styles.css"})
+    let productosDB = await manager.get();
+    let productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
+    res.render('products',{productos,style:"styles.css"})
    }
    )
 
 app.get('/carts/:cid', async (req, res) => {
     let cartId = req.params.cartId;
-    res.render('realTimeProducts',{productos,style:"styles.css"})
+    let cartProducts = await cartmanager.getByIdDetailed(cartId).products; 
+    res.render('carts',{cartProducts,style:"styles.css"})
    }
    )
 
