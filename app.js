@@ -1,8 +1,9 @@
-import express from "express";
+import express, { json } from "express";
 
 // Mis routers
 // TODO si no uso manager sacar esto
-import ProductRouter,{manager} from "./src/routes/product.router.js";
+import ApiProductRouter,{manager} from "./src/routes/apiproduct.router.js";
+import ProductRouter from "./src/routes/product.router.js";
 import CartRouter from "./src/routes/cart.router.js"
 import viewsrouter from './src/routes/views.router.js';
 
@@ -34,7 +35,8 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
 // Mi propio Middleware con router
-app.use('/api/products',ProductRouter);
+app.use('/api/products',ApiProductRouter);
+app.use('/products',ProductRouter);
 app.use('/api/carts',CartRouter);
 
 const httpServer = app.listen(8080, ()=> console.log('Listening on port 8080'));
@@ -56,14 +58,20 @@ mongoose.connect("mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mong
 });
 
 
+
+
 //Funciones Genericas
+const validarUrlIndividual = (product) => {
+    if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
+        product.thumbnail = "https://picsum.photos/200/300";
+}; 
+};
+
 const validarURL = (listadoProductos) => {
     //Validar por formulario o que la URL empiece con http
     listadoProductos.map((product => { 
-        if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
-        // product.thumbnail = "https://www.publicdomainpictures.net/pictures/280000/velka/not-found-image-15383864787lu.jpg";
-        product.thumbnail = "https://picsum.photos/200/300";
-    }}
+        validarUrlIndividual(product);
+    }
     
     ))
     return listadoProductos;
@@ -103,16 +111,27 @@ app.get('/realtimeproducts', async (req, res) => {
     res.render('realTimeProducts',{productos,style:"styles.css"})
    }
    )
-app.get('/products', async (req, res) => {
-    let productosDB = await manager.get();
-    let productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
-    res.render('products',{productos,style:"styles.css"})
-   }
-   )
+// app.get('/products', async (req, res) => {
+//     let productosDB = await manager.getPaginated();
+//     console.log(productosDB);
+//     let productos = validarURL(productosDB.docs.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
+//     res.render('products',{productos,style:"styles.css"})
+//    }
+//    )
 
 app.get('/carts/:cid', async (req, res) => {
-    let cartId = req.params.cartId;
-    let cartProducts = await cartmanager.getByIdDetailed(cartId).products; 
+    let cartId = req.params.cid;
+    let cartProm = await cartmanager.getByIdDetailed(cartId); 
+    let cartArray = cartProm.products; 
+    // console.log(cartArray);
+    // TODO AGREGAR BORRADO DE ARTICULOS DE CARRITO
+    let cartProducts = cartArray.map(function(productObj){
+        validarUrlIndividual(productObj.product);
+        return productObj = {title:productObj.product.title, description:productObj.product.description,
+            thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity}
+    })
+
+      
     res.render('carts',{cartProducts,style:"styles.css"})
    }
    )
@@ -185,7 +204,55 @@ io.on('connection',  (socket) => {
         } catch (error) {
             console.log(error.message);
         }
+    // Cart Sockets
+    
 
+
+    // socket.on('Agregar_al_Carro',(data) => {
+    //     console.log("Por que no entro aca?",data);
+    //     let putData = [{"product":"640bc2f9681bbd0c4a4a994c","quantity":5730 },
+    //     {"product":"640bc2d4681bbd0c4a4a9942","quantity":600 },
+    //     {"product":"640efafa130d57a081c9cfda","quantity":1 }
+    //     ];
+
+    // try {
+    //     // TODO HACER ANDAR ESTO
+    //     axios.put("http://localhost:8080/api/carts/64138d85b7e69806cd95ebe7/",putData)
+    //     .then(function () {
+    //         // manager.getFromSocket().then((res) => {
+    //         //     let valor = validarURL(res);
+    //             console.log("al menos entre aca");
+    //             socket.emit('Producto_Agregado_Carro',"Se ha insertado el nuevo producto exitosamente.");
+    //             // socket.emit('Listado de Productos Actualizados',valor);
+    //         // }
+    //         // );;
+    //     })
+    //     // TODO Verificar que me sirve realmente de aca
+    //     .catch(function (error) {
+    //         socket.emit("error_al_insertar", error.response.data.message);
+    //         if (error.response) {
+    //           // The request was made and the server responded with a status code
+    //           // that falls out of the range of 2xx
+    //           console.log(error.response.data);
+    //           console.log(error.response.status);
+    //           console.log(error.response.headers);
+    //         } else if (error.request) {
+    //           // The request was made but no response was received
+    //           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+    //           // http.ClientRequest in node.js
+    //           console.log(error.request);
+    //         } else {
+    //           // Something happened in setting up the request that triggered an Error
+    //           console.log('Error', error.message);
+    //         }
+    //         console.log(error.config);
+    //       });
+        
+    // } catch (error) {
+    //     console.log(error.message);
+    // }
+    // }
+    // )
 
     })
     // Chat Sockets

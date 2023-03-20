@@ -67,9 +67,10 @@ router.put('/:cid', async (req, res) => {
     
  router.put('/:cid/products/:pid', async (req, res) => {
     //TODO diferenciar del Post?
-        const cartId = req.params.cid;
-        const ProductId = req.params.pid;
-        const quantity = parseInt(req.body.quantity);
+    const cartId = req.params.cid;
+    const ProductId = req.params.pid;
+    const quantity = parseInt(req.body.quantity);
+    console.log("entre aca al menos?",req ,cartId, ProductId,quantity )
         const result = await manager.addProduct(cartId,ProductId,quantity);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else {

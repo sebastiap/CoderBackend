@@ -49,6 +49,10 @@ align-items: center;
     font-size: 3.5em;
 }
 
+.cartDiv {
+    background: linear-gradient(360deg, #66c192, rgba(255,144,168,1));
+    min-height: 94vh;
+}
 .listDiv {
     background: linear-gradient(270deg, #C1666B, rgba(255,144,168,1));
     min-height: 94vh;
@@ -138,6 +142,17 @@ margin-bottom: 5vh;
     display: grid;
     grid-template-rows: auto;
     grid-template-columns: 1fr 1fr;
+    row-gap: 1.5rem;
+    padding-bottom: 1rem;
+
+}
+
+#Carrito{
+    margin-left: 5rem;
+    margin-bottom: 2rem;
+    display: grid;
+    grid-template-rows: auto;
+    grid-template-columns: 1fr 1fr 1fr;
     row-gap: 1.5rem;
     padding-bottom: 1rem;
 

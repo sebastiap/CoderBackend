@@ -12,10 +12,21 @@
                 <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
                 <p><b>Precio:</b> {{this.price}}</p>
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
+                {{#if this.status}}
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
-                <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Borrar">
+                <input  class="button" type="button" onclick="AddtoCart({{this.id}})" name="" value="Añadir al Carro">
+                {{else }}
+                <input  class="button" type="button" onclick="" name="" value="Producto No disponible">
+                {{/if  }}
             </div>
             {{/each }}
+            {{#if prev}}
+             <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
+            {{/if }}
+            {{#if next}}
+            <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
+            {{/if }}
+
         </div>
         {{else }}
         <h1 id="Ltitle"></h1>
@@ -26,10 +37,28 @@
         {{/if }}
     </div>
     <div class="formDiv">
+        <div>
+            <a href="http://localhost:8080/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
+            <a href="http://localhost:8080/products/?query=Games&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
+            <a href="http://localhost:8080/products/?query=Clothing&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
+            <a href="http://localhost:8080/products/?query=Misc&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
+        </div>
+        <div>
+            {{!-- {{#if (eq sort 'Employer')}} --}}
+            
+            <a href="http://localhost:8080/products/?query={{query}}&sort=ASC&page={{page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
+            <a href="http://localhost:8080/products/?query={{query}}&sort=DESC&page={{page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
+            {{!-- {{/if }} --}}
+            {{!-- {{#if (sort eq "DESC") }}
+            {{/if }} --}}
+        </div>
     </div>
 </div>
 {{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
 </div>
 <script src="/socket.io/socket.io.js" ></script>
-<script src="/js/realtimeproducts.js" ></script>
+<script src="/js/products.js" ></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
