@@ -3,6 +3,16 @@
     <div class="listDiv">
         {{#if productos}}
         <h1 id="Ltitle">Lista de Productos Actuales </h1>
+        <div class="paginationButtonDiv">
+
+            {{#if prev}}
+            
+             <a  href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
+            {{/if }}
+            {{#if next}}
+            <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
+            {{/if }}
+            </div>
         <div id="Listado">
             
             {{#each productos}}
@@ -14,18 +24,13 @@
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
                 {{#if this.status}}
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
-                <input  class="button" type="button" onclick="AddtoCart({{this.id}})" name="" value="Añadir al Carro">
+                <input  class="button" type="button" onclick="AddtoCart({{this.id}},{{'64138d85b7e69806cd95ebe7'}})" name="" value="Añadir al Carro">
                 {{else }}
                 <input  class="button" type="button" onclick="" name="" value="Producto No disponible">
                 {{/if  }}
             </div>
             {{/each }}
-            {{#if prev}}
-             <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
-            {{/if }}
-            {{#if next}}
-            <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
-            {{/if }}
+
 
         </div>
         {{else }}
@@ -36,7 +41,7 @@
         </div>
         {{/if }}
     </div>
-    <div class="formDiv">
+    <div class="formDiv sortDiv">
         <div>
             <a href="http://localhost:8080/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
             <a href="http://localhost:8080/products/?query=Games&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>

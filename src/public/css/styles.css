@@ -50,9 +50,21 @@ align-items: center;
 }
 
 .cartDiv {
-    background: linear-gradient(360deg, #66c192, rgba(255,144,168,1));
+    background: linear-gradient(360deg, #66c192, slateblue);
     min-height: 94vh;
 }
+
+.sortDiv {
+    padding-top:2rem;
+    padding-left:5rem;
+}
+
+.paginationButtonDiv {
+display: flex;
+flex-direction: row;
+justify-content: flex-end
+}
+
 .listDiv {
     background: linear-gradient(270deg, #C1666B, rgba(255,144,168,1));
     min-height: 94vh;

@@ -75,6 +75,9 @@ export default class ProductManager{
                 else if (query == "true" || query == "false"){
                     tquery = {$or:[{status: query},{ stock:0}]};
                 }
+                else if (!query || query === undefined) {
+                     tquery = ""
+                }
                 else{
                     console.log('Some error ocurred or the query is not valid');
                     status = false;
