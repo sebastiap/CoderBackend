@@ -5,4 +5,36 @@ import { fileURLToPath } from "url";
 const filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(filename);
 
+import bcrypt from "bcrypt";
+import passport from 'passport';
+
+//Funciones Genericas
+export const validarUrlIndividual = (product) => {
+    console.log(product);
+    if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
+        product.thumbnail = "https://picsum.photos/200/300";
+}; 
+};
+
+export const validarURL = (listadoProductos) => {
+    //Validar por formulario o que la URL empiece con http
+    listadoProductos.map((product => { 
+        validarUrlIndividual(product);
+    }
+    
+    ))
+    return listadoProductos;
+
+}
+
+//Funciones de encriptacion
+export const createHash = password =>{
+bcrypt.hashSync(password,bcrypt.genSaltSync(10));
+}
+export const isValidPassword  = (user,password ) => {
+    bcrypt.compareSync(password,user.password);
+}
+
 export default __dirname;
+
+

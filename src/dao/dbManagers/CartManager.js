@@ -1,5 +1,7 @@
 import {cartModel} from '../models/cart.model.js'
-import {productModel} from '../models/product.model.js'
+import ProductManager from './ProductManager.js';
+
+let manager = new ProductManager();
 
 export default class CartManager {
     constructor(path){
@@ -46,7 +48,14 @@ export default class CartManager {
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
+        console.log("productId", productId);
 
+        manager.getByIdDB(productId).then((productExist) => {
+        console.log("encontre algo?", productExist);
+        if (productExist < 0) {
+            return 4;
+        }
+        })
         const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
         if (SearchedProductindex < 0 ) {
         productToAdd = {product:productId, quantity:quantity};
@@ -58,6 +67,39 @@ export default class CartManager {
         }
         productos.push(productToAdd);
 
+        let result = await cartModel.updateOne({id:cid},cartToUpdate);
+
+        if (result.modifiedCount != 1) {
+            return 4;
+        }
+        return 1;
+    }
+
+    addQuantity = async (cid,productId, quantity) => {
+
+        console.log("------------------------------------------");
+        // console.log(cid,productId, quantity);
+        const cartToUpdate = await this.getById(cid);
+        // console.log("Carro a actualizar" , cartToUpdate);
+        let productToAdd;
+        let productos = cartToUpdate.products;
+
+        const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
+        //TODO Tratamiento para productos invalidos
+        console.log("Producto a actualizar" , SearchedProductindex);
+        if (SearchedProductindex < 0 ) {
+        // productToAdd = {product:productId, quantity:quantity};
+        return "An error ocurred with the id of the product to add";
+        }
+        else {
+            let newQuantity = productos[SearchedProductindex].quantity + quantity;
+            console.log("Cantidad a actualizar" , newQuantity);
+            productToAdd = {product: productId, quantity: newQuantity};
+            console.log("Producto a actualizar" , SearchedProductindex);
+            productos.splice(SearchedProductindex,1);
+        }
+        productos.push(productToAdd);
+        console.log("Nuevo Cart" , productos);
         let result = await cartModel.updateOne({id:cid},cartToUpdate);
 
         if (result.modifiedCount != 1) {

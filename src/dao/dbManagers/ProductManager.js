@@ -10,6 +10,10 @@ export default class ProductManager{
 
     add = async(product) => {
         try {
+            // TODO ver si esto arregla el error al iniciar
+            if (this.maxid === 0){
+                this.get();
+            }
             if (!product.title || !product.description || !product.price 
                 // || !product.status || !product.stock
                 || !product.category || !product.code )
@@ -55,6 +59,7 @@ export default class ProductManager{
     getPaginated = async(reqq) => {
         const { limit = 10, page = 1, query , sort } = reqq
         let tquery = {};
+        let urlquery = "";
         let tsort = {};
         let payload = [];
         let status = true;
@@ -71,22 +76,28 @@ export default class ProductManager{
             if (query != undefined ) {
                 if(query == "Games" || query == "Clothing"|| query == "Misc") {
                     tquery = { category: query };
+                    urlquery = query;
                 }
                 else if (query == "true" || query == "false"){
                     tquery = {$or:[{status: query},{ stock:0}]};
+                    urlquery = query;
                 }
                 else if (!query || query === undefined) {
-                     tquery = ""
+                     tquery = "";
+                     urlquery = "";
                 }
                 else{
                     console.log('Some error ocurred or the query is not valid');
                     status = false;
+                    tquery = "";
                     payload = "Error";
                 }
             }
            let paginateResults = await productModel.paginate(tquery,{limit:limit,page:page,sort:tsort});
-           let prevLink = `products/?page=${paginateResults.prevPage}&query=${query}&sort=${tsort}`;
-           let nextLink = `products/?page=${paginateResults.nextPage}&query=${query}&sort=${tsort}`;
+           
+           let prevLink = `?page=${paginateResults.prevPage}&query=${urlquery}&sort=${JSON.stringify(tsort)}`;
+           let nextLink = `?page=${paginateResults.nextPage}&query=${urlquery}&sort=${JSON.stringify(tsort)}`;
+ 
            return {
                 status:status, payload:paginateResults.docs,  
                 totalPages: paginateResults.totalPages, 
@@ -98,17 +109,6 @@ export default class ProductManager{
                 prevLink: prevLink,
                 nextLink: nextLink,
         }
-
-//     prevLink: Link directo a la página previa (null si hasPrevPage=false)
-//     nextLink: Link directo a la página siguiente (null si hasNextPage=false)
-//     }
-        //    res.send({status: 'success', payload: productsPaginates})
-        //    let max = Math.max(...resultDB.map(o => o.id));
-        //    if (!max || max == null || max == -Infinity) {
-        //     max = 0;
-        //    }
-        //    this.maxid = max;
-           return resultDB;
         }
             catch(error){ 
                 console.log("Error al consultar en MongoDB:" , error); 

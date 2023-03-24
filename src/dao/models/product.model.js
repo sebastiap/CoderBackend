@@ -12,7 +12,9 @@ const productSchema = mongoose.Schema({
     "thumbnail":String,
     "stock":{type:Number},
     "code":{type:String,index:true,unique:true},
-    "category":String,
+    "category":{type:String,
+                enum:["Games","Clothing","Misc"],
+                default:'Misc'},
     "status":Boolean
 });
 

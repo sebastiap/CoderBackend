@@ -5,12 +5,14 @@
         <h1 id="Ltitle">Lista de Productos Actuales </h1>
         <div class="paginationButtonDiv">
 
-            {{#if prev}}
+            {{#if pageConfig.prev}}
             
-             <a  href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
+             {{!-- <a  href="http://localhost:8080/products/?query={{pageConfig.query}}&sort={{pageConfig.sort}}&page={{pageConfig.prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a> --}}
+             <a  href={{pageConfig.prevLink}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
             {{/if }}
-            {{#if next}}
-            <a href="http://localhost:8080/products/?query={{query}}&sort={{sort}}&page={{next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
+            {{#if pageConfig.next}}
+            <a href={{pageConfig.nextLink}}><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
+            {{!-- <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort={{pageConfig.sort}}&page={{pageConfig.next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a> --}}
             {{/if }}
             </div>
         <div id="Listado">
@@ -24,7 +26,7 @@
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
                 {{#if this.status}}
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
-                <input  class="button" type="button" onclick="AddtoCart({{this.id}},{{'64138d85b7e69806cd95ebe7'}})" name="" value="Añadir al Carro">
+                <input  class="button" type="button" onclick="AddtoCart({{this.id}})" name="" value="Añadir al Carro">
                 {{else }}
                 <input  class="button" type="button" onclick="" name="" value="Producto No disponible">
                 {{/if  }}
@@ -44,15 +46,15 @@
     <div class="formDiv sortDiv">
         <div>
             <a href="http://localhost:8080/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
-            <a href="http://localhost:8080/products/?query=Games&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
-            <a href="http://localhost:8080/products/?query=Clothing&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
-            <a href="http://localhost:8080/products/?query=Misc&sort={{sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
+            <a href="http://localhost:8080/products/?query=Games&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
+            <a href="http://localhost:8080/products/?query=Clothing&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
+            <a href="http://localhost:8080/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
         </div>
         <div>
             {{!-- {{#if (eq sort 'Employer')}} --}}
             
-            <a href="http://localhost:8080/products/?query={{query}}&sort=ASC&page={{page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
-            <a href="http://localhost:8080/products/?query={{query}}&sort=DESC&page={{page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
+            <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
+            <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
             {{!-- {{/if }} --}}
             {{!-- {{#if (sort eq "DESC") }}
             {{/if }} --}}

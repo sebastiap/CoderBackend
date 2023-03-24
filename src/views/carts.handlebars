@@ -12,7 +12,9 @@
                 <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
                 <p><b>Precio:</b> {{this.price}}</p>
                 <p><b>Cantidad: </b> {{this.quantity}}</p>
-                {{!-- <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Quitar del Carrito"> --}}
+                <input  class="button" type="button" onclick="QuantityChange({{this.id}},-1)" name="" value="-">
+                <input  class="button" type="button" onclick="deleteCart({{this.id}})" name="" value="Quitar del Carrito">
+                <input  class="button" type="button" onclick="QuantityChange({{this.id}},1)" name="" value="+">
             </div>
             {{/each }}
         </div>
@@ -34,5 +36,5 @@
 {{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
 </div>
 <script src="/socket.io/socket.io.js" ></script>
-{{!-- <script src="/js/realtimeproducts.js" ></script> --}}
+<script src="/js/products.js" ></script>
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>

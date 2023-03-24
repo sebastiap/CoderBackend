@@ -1,10 +1,19 @@
 const socket = io();
 
+const deleteCart = async (id) => {
+  let stringId = id;
+  socket.emit("Borrar_Producto_Carro" , stringId);
+};
+const QuantityChange = async (id,q) => {
+
+  let qdata = {id:id, quantity:q};
+  socket.emit("Cambiar_Cantidad_Carro" , qdata);
+};
+
 const AddtoCart = async (productId) => {
   let stringId = productId;
   // TODO hacer generico para cada user
   let stringCart = '64135d02acdf495d33f1a229';
-  // console.log("id",string);
   let productToAdd = await axios.get('http://localhost:8080/api/products/'+stringId);
   let cartToFill = await axios.get('http://localhost:8080/api/carts/'+stringCart);
   // console.log("cartProducts",cartToFill.data.products);
@@ -48,6 +57,21 @@ const AddtoCart = async (productId) => {
 
 
 };
+
+socket.on('Mensaje_Carro',message =>{
+
+  Swal.fire({
+    title: 'Actualizacion de Carro',
+    toast: true,
+    icon:"success",
+    text: message,
+    position:"top-end",
+    showConfirmButton: false,
+    timer:2000
+});
+setTimeout(() => {window.location.reload()}, 1000);
+
+});
 // TODO ver si se puede y conviene hacer con sockets
 // socket.on('Producto_Agregado_Carro',message =>{
 //   Swal.fire({

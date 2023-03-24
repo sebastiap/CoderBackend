@@ -24,7 +24,7 @@ Un router en express nos permitirá separar los endpoints “comunes” en entid
 Websocket es un protocolo de comunicación basado en TCP para poder establecer esa conexión entre el cliente y el servidor. A diferencia de HTTP la comunicacion es bidireccional con la utilizacion de endpoints(Sockets) que emiten y reciben informacion.
 
 ## Entrega Actual 
-La entrega actual corresponde a la clase 16.
+La entrega actual corresponde a la clase 20.
 
 ## Contenido - Practica Integradora
 
@@ -39,3 +39,5 @@ La entrega actual corresponde a la clase 16.
 * MongoDB - CRUD en bases de datos no relacionales
 * Mongoose - conexion de Node con MongoDB Atlas
 * DAO - objeto de acceso a datos - Managers(clases) y Models(Esquemas)
+* Autenticacion/Login 
+* Encriptacion de Password - bcrypt

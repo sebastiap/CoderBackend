@@ -6,13 +6,13 @@ let price = document.getElementById("price");
 let thumbnail = document.getElementById("thumbnail");
 let stock = document.getElementById("stock");
 let code = document.getElementById("code");
+let category = 'Misc';
 let mensajeError = document.getElementById("mensajeError");
 let mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
 
 const Borro = (id) => {
     socket.emit("Producto Borrado" , id);
 };
-
 
 const ActualizarLista = (lista) => {
     let ltitle = document.getElementById("Ltitle");
@@ -59,11 +59,15 @@ socket.on("Listado de Productos Actualizados", data => {
 
 myform.addEventListener("submit", (e) => {
     e.preventDefault();
+    category = document.querySelector('input[name="tools"]:checked').id;
+    if (category == null || category == undefined){
+      category = 'Misc'
+    }
     const producto = {"title": title.value, "description": description.value, "price": price.value , 
     "thumbnail": thumbnail.value, "stock": stock.value, "code": code.value,
-    "category":"Misc", "status":true
-}
-    
+    "category":category , "status":true
+};
+
     socket.emit("Ingresar Nuevo Producto",producto);
   });
 

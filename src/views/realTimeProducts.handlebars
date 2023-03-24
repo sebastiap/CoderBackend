@@ -65,13 +65,23 @@
                     <label for="stock" class="formLabel">Stock Disponible</label>
                     <span class="formLine"></span>
                 </div>
-                {{!-- <label for="description">Descripcion:</label><br> --}}
-                {{!-- <input type="text" id="description" name="description" placeholder="Agregue una descripcion."><br><br> --}}
-                {{!-- <label for="price">Precio:</label><br> --}}
-                {{!-- <input type="text" id="price" name="price" placeholder="Agregue el precio del producto."><br><br>
-                <input type="text" id="thumbnail" name="thumbnail" placeholder="Ingrese aqui la url de la imagen del producto."><br><br>
-                <input type="text" id="code" name="code" placeholder="Ingrese codigo del producto."><br><br>
-                <input type="text" id="stock" name="stock" placeholder="Ingrese Stock disponible."><br><br> --}}
+                <div class="col-12 pb-5">
+                        <input class="checkbox-tools" type="radio" name="tools" id="Games">
+						<label class="for-checkbox-tools" for="Games">
+							<i class='uil uil-crop-alt'></i>
+							Games
+						</label>
+						<input class="checkbox-tools" type="radio" name="tools" id="Clothing">
+						<label class="for-checkbox-tools" for="Clothing">
+							<i class='uil uil-vector-square'></i>
+							Clothing
+						</label><!--
+						--><input class="checkbox-tools" type="radio" name="tools" id="Misc">
+						<label class="for-checkbox-tools" for="Misc">
+							<i class='uil uil-ruler'></i>
+							Misc
+						</label>
+					</div>
                 <input class="submitbutton" type="submit" value="Agregar Producto">
             </div>
         </form>

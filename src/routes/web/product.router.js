@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../dao/dbManagers/ProductManager.js";
+import ProductManager from "../../dao/dbManagers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
@@ -17,11 +17,11 @@ router.get("/",async(req,res) =>{
 
     // let limit = req.query.limit;
     // let page = req.query.page;
-    let sort = req.query.sort;
-    let query = req.query.query;
+    let { limit = 10, page = 1, query , sort } = req.query
     // let {limit,page,sort,query} = req.query;
   
     let productosDB = await manager.getPaginated(req.query);
+    console.log(productosDB);
 
     let productosFormated = productosDB.payload;
 
@@ -33,16 +33,14 @@ router.get("/",async(req,res) =>{
     if (productosDB.hasNextPage){
         next = productosDB.nextPage;
     }
-    let page = productosDB.nextPage;
     let cart = '64135d02acdf495d33f1a229';
-    let productos = productosFormated.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
-    // TODO pasar Objeto con variables necesarias y no tantas
-    res.render('products',{productos,page,query,sort,prev,next,cart,style:"styles.css"})
+    let productos = productosFormated.map(prod => 
+        ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
+            code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
+    // console.log(productos);
 
-    
-
-    // fileproductos = fileproductos.slice(0, limit);
-    // res.send(productosDB);
+    let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
+    res.render('products',{productos,pageConfig,style:"styles.css"});
 })
 
 

@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartManager from "../dao/dbManagers/CartManager.js";
+import CartManager from "../../dao/dbManagers/CartManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
@@ -45,12 +45,18 @@ router.post('/:cid/product/:pid',async (req, res) => {
 // DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
 router.delete('/:cid/products/:pid', async (req, res) => {
         const cartId = req.params.cid;
-        const productId = req.params.pid;
+        let productId = req.params.pid;
+        if (typeof(productId) != String ) {
+        //     productId = JSON.stringify(productId);
+        }
         manager.getById(cartId).then((cart) => {
             let oldProducts = cart.products;
-            let newProducts = oldProducts.filter((prod) => String(prod.product) !== productId);
+            let newProducts = oldProducts.filter((prod) => JSON.stringify(prod.product) != String(productId));
             manager.update(cartId, newProducts).then((resupdate) => {
-                res.send({status: 'success',message: 'The product with id ' + productId + ' was deleted successfully from cart ' + cartId + ''});
+                if (resupdate.modifiedCount >= 1){
+                    res.send({status: 'success',message: 'The product with id ' + productId + ' was deleted successfully from cart ' + cartId + ''}); 
+                }
+                else {res.send({status: 'error',message:"No product with that id was deleted" })}
             });
         })
 
@@ -66,13 +72,12 @@ router.put('/:cid', async (req, res) => {
         });
     
  router.put('/:cid/products/:pid', async (req, res) => {
-    //TODO diferenciar del Post?
     const cartId = req.params.cid;
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
-    console.log("entre aca al menos?",req ,cartId, ProductId,quantity )
-        const result = await manager.addProduct(cartId,ProductId,quantity);
+        const result = await manager.addQuantity(cartId,ProductId,quantity);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+        else if (result === "An error ocurred with the id of the product to add.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else {
             res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + ''});
         };

@@ -1,10 +1,13 @@
 import express, { json } from "express";
+import {validarUrlIndividual,validarURL} from "./utils.js" 
 
 // Mis routers
 // TODO si no uso manager sacar esto
-import ApiProductRouter,{manager} from "./src/routes/apiproduct.router.js";
-import ProductRouter from "./src/routes/product.router.js";
-import CartRouter from "./src/routes/cart.router.js"
+import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
+import ProductRouter from "./src/routes/web/product.router.js";
+import ApiCartRouter from "./src/routes/api/cart.router.js"
+import CartRouter from "./src/routes/web/carts.router.js"
+import AuthRouter from "./src/routes/auth/session.router.js"
 import viewsrouter from './src/routes/views.router.js';
 
 import __dirname from './utils.js';
@@ -24,75 +27,51 @@ import CartManager from "./src/dao/dbManagers/CartManager.js";
 
 const app = express();
 
-//APP USE - Middleware
-// App use nos permite usar middleware . Cada vez que hacemos un app.use estamos agregando uno.
-// Express ejecutara las funciones que le pasemos a app.use() en orden a medida que los llamemos.
-
-// express.json() parsea el JSON que nos llega en las requests y pone los datos en req.body.
 app.use(express.json());
-// Si ponemos el atributo extended  en true para urlencoded
-// esto especifica que el objeto req.body va a contener valores de todo tipo en lugar de solo strings (por defecto toma solo strings)
 app.use(express.urlencoded({extended:true}));
 
-// Mi propio Middleware con router
 app.use('/api/products',ApiProductRouter);
+app.use('/api/carts',ApiCartRouter);
 app.use('/products',ProductRouter);
-app.use('/api/carts',CartRouter);
+app.use('/carts',CartRouter);
+app.use('/auth',AuthRouter);
 
 const httpServer = app.listen(8080, ()=> console.log('Listening on port 8080'));
 
-// Agrego estructura de WebSocket
 app.engine('handlebars',handlebars.engine());
 app.set('views',__dirname+'/src/views');
 app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
+// Para sacar el warning
+mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority", error => {
     if (error) {
         console.log("Cannot Connect to Database", error);
         process.exit();
     }
-    
-    
 });
-
-
-
-
-//Funciones Genericas
-const validarUrlIndividual = (product) => {
-    if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
-        product.thumbnail = "https://picsum.photos/200/300";
-}; 
-};
-
-const validarURL = (listadoProductos) => {
-    //Validar por formulario o que la URL empiece con http
-    listadoProductos.map((product => { 
-        validarUrlIndividual(product);
-    }
-    
-    ))
-    return listadoProductos;
-
-}
 
 // Chat Variables
 let messages  = [];
+let productos = [];
 let msgmanager = new messageManager();
 
-//Cart
-let cartmanager = new CartManager();
-
 // Home
-
+// TODO ARREGLAR ESTO
 app.get('/', async (req, res) => {
 
 let productosDB = await manager.get();
 let messagesDB = await msgmanager.getLast();
-let productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
-messages = messagesDB.map(sms => ({user:sms.user, message: sms.message})).reverse();
+if (productosDB !== undefined) {
+
+    productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
+    messages = messagesDB.map(sms => ({user:sms.user, message: sms.message})).reverse();
+}
+else {
+    productos = [];
+}
 res.render('home',{productos,messages,style:"styles.css"})
 
 }
@@ -100,53 +79,22 @@ res.render('home',{productos,messages,style:"styles.css"})
 
 // Chat
 app.get('/chat', async (req, res) => {
-
     res.render('chat',{messages,style:"styles.css"})
-   }
-   )
-
+   })
 // realTimeProducts
 app.get('/realtimeproducts', async (req, res) => {
     let productos = [];
     res.render('realTimeProducts',{productos,style:"styles.css"})
-   }
-   )
-// app.get('/products', async (req, res) => {
-//     let productosDB = await manager.getPaginated();
-//     console.log(productosDB);
-//     let productos = validarURL(productosDB.docs.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
-//     res.render('products',{productos,style:"styles.css"})
-//    }
-//    )
+   })
 
-app.get('/carts/:cid', async (req, res) => {
-    let cartId = req.params.cid;
-    let cartProm = await cartmanager.getByIdDetailed(cartId); 
-    let cartArray = cartProm.products; 
-    // console.log(cartArray);
-    // TODO AGREGAR BORRADO DE ARTICULOS DE CARRITO
-    let cartProducts = cartArray.map(function(productObj){
-        validarUrlIndividual(productObj.product);
-        return productObj = {title:productObj.product.title, description:productObj.product.description,
-            thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity}
-    })
-
-      
-    res.render('carts',{cartProducts,style:"styles.css"})
-   }
-   )
-
-// Al crear esta instancia del Servidor de Socket IO, lo que estoy logrando es que este servidor 
-// obtenga un habilidad adicional para utilizar Sockets
+// Socket
 const io = new Server(httpServer);
-let prodids = [];
 
 io.on('connection',  (socket) => {
 
-    // Un cliente se conecta
     socket.on('Client_Connect', message => {
         console.log(message);
-        let valor  = manager.getFromSocket().then((res) => {
+        manager.getFromSocket().then((res) => {
         let mapProd = res.map(prod => (
             {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id}));
         let productos = validarURL(mapProd);
@@ -155,7 +103,6 @@ io.on('connection',  (socket) => {
     });
     });
 
-    // Un cliente pide borrar un producto
     socket.on("Producto Borrado" ,async data =>{
 
         manager.delete(data).then(result =>{
@@ -169,7 +116,7 @@ io.on('connection',  (socket) => {
     })
         
     })
-    // Un cliente ingresa un nuevo producto
+
     socket.on("Ingresar Nuevo Producto", producto => {
         try {
             axios.post("http://localhost:8080/api/products/",producto)
@@ -180,7 +127,6 @@ io.on('connection',  (socket) => {
                     socket.emit('Listado de Productos Actualizados',valor);
                 });;
             })
-            // TODO Verificar que me sirve realmente de aca
             .catch(function (error) {
                 socket.emit("error_al_insertar", error.response.data.message);
                 if (error.response) {
@@ -191,8 +137,6 @@ io.on('connection',  (socket) => {
                   console.log(error.response.headers);
                 } else if (error.request) {
                   // The request was made but no response was received
-                  // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                  // http.ClientRequest in node.js
                   console.log(error.request);
                 } else {
                   // Something happened in setting up the request that triggered an Error
@@ -204,9 +148,87 @@ io.on('connection',  (socket) => {
         } catch (error) {
             console.log(error.message);
         }
-    // Cart Sockets
-    
+    })
 
+    // Chat Sockets
+    socket.on("message", (data) => {
+        messages.push(data);
+        msgmanager.post(data);
+        io.emit("message_logs",messages)
+    })
+
+    
+    socket.on("authenticated", user => {
+        io.emit("message_logs",messages);
+        io.emit("new_user_connected",user);
+    })
+
+
+     // Cart Sockets
+     let cartManager = new CartManager;
+    
+    socket.on("Borrar_Producto_Carro", (id) => {
+            try {
+            axios.get('http://localhost:8080/api/products/'+id).then( (product) => {
+            let dataid = JSON.stringify(product.data[0]._id);
+            let cart = '64135d02acdf495d33f1a229';
+            let pid = '640bc2d4681bbd0c4a4a9942';
+            axios.delete(`http://localhost:8080/api/carts/${cart}/products/${dataid}`)
+            .then(function () {
+                    // console.log("al menos entre aca");
+                    socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
+                })
+                .catch(err => {console.log(err);}); 
+            }
+        ) ;
+        // let dataid = productToAdd.data[0]._id;
+        // console.log("id",dataid);
+        // let cart = '64135d02acdf495d33f1a229';
+        // http://localhost:8080/api/carts/:cid/products/:pid
+        // axios.delete(`http://localhost:8080/api/carts/${cart}/products/`,dataid)
+        // .then(function () {
+        //         console.log("al menos entre aca");
+        //         socket.emit('Producto_Borrado_Carro',"Se ha borrado.");
+        //     })
+        }
+        catch (error) {
+              console.log(error);
+        }
+        })
+
+    socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
+        try {
+            axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
+            let dataid = product.data[0]._id;
+            let cart = '64135d02acdf495d33f1a229';
+            // let pid = '6417474f08f56d00a6f79c69';
+            // cartManager.addProduct(cart,dataid, qdata.quantity).then( (added) => {
+            //     console.log(added);
+            // }
+            // )
+
+            // let cartToFill = axios.get('http://localhost:8080/api/carts/'+stringCart);
+            console.log(dataid);
+
+            let putData = {
+                "quantity":qdata.quantity
+                };
+              // cartProducts.push(putData);
+              let putURL = `http://localhost:8080/api/carts/${cart}/products/`+dataid;
+              console.log(putURL);
+              axios.put(putURL,putData)
+            .then(function () {
+                    // console.log("al menos entre aca");
+                    socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");
+                })
+                .catch(err => {console.log(err);}); 
+            })
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    );
 
     // socket.on('Agregar_al_Carro',(data) => {
     //     console.log("Por que no entro aca?",data);
@@ -227,7 +249,6 @@ io.on('connection',  (socket) => {
     //         // }
     //         // );;
     //     })
-    //     // TODO Verificar que me sirve realmente de aca
     //     .catch(function (error) {
     //         socket.emit("error_al_insertar", error.response.data.message);
     //         if (error.response) {
@@ -254,17 +275,6 @@ io.on('connection',  (socket) => {
     // }
     // )
 
-    })
-    // Chat Sockets
-    socket.on("message", (data) => {
-        messages.push(data);
-        msgmanager.post(data);
-        io.emit("message_logs",messages)
-    })
 
-    
-    socket.on("authenticated", user => {
-        io.emit("message_logs",messages);
-        io.emit("new_user_connected",user);
-    })
+
 });
