@@ -1,5 +1,7 @@
 import express, { json } from "express";
-import {validarUrlIndividual,validarURL} from "./utils.js" 
+import session from "express-session";
+import {validarUrlIndividual,validarURL} from "./utils.js" ;
+import MongoStore from "connect-mongo";
 
 // Mis routers
 // TODO si no uso manager sacar esto
@@ -27,6 +29,17 @@ import CartManager from "./src/dao/dbManagers/CartManager.js";
 
 const app = express();
 
+app.use(session({
+    store:MongoStore.create({
+        mongoUrl:"mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoOptions: {useNewUrlParser:true},
+        ttl:15,
+    }),
+    secret:'codename',
+    resave:true,
+    saveUninitialized:true
+
+}));
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 
@@ -41,8 +54,20 @@ const httpServer = app.listen(8080, ()=> console.log('Listening on port 8080'));
 app.engine('handlebars',handlebars.engine());
 app.set('views',__dirname+'/src/views');
 app.set('view engine','handlebars');
-app.use(express.static(__dirname+'/src/public'));
+app.use(express.static(__dirname+'/src/public')); 
 app.use(express.static('/',viewsrouter));
+
+
+app.get('/session', async (req, res) => {
+if (req.session.counter) {
+    req.session.counter++;
+    res.send(`Usted ha visitado este sitio ${req.session.counter} veces.`);
+}
+else {
+    req.session.counter =1;
+    res.send('bienvenido');
+}
+});
 
 // Para sacar el warning
 mongoose.set('strictQuery', true);

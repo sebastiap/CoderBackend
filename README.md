@@ -39,5 +39,6 @@ La entrega actual corresponde a la clase 20.
 * MongoDB - CRUD en bases de datos no relacionales
 * Mongoose - conexion de Node con MongoDB Atlas
 * DAO - objeto de acceso a datos - Managers(clases) y Models(Esquemas)
-* Autenticacion/Login 
+* Autenticacion/Login - Session
+* Authorisation - Perfiles
 * Encriptacion de Password - bcrypt

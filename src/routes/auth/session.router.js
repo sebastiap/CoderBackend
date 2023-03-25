@@ -5,19 +5,28 @@ import { createHash,isValidPassword } from "../../../utils.js";
 const router = Router();
 export default router;
 
+router.get('/login', async (req, res) => {
+    res.render('auth/login',{style:"styles.css"})
+   });
+router.get('/register', async (req, res) => {
+    res.render('auth/register',{style:"styles.css"})
+   });
+
 router.post('/register', async (req, res) => {
-    const {firstname, lastname,email,age,password} = req.body;
+    const {first_name, last_name,email,age,password} = req.body;
 
     try {
-        const exist = await userModel.findOne({ email});
-        if (exist) return res.status(400).send({status:'error', message:'the email is already registered in this site.'})
+        const exist = await userModel.findOne({ email });
+        if (exist) return res.status(400).send({status:'error', message:'the email is already registered in this site.'});
+        console.log(createHash(password));
 
         const user = {
-            firstname,
-            lastname,
+            first_name,
+            last_name,
             email,
             age,
-            password:createHash(password)
+            // password:createHash(password),
+            password,
         };
 
         await userModel.create(user);
@@ -37,7 +46,8 @@ router.post('/login', async (req, res) => {
     try {
         const user = await userModel.findOne({ email });
         if (!user) return res.status(400).send({status:'error', message:'User not found.'});
-        if (!isValidPassword(user,password)) return res.status(401).send({status:'error', message:'incorrect password.'});
+        // if (!isValidPassword(user,password)) return res.status(401).send({status:'error', message:'incorrect password.'});
+        if (user.password != password) return res.status(401).send({status:'error', message:'incorrect password.'});
 
         delete user.password;
 
@@ -45,9 +55,16 @@ router.post('/login', async (req, res) => {
 
         await userModel.create(user);
 
-        res.send({status:'success', message: 'user registered successfully.'});
+        res.send({status:'success', message: 'user was logged in successfully.'});
 
     } catch (error) {
-        res.status(500).send({status:'error', message: error.message});
+        res.status(501).send({status:'error', message: error.message});
     }
 });
+
+router.get('/logout', (req, res) => {
+    req.session.destroy(err => {
+        if (err) {return res.status(500).send({status:'error', message})}
+    });
+    res.redirect('/');
+})

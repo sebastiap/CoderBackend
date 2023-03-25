@@ -1,0 +1,43 @@
+<div>
+<div class="container">
+    <div class="formDiv">
+        <h1> Nuevo producto </h1>
+        <form id="registerForm">
+             <div class="formContainer">
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="first_name" name="first_name" placeholder=" ">
+                    <label for="first_name" class="formLabel">First Name</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="last_name" name="last_name" placeholder=" ">
+                    <label for="last_name" class="formLabel">Last Name</label>
+                    <span class="formLine"></span>
+                </div> 
+                <div class="formGroup"> 
+                    <input class="formInput" type="text" id="age" name="age" placeholder=" ">
+                    <label for="age" class="formLabel">age</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup">   
+                    <input class="formInput" type="text" id="email" name="email" placeholder=" ">
+                    <label for="email" class="formLabel">Email</label>
+                    <span class="formLine"></span>
+                </div>
+                <div class="formGroup"> 
+                    <input class="formInput" type="password" id="password" name="password" placeholder=" ">
+                    <label for="password" class="formLabel">Password</label>
+                    <span class="formLine"></span>
+                </div>
+                <input class="submitbutton" type="submit" value="Registrar Usuario">
+            </div>
+        </form>
+        <p id="mensajeError"></p>
+        <p id="mensajeConfirmacion"></p>
+    </div>
+</div>
+{{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/js/auth/register.js" ></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>

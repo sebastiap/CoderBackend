@@ -1,6 +1,11 @@
 <div>
 <div class="container">
     <div class="listDiv">
+        {{#if user}}
+        {{this.user.email}}
+        {{req.session.user.email}}
+        <a href="auth/logout">Desloguearse</a>
+        {{/if}}
         {{#if productos}}
         <h1 id="Ltitle">Lista de Productos Actuales </h1>
         <div class="paginationButtonDiv">

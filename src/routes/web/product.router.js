@@ -40,7 +40,8 @@ router.get("/",async(req,res) =>{
     // console.log(productos);
 
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
-    res.render('products',{productos,pageConfig,style:"styles.css"});
+    
+    res.render('products',{productos,pageConfig,user:req.session.user,style:"styles.css"});
 })
 
 
