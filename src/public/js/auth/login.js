@@ -1,4 +1,5 @@
 const form = document.getElementById('loginForm');
+const errorMessage = document.getElementById('mensajeError');
 
 form.addEventListener('submit', function(e) {
     e.preventDefault();
@@ -17,7 +18,16 @@ form.addEventListener('submit', function(e) {
     }).then(result => {
         if(result.status === 200) {
             //esta es la version del frontend del redirect
-            window.location.replace('/');
+            window.location.replace('/products');
+        }
+        else if (result.status === 400) {
+            errorMessage.innerHTML = 'Authentication failed. Invalid email or incomplete data.'
+        }
+        else if (result.status === 401) {
+            errorMessage.innerHTML = 'Authentication failed. Invalid Password.'
+        }
+        else {
+            errorMessage.innerHTML = 'Authentication failed. Some Error Ocurred.' 
         }
     })
 })

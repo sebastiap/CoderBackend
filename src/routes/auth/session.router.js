@@ -5,20 +5,21 @@ import { createHash,isValidPassword } from "../../../utils.js";
 const router = Router();
 export default router;
 
-router.get('/login', async (req, res) => {
+import { publicAccess } from "../../../utils.js";
+
+router.get('/login',publicAccess, async (req, res) => {
     res.render('auth/login',{style:"styles.css"})
    });
-router.get('/register', async (req, res) => {
+router.get('/register',publicAccess, async (req, res) => {
     res.render('auth/register',{style:"styles.css"})
    });
 
 router.post('/register', async (req, res) => {
-    const {first_name, last_name,email,age,password} = req.body;
+    const {first_name, last_name,email,age,password,admin,role} = req.body;
 
     try {
         const exist = await userModel.findOne({ email });
         if (exist) return res.status(400).send({status:'error', message:'the email is already registered in this site.'});
-        console.log(createHash(password));
 
         const user = {
             first_name,
@@ -27,6 +28,8 @@ router.post('/register', async (req, res) => {
             age,
             // password:createHash(password),
             password,
+            admin,
+            role
         };
 
         await userModel.create(user);

@@ -3,6 +3,8 @@ import ProductManager from "../../dao/dbManagers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
+import { privateAccess } from "../../../utils.js";
+
 // utilizo router para redireccionar y organizar mis llamadas.
 const router = Router();
 
@@ -13,7 +15,7 @@ const dirname = path.dirname(filename);
 
 export const manager = new ProductManager(path.join(dirname,"../../data",'productos.json'));
 
-router.get("/",async(req,res) =>{
+router.get("/",privateAccess,async(req,res) =>{
 
     // let limit = req.query.limit;
     // let page = req.query.page;
@@ -21,7 +23,6 @@ router.get("/",async(req,res) =>{
     // let {limit,page,sort,query} = req.query;
   
     let productosDB = await manager.getPaginated(req.query);
-    console.log(productosDB);
 
     let productosFormated = productosDB.payload;
 
@@ -37,8 +38,6 @@ router.get("/",async(req,res) =>{
     let productos = productosFormated.map(prod => 
         ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
-    // console.log(productos);
-
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     
     res.render('products',{productos,pageConfig,user:req.session.user,style:"styles.css"});

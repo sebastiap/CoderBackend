@@ -35,6 +35,19 @@ export const isValidPassword  = (user,password ) => {
     bcrypt.compareSync(password,user.password);
 }
 
+// Funciones de Validacion de Acceso
+export const publicAccess = (req, res,next) => {
+
+    if (req.session.user) return res.redirect('/products/');
+    next();
+};
+
+export const privateAccess = (req, res,next) => {
+
+    if (!req.session.user) return res.redirect('/auth/login');
+    next();
+};
+
 export default __dirname;
 
 

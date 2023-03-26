@@ -2,8 +2,9 @@
 <div class="container">
     <div class="listDiv">
         {{#if user}}
-        {{this.user.email}}
-        {{req.session.user.email}}
+        <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}}</p>
+        <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
+        Segun nuestros registros tienes {{this.user.age}} años.
         <a href="auth/logout">Desloguearse</a>
         {{/if}}
         {{#if productos}}

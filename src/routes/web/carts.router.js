@@ -1,11 +1,11 @@
 import { Router } from "express";
 import CartManager from "../../dao/dbManagers/CartManager.js";
-import {validarUrlIndividual} from "../../../utils.js" 
+import {validarUrlIndividual,privateAccess } from "../../../utils.js" 
 
 const router = Router();
 let cartmanager = new CartManager();
 
-router.get('/:cid', async (req, res) => {
+router.get('/:cid',privateAccess, async (req, res) => {
     let cartId = req.params.cid;
     let cartProm = await cartmanager.getByIdDetailed(cartId); 
     let cartArray = cartProm.products; 

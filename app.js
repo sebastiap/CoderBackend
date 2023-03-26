@@ -1,6 +1,6 @@
 import express, { json } from "express";
 import session from "express-session";
-import {validarUrlIndividual,validarURL} from "./utils.js" ;
+import {validarUrlIndividual,validarURL,privateAccess} from "./utils.js" ;
 import MongoStore from "connect-mongo";
 
 // Mis routers
@@ -85,7 +85,7 @@ let msgmanager = new messageManager();
 
 // Home
 // TODO ARREGLAR ESTO
-app.get('/', async (req, res) => {
+app.get('/', privateAccess, async (req, res) => {
 
 let productosDB = await manager.get();
 let messagesDB = await msgmanager.getLast();
@@ -103,11 +103,11 @@ res.render('home',{productos,messages,style:"styles.css"})
 );
 
 // Chat
-app.get('/chat', async (req, res) => {
+app.get('/chat',privateAccess, async (req, res) => {
     res.render('chat',{messages,style:"styles.css"})
    })
 // realTimeProducts
-app.get('/realtimeproducts', async (req, res) => {
+app.get('/realtimeproducts',privateAccess, async (req, res) => {
     let productos = [];
     res.render('realTimeProducts',{productos,style:"styles.css"})
    })
