@@ -1,7 +1,8 @@
 import express, { json } from "express";
 import session from "express-session";
-import {validarUrlIndividual,validarURL,privateAccess} from "./utils.js" ;
+import passport from "passport";
 import MongoStore from "connect-mongo";
+import {validarUrlIndividual,validarURL,privateAccess} from "./utils.js" ;
 
 // Mis routers
 // TODO si no uso manager sacar esto
@@ -25,21 +26,31 @@ import mongoose from "mongoose";
 // Manejo de los mensajes del chat
 import messageManager from "./src/dao/dbManagers/MessageManager.js";
 import CartManager from "./src/dao/dbManagers/CartManager.js";
+import initializePassport from "./src/config/passport.config.js";
 
 
 const app = express();
+
+
 
 app.use(session({
     store:MongoStore.create({
         mongoUrl:"mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority",
         mongoOptions: {useNewUrlParser:true},
-        ttl:15,
+        ttl:3000,
     }),
     secret:'codename',
     resave:true,
     saveUninitialized:true
 
 }));
+
+// configuracion de Passport
+initializePassport();
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 

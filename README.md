@@ -40,5 +40,5 @@ La entrega actual corresponde a la clase 20.
 * Mongoose - conexion de Node con MongoDB Atlas
 * DAO - objeto de acceso a datos - Managers(clases) y Models(Esquemas)
 * Autenticacion/Login - Session
-* Authorisation - Perfiles
+* Authorisation - Perfiles y Estrategia de autorizacion con Libreria Passport
 * Encriptacion de Password - bcrypt

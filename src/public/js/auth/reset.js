@@ -8,17 +8,8 @@ form.addEventListener('submit', function(e) {
     const obj = {};
 
     data.forEach((value,key) => obj[key] = value);
-// TODO Agregar mas validaciones, campos completos y validos
-    if (obj.email.slice(0,5) === 'admin'){
-        obj.admin = true;
-        obj.role = 'admin';
-    }
-    else {
-        obj.role = 'user';
-    }
-    let newObj = JSON.stringify(obj);
-    
-    fetch('/auth/register', {
+
+    fetch('/auth/reset', {
         method: 'POST',
         body: newObj,
         headers: {
@@ -26,11 +17,10 @@ form.addEventListener('submit', function(e) {
         }
     }).then(result => {
         if(result.status === 200) {
-            //esta es la version del frontend del redirect
             window.location.replace('/auth/login');
         }
         else if (result.status === 400) {
-            errorMessage.innerHTML = 'Registration failed. The email is already registered in this site.'
+            errorMessage.innerHTML = 'Password reset failed. The email does not exist in this site.'
         }
         else {
             errorMessage.innerHTML = 'Registration failed. Some Error Ocurred.' 

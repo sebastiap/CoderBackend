@@ -28,12 +28,12 @@ export const validarURL = (listadoProductos) => {
 }
 
 //Funciones de encriptacion
-export const createHash = password =>{
+export const createHash = (password) => 
 bcrypt.hashSync(password,bcrypt.genSaltSync(10));
-}
-export const isValidPassword  = (user,password ) => {
+
+export const isValidPassword  = (user,password ) => 
     bcrypt.compareSync(password,user.password);
-}
+
 
 // Funciones de Validacion de Acceso
 export const publicAccess = (req, res,next) => {
