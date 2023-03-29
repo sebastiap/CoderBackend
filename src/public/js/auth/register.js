@@ -10,7 +10,6 @@ form.addEventListener('submit', function(e) {
     data.forEach((value,key) => obj[key] = value);
 // TODO Agregar mas validaciones, campos completos y validos
     if (obj.email.slice(0,5) === 'admin'){
-        obj.admin = true;
         obj.role = 'admin';
     }
     else {

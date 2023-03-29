@@ -5,7 +5,6 @@ import MongoStore from "connect-mongo";
 import {validarUrlIndividual,validarURL,privateAccess} from "./utils.js" ;
 
 // Mis routers
-// TODO si no uso manager sacar esto
 import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
 import ProductRouter from "./src/routes/web/product.router.js";
 import ApiCartRouter from "./src/routes/api/cart.router.js"
@@ -95,7 +94,6 @@ let productos = [];
 let msgmanager = new messageManager();
 
 // Home
-// TODO ARREGLAR ESTO
 app.get('/', privateAccess, async (req, res) => {
 
 let productosDB = await manager.get();
@@ -251,7 +249,7 @@ io.on('connection',  (socket) => {
                 };
               // cartProducts.push(putData);
               let putURL = `http://localhost:8080/api/carts/${cart}/products/`+dataid;
-              console.log(putURL);
+            //   console.log(putURL);
               axios.put(putURL,putData)
             .then(function () {
                     // console.log("al menos entre aca");

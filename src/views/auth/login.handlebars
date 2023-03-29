@@ -2,8 +2,6 @@
 <div class="container">
     <div class="formDiv">
         <h1> Login </h1>
-        No tienes usuario ?<a href="/auth/register">Regístrate</a>
-        Olvidaste tu contraseña ?<a href="/auth/reset">Resetear Password</a>
         <form id="loginForm">
              <div class="formContainer">
                 <div class="formGroup">    
@@ -19,6 +17,13 @@
                 <input class="submitbutton" type="submit" value="Registrar Usuario">
             </div>
         </form>
+        <div class="linkDiv">
+        No tienes usuario ?<a href="/auth/register">Regístrate</a>
+        </div>
+        <div class="linkDiv">
+        Olvidaste tu contraseña ?<a href="/auth/reset">Resetear Password</a>
+        </div>
+        <a href="/auth/github">Login con Github</a>
         <p id="mensajeError"></p>
         <p id="mensajeConfirmacion"></p>
     </div>

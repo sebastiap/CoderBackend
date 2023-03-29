@@ -8,13 +8,13 @@ export default router;
 
 
 router.get('/login',publicAccess, async (req, res) => {
-    res.render('auth/login',{style:"styles.css"})
+    res.render('auth/login',{style:"login.css"})
    });
 router.get('/reset',publicAccess, async (req, res) => {
-    res.render('auth/reset',{style:"styles.css"})
+    res.render('auth/reset',{style:"login.css"})
    });
 router.get('/register',publicAccess, async (req, res) => {
-    res.render('auth/register',{style:"styles.css"})
+    res.render('auth/register',{style:"login.css"})
    });
 
 router.get('/fail-register',publicAccess, async (req, res) => {
@@ -107,4 +107,14 @@ router.get('/logout', (req, res) => {
         if (err) {return res.status(500).send({status:'error', message})}
     });
     res.redirect('/');
-})
+});
+
+router.get('/github',
+passport.authenticate('github',{scope: ['user:email']})
+);
+
+router.get('/github-callback',
+passport.authenticate('github',{failureRedirect: '/login'}), async (req,res) => {
+req.session.user = req.user;
+res.redirect('/');
+});

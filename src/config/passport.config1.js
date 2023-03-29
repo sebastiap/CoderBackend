@@ -1,14 +1,11 @@
 import passport from "passport";
-import GithubStrategy from 'passport-github2';
 import local from 'passport-local';
 import {userModel} from "../dao/models/user.model.js";
 import {createHash,isValidPassword} from "../../utils.js"
 
-
 const LocalStrategy = local.Strategy;
 
 const initializePassport = () => {
-
     passport.use('register', new LocalStrategy({
         passReqToCallback: true,
         usernameField:'email'
@@ -39,8 +36,10 @@ const initializePassport = () => {
         usernameField:'email'
         },
         async (username, password, done) => {
+            console.log(username,password);
             try {
                 const user = await userModel.findOne({ email:username });
+                console.log(user,username);
                 if (!user) { 
                     console.log('El usuario no existe.');
                     return done(null,false);   
@@ -52,35 +51,9 @@ const initializePassport = () => {
                 return done(`Error al registrar usuario ${error}`);
             }
 
-        }));
+        }))
 
-    passport.use('github', new GithubStrategy({
-        clientID:'Iv1.6b56347129836044', 
-        clientSecret:'36c2ae35bc4693256579d5320928d4a0b83412cc',
-        callbackURL:'http://localhost:8080/auth/github-callback'
-    }, async (accessToken,refreshToken,profile,done) => {
-        try {
-            const user = await userModel.findOne({email:profile._json.email})
-            if (!user) {
-                const newUser = {
-                    first_name:profile._json.name,
-                    last_name:'',
-                    age:18,
-                    email:profile._json.email,
-                    password:''
-                }
-            const result = await userModel.create(newUser);
-            done(null,result);
-            }
-            else {
-                done(null,user);
-            }
-        } catch (error) {
-            done(error);
-            
-        }
-    }));
-  
+
         passport.serializeUser((user,done)=> {
             done(null,user);
 

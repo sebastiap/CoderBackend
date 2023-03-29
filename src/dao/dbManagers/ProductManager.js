@@ -10,7 +10,6 @@ export default class ProductManager{
 
     add = async(product) => {
         try {
-            // TODO ver si esto arregla el error al iniciar
             if (this.maxid === 0){
                 this.get();
             }

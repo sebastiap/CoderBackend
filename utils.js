@@ -10,7 +10,7 @@ import passport from 'passport';
 
 //Funciones Genericas
 export const validarUrlIndividual = (product) => {
-    console.log(product);
+    // console.log(product);
     if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
         product.thumbnail = "https://picsum.photos/200/300";
 }; 
