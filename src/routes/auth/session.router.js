@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import {userModel} from '../../dao/models/user.model.js'
-import { isValidPassword,publicAccess,createHash } from "../../../utils.js";
+import { isValidPassword,publicAccess,createHash,passportCall } from "../../../utils.js";
 
 const router = Router();
 export default router;
@@ -51,7 +51,7 @@ router.post('/register',passport.authenticate('register',{failureRedirect: 'fail
     // }
 });
 
-router.post('/login',passport.authenticate('login',{failureRedirect: 'fail-login'}), async (req, res) => {
+router.post('/login',passportCall('login'), async (req, res) => {
     if (!req.user) {res.status(400).send({status:'error', message:"Invalid credentials"})}
     const {email,password} = req.body;
     console.log(email,password);
@@ -64,7 +64,7 @@ router.post('/login',passport.authenticate('login',{failureRedirect: 'fail-login
         // if (!isValidPassword(user,password)) return res.status(401).send({status:'error', message:'incorrect password.'});
         // // if (user.password != password) return res.status(401).send({status:'error', message:'incorrect password.'});
 
-        // delete user.password;
+        // delete user.password; 
 
         //  req.session.user = user;
          req.session.user = {
@@ -83,6 +83,7 @@ router.post('/login',passport.authenticate('login',{failureRedirect: 'fail-login
     //     res.status(501).send({status:'error', message: error.message});
     // }
 });
+
 router.post('/reset', async (req, res) => {
     const {email,password} = req.body;
 

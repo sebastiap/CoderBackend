@@ -12,24 +12,18 @@ const QuantityChange = async (id,q) => {
 
 const AddtoCart = async (productId) => {
   let stringId = productId;
-  // TODO hacer generico para cada user
+  // TODOZ hacer generico para cada user
   let stringCart = '64135d02acdf495d33f1a229';
   let productToAdd = await axios.get('http://localhost:8080/api/products/'+stringId);
   let cartToFill = await axios.get('http://localhost:8080/api/carts/'+stringCart);
-  // console.log("cartProducts",cartToFill.data.products);
-  // let cartProducts = cartToFill.data.products;
-  
-  // TODO que no devuelva data
+  // TODOZ que no devuelva data
   let dataid = productToAdd.data[0]._id;
 
   // let putData = {product:dataid, quantity:1};
   let putData = {
     "quantity":1
     };
-  // cartProducts.push(putData);
   let putURL = `http://localhost:8080/api/carts/${stringCart}/products/${dataid}`;
-  // console.log(putURL);
-  // console.log(putData);
 
   await axios.put(putURL,putData)
   .then(function () {
@@ -72,23 +66,5 @@ socket.on('Mensaje_Carro',message =>{
 setTimeout(() => {window.location.reload()}, 1000);
 
 });
-// TODO ver si se puede y conviene hacer con sockets
-// socket.on('Producto_Agregado_Carro',message =>{
-//   Swal.fire({
-//     title: 'Nuevo producto agregado al Carro.',
-//     toast: true,
-//     icon:"success",
-//     text: message,
-//     position:"top-end",
-//     showConfirmButton: false,
-//     timer:3000
-// })
-//   code.value = "";
-//   stock.value = "";
-//   title.value = "";
-//   description.value = "";
-//   price.value = "";
-//   thumbnail.value = "";
 
-// });
 

@@ -47,6 +47,28 @@ export const privateAccess = (req, res,next) => {
     if (!req.session.user) return res.redirect('/auth/login');
     next();
 };
+export const passportCall = (strategy) => {
+    return async (req, res, next) => {
+        passport.authenticate(strategy,function(err, user, info) {
+
+        if (err) return next(err);
+        // TODOZ agregar validacion para usuario inexistente
+        if (!user) {
+            return res.status(401).send({error:info.message?info.message:info.toString()});
+        }
+    req.user =user;
+    next();
+})(req, res, next);
+}
+};
+export const authorizationCall = (role) => {
+    return async (req, res, next) => {
+        console.log(req.user,role);
+    if (!req.user) return res.status(401).send({ error: 'Unauthorized' });
+    if (req.user.role != role) return res.status(403).send({ error: 'You need to be an administrator to access this page.'});
+    next();
+}
+};
 
 export default __dirname;
 

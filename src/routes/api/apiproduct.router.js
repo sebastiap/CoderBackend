@@ -77,7 +77,7 @@ router.post('/', async (req,res) => {
 
 router.put('/:pid', async (req,res) => {
     try {
-    // TODO validar errores 1 y 2
+    // TODOZ validar errores 1 y 2
     // const id = parseInt(req.params.pid);
     const id = req.params.pid;
     const productToUpdate = req.body;

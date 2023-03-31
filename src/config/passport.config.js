@@ -46,7 +46,10 @@ const initializePassport = () => {
                     return done(null,false);   
                 };
                 if (!isValidPassword(user,password)) {return done(null,false)}
-                // return res.status(401).send({status:'error', message:'incorrect password.'};
+                if (user.email.slice(0,5) === 'admin'){
+                    user.role = 'admin';
+                }
+                console.log(user)
                 return done(null,user);
             } catch (error) {
                 return done(`Error al registrar usuario ${error}`);

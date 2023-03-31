@@ -2,7 +2,7 @@ import express, { json } from "express";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
-import {validarUrlIndividual,validarURL,privateAccess} from "./utils.js" ;
+import {validarUrlIndividual,validarURL,privateAccess,authorizationCall} from "./utils.js" ;
 
 // Mis routers
 import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
@@ -116,7 +116,7 @@ app.get('/chat',privateAccess, async (req, res) => {
     res.render('chat',{messages,style:"styles.css"})
    })
 // realTimeProducts
-app.get('/realtimeproducts',privateAccess, async (req, res) => {
+app.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
     res.render('realTimeProducts',{productos,style:"styles.css"})
    })
@@ -235,13 +235,6 @@ io.on('connection',  (socket) => {
             axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = '64135d02acdf495d33f1a229';
-            // let pid = '6417474f08f56d00a6f79c69';
-            // cartManager.addProduct(cart,dataid, qdata.quantity).then( (added) => {
-            //     console.log(added);
-            // }
-            // )
-
-            // let cartToFill = axios.get('http://localhost:8080/api/carts/'+stringCart);
             console.log(dataid);
 
             let putData = {
@@ -263,52 +256,5 @@ io.on('connection',  (socket) => {
         }
     }
     );
-
-    // socket.on('Agregar_al_Carro',(data) => {
-    //     console.log("Por que no entro aca?",data);
-    //     let putData = [{"product":"640bc2f9681bbd0c4a4a994c","quantity":5730 },
-    //     {"product":"640bc2d4681bbd0c4a4a9942","quantity":600 },
-    //     {"product":"640efafa130d57a081c9cfda","quantity":1 }
-    //     ];
-
-    // try {
-    //     // TODO HACER ANDAR ESTO
-    //     axios.put("http://localhost:8080/api/carts/64138d85b7e69806cd95ebe7/",putData)
-    //     .then(function () {
-    //         // manager.getFromSocket().then((res) => {
-    //         //     let valor = validarURL(res);
-    //             console.log("al menos entre aca");
-    //             socket.emit('Producto_Agregado_Carro',"Se ha insertado el nuevo producto exitosamente.");
-    //             // socket.emit('Listado de Productos Actualizados',valor);
-    //         // }
-    //         // );;
-    //     })
-    //     .catch(function (error) {
-    //         socket.emit("error_al_insertar", error.response.data.message);
-    //         if (error.response) {
-    //           // The request was made and the server responded with a status code
-    //           // that falls out of the range of 2xx
-    //           console.log(error.response.data);
-    //           console.log(error.response.status);
-    //           console.log(error.response.headers);
-    //         } else if (error.request) {
-    //           // The request was made but no response was received
-    //           // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-    //           // http.ClientRequest in node.js
-    //           console.log(error.request);
-    //         } else {
-    //           // Something happened in setting up the request that triggered an Error
-    //           console.log('Error', error.message);
-    //         }
-    //         console.log(error.config);
-    //       });
-        
-    // } catch (error) {
-    //     console.log(error.message);
-    // }
-    // }
-    // )
-
-
 
 });

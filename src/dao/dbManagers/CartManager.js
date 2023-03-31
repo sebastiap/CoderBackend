@@ -85,7 +85,6 @@ export default class CartManager {
         let productos = cartToUpdate.products;
 
         const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
-        //TODO Tratamiento para productos invalidos
         console.log("Producto a actualizar" , SearchedProductindex);
         if (SearchedProductindex < 0 ) {
         // productToAdd = {product:productId, quantity:quantity};
@@ -93,13 +92,10 @@ export default class CartManager {
         }
         else {
             let newQuantity = productos[SearchedProductindex].quantity + quantity;
-            console.log("Cantidad a actualizar" , newQuantity);
             productToAdd = {product: productId, quantity: newQuantity};
-            console.log("Producto a actualizar" , SearchedProductindex);
             productos.splice(SearchedProductindex,1);
         }
-        productos.push(productToAdd);
-        console.log("Nuevo Cart" , productos);
+        if (productToAdd.quantity > 1) {productos.push(productToAdd);}
         let result = await cartModel.updateOne({id:cid},cartToUpdate);
 
         if (result.modifiedCount != 1) {
