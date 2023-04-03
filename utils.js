@@ -52,7 +52,7 @@ export const passportCall = (strategy) => {
         passport.authenticate(strategy,function(err, user, info) {
 
         if (err) return next(err);
-        // TODOZ agregar validacion para usuario inexistente
+        console.log("usuario",user,info,err);
         if (!user) {
             return res.status(401).send({error:info.message?info.message:info.toString()});
         }
@@ -63,9 +63,9 @@ export const passportCall = (strategy) => {
 };
 export const authorizationCall = (role) => {
     return async (req, res, next) => {
-        console.log(req.user,role);
-    if (!req.user) return res.status(401).send({ error: 'Unauthorized' });
-    if (req.user.role != role) return res.status(403).send({ error: 'You need to be an administrator to access this page.'});
+        console.log(req.session,role);
+    if (!req.session.user) return res.status(401).send({ error: 'Unauthorized' });
+    if (req.session.user.role != role) return res.status(403).send({ error: 'You need to be an administrator to access this page.'});
     next();
 }
 };

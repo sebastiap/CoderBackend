@@ -1,4 +1,5 @@
 import {cartModel} from '../models/cart.model.js'
+import {productModel} from '../models/product.model.js'
 import ProductManager from './ProductManager.js';
 
 let manager = new ProductManager();
@@ -48,10 +49,10 @@ export default class CartManager {
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
-        console.log("productId", productId);
+        // console.log("productId", productId);
 
         manager.getByIdDB(productId).then((productExist) => {
-        console.log("encontre algo?", productExist);
+        // console.log("encontre algo?", productExist);
         if (productExist < 0) {
             return 4;
         }
@@ -85,18 +86,23 @@ export default class CartManager {
         let productos = cartToUpdate.products;
 
         const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
-        console.log("Producto a actualizar" , SearchedProductindex);
+        // console.log("Producto a actualizar" , SearchedProductindex);
         if (SearchedProductindex < 0 ) {
-        // productToAdd = {product:productId, quantity:quantity};
-        return "An error ocurred with the id of the product to add";
+            const productexist = await productModel.findOne({_id:productId});
+            if (!productexist) {
+                return "An error ocurred with the id of the product to add";
+            }
+            productToAdd = {product: productId, quantity: quantity};
         }
         else {
             let newQuantity = productos[SearchedProductindex].quantity + quantity;
             productToAdd = {product: productId, quantity: newQuantity};
             productos.splice(SearchedProductindex,1);
         }
-        if (productToAdd.quantity > 1) {productos.push(productToAdd);}
+        // console.log("productToAdd",productToAdd);
+        if (productToAdd.quantity >= 1) {productos.push(productToAdd);}
         let result = await cartModel.updateOne({id:cid},cartToUpdate);
+        // console.log(result);
 
         if (result.modifiedCount != 1) {
             return 4;

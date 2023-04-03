@@ -21,7 +21,8 @@ router.get("/",privateAccess,async(req,res) =>{
     // let page = req.query.page;
     let { limit = 10, page = 1, query , sort } = req.query
     // let {limit,page,sort,query} = req.query;
-  
+
+    console.log("Session User", req.session.user);
     let productosDB = await manager.getPaginated(req.query);
 
     let productosFormated = productosDB.payload;
@@ -35,12 +36,14 @@ router.get("/",privateAccess,async(req,res) =>{
         next = productosDB.nextPage;
     }
     let cart = '64135d02acdf495d33f1a229';
+    // let cart = JSON.stringify(req.session.user.cart);
+    console.log("Cart", cart);
     let productos = productosFormated.map(prod => 
         ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     
-    res.render('products',{productos,pageConfig,user:req.session.user,style:"styles.css"});
+    res.render('products',{productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
 })
 
 

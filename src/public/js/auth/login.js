@@ -24,7 +24,7 @@ form.addEventListener('submit', function(e) {
             errorMessage.innerHTML = 'Authentication failed. Invalid email or incomplete data.'
         }
         else if (result.status === 401) {
-            errorMessage.innerHTML = 'Authentication failed. Invalid Password.'
+            errorMessage.innerHTML = 'Authentication failed. Invalid Username or Password.'
         }
         else {
             errorMessage.innerHTML = 'Authentication failed. Some Error Ocurred.' 

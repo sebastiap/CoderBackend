@@ -2,6 +2,7 @@ import passport from "passport";
 import GithubStrategy from 'passport-github2';
 import local from 'passport-local';
 import {userModel} from "../dao/models/user.model.js";
+import {cartModel} from "../dao/models/cart.model.js";
 import {createHash,isValidPassword} from "../../utils.js"
 
 
@@ -20,12 +21,15 @@ const initializePassport = () => {
                 console.log('El usuario ya existe.');
                 return done(null,false);
             }
+            const resultCart = await cartModel.create({"products":[]});
+            const cartId = resultCart._id;
             const newUser = {
                 first_name,
                  last_name,
                  email,
                  age,
-                 password:createHash(password)
+                 password:createHash(password),
+                 cart:cartId
             }
             let result = await userModel.create(newUser);
             return done(null,user);
@@ -49,7 +53,6 @@ const initializePassport = () => {
                 if (user.email.slice(0,5) === 'admin'){
                     user.role = 'admin';
                 }
-                console.log(user)
                 return done(null,user);
             } catch (error) {
                 return done(`Error al registrar usuario ${error}`);
@@ -58,6 +61,7 @@ const initializePassport = () => {
         }));
 
     passport.use('github', new GithubStrategy({
+        //TODOZ Ver tema del carrito
         clientID:'Iv1.6b56347129836044', 
         clientSecret:'36c2ae35bc4693256579d5320928d4a0b83412cc',
         callbackURL:'http://localhost:8080/auth/github-callback'
@@ -65,12 +69,14 @@ const initializePassport = () => {
         try {
             const user = await userModel.findOne({email:profile._json.email})
             if (!user) {
+                const resultCart = await cartModel.create({"products":[]});
                 const newUser = {
                     first_name:profile._json.name,
                     last_name:'',
                     age:18,
                     email:profile._json.email,
-                    password:''
+                    password:'',
+                    cart:resultCart._id
                 }
             const result = await userModel.create(newUser);
             done(null,result);

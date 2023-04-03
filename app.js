@@ -68,9 +68,10 @@ app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
 
-app.get('/session', async (req, res) => {
+app.get('/profile', async (req, res) => {
 if (req.session.counter) {
     req.session.counter++;
+    console.log(req.session);
     res.send(`Usted ha visitado este sitio ${req.session.counter} veces.`);
 }
 else {
@@ -96,7 +97,8 @@ let msgmanager = new messageManager();
 // Home
 app.get('/', privateAccess, async (req, res) => {
 
-let productosDB = await manager.get();
+let result = await manager.getPaginated({limit: 8});
+let productosDB = result.payload; 
 let messagesDB = await msgmanager.getLast();
 if (productosDB !== undefined) {
 

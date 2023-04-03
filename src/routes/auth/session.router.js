@@ -72,6 +72,8 @@ router.post('/login',passportCall('login'), async (req, res) => {
             last_name: req.user.last_name,
             email: req.user.email,
             age: req.user.age,
+            role:req.user.role,
+            cart:req.user.cart
 
          };
 
@@ -117,5 +119,5 @@ passport.authenticate('github',{scope: ['user:email']})
 router.get('/github-callback',
 passport.authenticate('github',{failureRedirect: '/login'}), async (req,res) => {
 req.session.user = req.user;
-res.redirect('/');
+res.redirect('/products/');
 });

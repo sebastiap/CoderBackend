@@ -5,6 +5,7 @@
         <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}}</p>
             {{#if this.user.email}}
             <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
+            <p id="cart">{{cart}}</p> 
             {{else}}
             <p>Logueado via Github</p>
             {{/if}}
@@ -35,7 +36,7 @@
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
                 {{#if this.status}}
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
-                <input  class="button" type="button" onclick="AddtoCart({{this.id}})" name="" value="Añadir al Carro">
+                <input  class="button" type="button" onclick='AddtoCart({{this.id}})' name="" value="Añadir al Carro">
                 {{else }}
                 <input  class="button" type="button" onclick="" name="" value="Producto No disponible">
                 {{/if  }}

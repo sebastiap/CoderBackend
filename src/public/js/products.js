@@ -1,4 +1,5 @@
 const socket = io();
+let cartDiv = document.getElementById('cart');
 
 const deleteCart = async (id) => {
   let stringId = id;
@@ -14,6 +15,7 @@ const AddtoCart = async (productId) => {
   let stringId = productId;
   // TODOZ hacer generico para cada user
   let stringCart = '64135d02acdf495d33f1a229';
+  // let stringCart = cartDiv.innerHTML;
   let productToAdd = await axios.get('http://localhost:8080/api/products/'+stringId);
   let cartToFill = await axios.get('http://localhost:8080/api/carts/'+stringCart);
   // TODOZ que no devuelva data
