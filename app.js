@@ -71,7 +71,6 @@ app.use(express.static('/',viewsrouter));
 app.get('/profile', async (req, res) => {
 if (req.session.counter) {
     req.session.counter++;
-    console.log(req.session);
     res.send(`Usted ha visitado este sitio ${req.session.counter} veces.`);
 }
 else {
@@ -201,31 +200,22 @@ io.on('connection',  (socket) => {
 
 
      // Cart Sockets
-     let cartManager = new CartManager;
+    //  let cartManager = new CartManager;
     
-    socket.on("Borrar_Producto_Carro", (id) => {
+    socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
+            let id = qdata.id;
             axios.get('http://localhost:8080/api/products/'+id).then( (product) => {
             let dataid = JSON.stringify(product.data[0]._id);
-            let cart = '64135d02acdf495d33f1a229';
-            let pid = '640bc2d4681bbd0c4a4a9942';
+            let cart = qdata.cart;
+
             axios.delete(`http://localhost:8080/api/carts/${cart}/products/${dataid}`)
             .then(function () {
-                    // console.log("al menos entre aca");
                     socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
                 })
                 .catch(err => {console.log(err);}); 
             }
         ) ;
-        // let dataid = productToAdd.data[0]._id;
-        // console.log("id",dataid);
-        // let cart = '64135d02acdf495d33f1a229';
-        // http://localhost:8080/api/carts/:cid/products/:pid
-        // axios.delete(`http://localhost:8080/api/carts/${cart}/products/`,dataid)
-        // .then(function () {
-        //         console.log("al menos entre aca");
-        //         socket.emit('Producto_Borrado_Carro',"Se ha borrado.");
-        //     })
         }
         catch (error) {
               console.log(error);
@@ -236,8 +226,8 @@ io.on('connection',  (socket) => {
         try {
             axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
-            let cart = '64135d02acdf495d33f1a229';
-            console.log(dataid);
+            let cart = qdata.cart;
+
 
             let putData = {
                 "quantity":qdata.quantity

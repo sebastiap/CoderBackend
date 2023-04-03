@@ -183,6 +183,10 @@ margin-bottom: 5vh;
 
 }
 
+#cart{
+    visibility: hidden;
+}
+
 .maintitle{
     text-shadow: 3px 3px 3px#2C666E;
 }

@@ -17,14 +17,9 @@ export const manager = new ProductManager(path.join(dirname,"../../data",'produc
 
 router.get("/",privateAccess,async(req,res) =>{
 
-    // let limit = req.query.limit;
-    // let page = req.query.page;
+
     let { limit = 10, page = 1, query , sort } = req.query
-    // let {limit,page,sort,query} = req.query;
-
-    console.log("Session User", req.session.user);
     let productosDB = await manager.getPaginated(req.query);
-
     let productosFormated = productosDB.payload;
 
     let prev = 0;
@@ -35,9 +30,8 @@ router.get("/",privateAccess,async(req,res) =>{
     if (productosDB.hasNextPage){
         next = productosDB.nextPage;
     }
-    let cart = '64135d02acdf495d33f1a229';
-    // let cart = JSON.stringify(req.session.user.cart);
-    console.log("Cart", cart);
+    // let cart = '64135d02acdf495d33f1a229';
+    let cart = req.session.user.cart;
     let productos = productosFormated.map(prod => 
         ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));

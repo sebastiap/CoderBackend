@@ -12,12 +12,12 @@ const manager = new CartManager(path.join(dirname,"../../data",'carrito.json'));
 router.post('/',async (req, res) => {
     const cartProducts = req.body.products;
     manager.create(cartProducts);
-    res.send({status: 'success',message: 'Cart added successfully'})
+    res.send({status: 'success',message: 'Cart added successfully'});
 });
 
 router.get('/',async (req, res) => {
     let result = await manager.getAll();
-    res.send(result)
+    res.send(result);
 })
 
 router.get('/:cid',async (req, res) => {
@@ -75,9 +75,7 @@ router.put('/:cid', async (req, res) => {
     const cartId = req.params.cid;
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
-    console.log("Esta parte de mierda dejo de andar",cartId,quantity,ProductId);
         const result = await manager.addQuantity(cartId,ProductId,quantity);
-        console.log(result);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else if (result === "An error ocurred with the id of the product to add") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else {

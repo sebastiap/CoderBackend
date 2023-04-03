@@ -6,7 +6,7 @@ let manager = new ProductManager();
 
 export default class CartManager {
     constructor(path){
-        this.carts = [];
+        this.cart = {};
         this.idIndex = 0 ;
         this.path = path;
     }
@@ -29,6 +29,7 @@ export default class CartManager {
     }
 
     getByIdDetailed = async(cid) => {
+        this.cart = cid;
         const searchedCart = await cartModel.findOne({"_id":cid}).populate('products.product');
         if (!searchedCart || searchedCart.length == 0) {
             return 'Cart not found';
@@ -49,10 +50,8 @@ export default class CartManager {
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
-        // console.log("productId", productId);
 
         manager.getByIdDB(productId).then((productExist) => {
-        // console.log("encontre algo?", productExist);
         if (productExist < 0) {
             return 4;
         }
@@ -79,14 +78,11 @@ export default class CartManager {
     addQuantity = async (cid,productId, quantity) => {
 
         console.log("------------------------------------------");
-        // console.log(cid,productId, quantity);
         const cartToUpdate = await this.getById(cid);
-        // console.log("Carro a actualizar" , cartToUpdate);
         let productToAdd;
         let productos = cartToUpdate.products;
 
         const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
-        // console.log("Producto a actualizar" , SearchedProductindex);
         if (SearchedProductindex < 0 ) {
             const productexist = await productModel.findOne({_id:productId});
             if (!productexist) {
@@ -99,10 +95,9 @@ export default class CartManager {
             productToAdd = {product: productId, quantity: newQuantity};
             productos.splice(SearchedProductindex,1);
         }
-        // console.log("productToAdd",productToAdd);
         if (productToAdd.quantity >= 1) {productos.push(productToAdd);}
-        let result = await cartModel.updateOne({id:cid},cartToUpdate);
-        // console.log(result);
+        let result = await cartModel.updateOne({_id:cid},cartToUpdate);
+        // let result = await cartModel.updateOne({id:cid},cartToUpdate);
 
         if (result.modifiedCount != 1) {
             return 4;

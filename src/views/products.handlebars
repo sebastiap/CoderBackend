@@ -6,6 +6,7 @@
             {{#if this.user.email}}
             <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
             <p id="cart">{{cart}}</p> 
+            <a href="http://localhost:8080/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a>
             {{else}}
             <p>Logueado via Github</p>
             {{/if}}

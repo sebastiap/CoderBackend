@@ -10,13 +10,12 @@ router.get('/:cid',privateAccess, async (req, res) => {
     let cartProm = await cartmanager.getByIdDetailed(cartId); 
     let cartArray = cartProm.products; 
     let cartProducts = cartArray.map(function(productObj){
-        // console.log(productObj);
         validarUrlIndividual(productObj.product);
         return productObj = {title:productObj.product.title, description:productObj.product.description,
             thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity,id:productObj.product.id}
     })
         
-    res.render('carts',{cartProducts,style:"styles.css"})
+    res.render('carts',{cartProducts,cart:cartId,style:"styles.css"})
    }
    )
 
