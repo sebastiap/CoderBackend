@@ -224,6 +224,7 @@ io.on('connection',  (socket) => {
 
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {
+            console.log(socket.handshake);
             axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = qdata.cart;

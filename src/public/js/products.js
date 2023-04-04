@@ -15,13 +15,11 @@ const QuantityChange = async (id,q) => {
 
 const AddtoCart = async (productId) => {
   let stringId = productId;
-  // TODOZ hacer generico para cada user
-  // let stringCart = '64135d02acdf495d33f1a229';
   stringCart = cartDiv.innerHTML;
   console.log(stringCart);
   let productToAdd = await axios.get('http://localhost:8080/api/products/'+stringId);
   let cartToFill = await axios.get('http://localhost:8080/api/carts/'+stringCart);
-  // TODOZ que no devuelva data
+
   let dataid = productToAdd.data[0]._id;
 
   let putData = {

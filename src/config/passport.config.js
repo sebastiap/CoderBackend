@@ -61,7 +61,6 @@ const initializePassport = () => {
         }));
 
     passport.use('github', new GithubStrategy({
-        //TODOZ Ver tema del carrito
         clientID:'Iv1.6b56347129836044', 
         clientSecret:'36c2ae35bc4693256579d5320928d4a0b83412cc',
         callbackURL:'http://localhost:8080/auth/github-callback'

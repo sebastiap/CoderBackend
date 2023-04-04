@@ -81,7 +81,6 @@ router.put('/:pid', async (req,res) => {
     // const id = parseInt(req.params.pid);
     const id = req.params.pid;
     const productToUpdate = req.body;
-    // let result = await manager.updateProduct(id,productToUpdate);
     let result = await manager.update(id,productToUpdate);
     if (result === 1){
         res.status(400).send({status:'error', message:'The code is already in used in another Product'});
