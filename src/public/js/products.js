@@ -16,7 +16,6 @@ const QuantityChange = async (id,q) => {
 const AddtoCart = async (productId) => {
   let stringId = productId;
   stringCart = cartDiv.innerHTML;
-  console.log(stringCart);
   let productToAdd = await axios.get('http://localhost:8080/api/products/'+stringId);
   let cartToFill = await axios.get('http://localhost:8080/api/carts/'+stringCart);
 

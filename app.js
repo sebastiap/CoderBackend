@@ -68,14 +68,13 @@ app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
 
-app.get('/profile', async (req, res) => {
-if (req.session.counter) {
-    req.session.counter++;
-    res.send(`Usted ha visitado este sitio ${req.session.counter} veces.`);
+app.get('/api/session/current', async (req, res) => {
+if (req.session.user) {
+    res.send(req.session.user);
+
 }
-else {
-    req.session.counter =1;
-    res.send('bienvenido');
+else{
+    return res.status(400).send({ error: 'There is no current session logged in.' });
 }
 });
 

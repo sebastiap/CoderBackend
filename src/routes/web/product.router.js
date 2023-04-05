@@ -32,7 +32,6 @@ router.get("/",privateAccess,async(req,res) =>{
     }
     // let cart = '64135d02acdf495d33f1a229';
     let cart = req.session.user.cart;
-    console.log("Session",req.session.user);
     let productos = productosFormated.map(prod => 
         ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));

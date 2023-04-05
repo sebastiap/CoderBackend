@@ -141,13 +141,16 @@ to{
     animation: titleAnimation 2s ease-out 0s;
 }
 
-#NoProdHero h2,#NoProdHero img {
+#NoProdHero h2,#NoProdHero h1,#NoProdHero img,#NoProdHero .pagebutton {
     text-align: center;
     animation: noproductsAnimation 1s ease-in 0s;
     
 }
 
-
+.centered{
+    display: flex;
+    justify-content: center;
+}
 #NoProdHero .noPdiv {
 display: flex;
 flex-direction: row;

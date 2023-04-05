@@ -24,7 +24,7 @@ Un router en express nos permitirá separar los endpoints “comunes” en entid
 Websocket es un protocolo de comunicación basado en TCP para poder establecer esa conexión entre el cliente y el servidor. A diferencia de HTTP la comunicacion es bidireccional con la utilizacion de endpoints(Sockets) que emiten y reciben informacion.
 
 ## Entrega Actual 
-La entrega actual corresponde a la clase 20.
+La entrega actual corresponde a la clase 25.
 
 ## Contenido - Practica Integradora
 
