@@ -145,6 +145,10 @@ body {
         #mensajeError{
             color: #EF3E36;
             font-weight:bolder;
+            font-size: 2rem;
+            text-shadow: 2px 7px 5px rgba(0,0,0,0.3);
+            height: 100%;
+            width: 100%;
         }
 
         .submitbutton{
@@ -164,9 +168,65 @@ body {
         display: flex;
         justify-content:space-around;
         align-items: center;
-        position: absolute;
-        bottom: 0;
+        /* position: absolute; */
+        /* bottom: 0; */
         font-size: 2rem;
         color: rgb(160, 166, 155);
+        }
+
+    
+        @media (min-height: 1600px) {
+            #mensajeError{
+                color: #EF3E36;
+                font-weight:bolder;
+                font-size: 6rem;
+                text-align: center;
+                text-shadow: 2px 7px 5px rgba(0,0,0,0.3), 0px -4px 10px;
+                height: 100%;
+            }
+            .footer{
+                background-color: #2C666E;
+                width: 100%;
+                height: 7vh;
+                display: flex;
+                justify-content:space-around;
+                align-items: center;
+                position: absolute;
+                bottom: 0;
+                font-size: 2rem;
+                color: rgb(160, 166, 155);
+                }
+
+
+                .formDiv {
+                    background-color: #2C666E;
+                    opacity: 0.8;
+                    background-image:  linear-gradient(#45919b 1px, transparent 1px), linear-gradient(to right, #45919b 1px, #2C666E 1px);
+                    background-size: 20px 20px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: space-between;
+                    font-size: 2rem;
+                    color: rgb(3, 4, 4);
+                    margin: 0 auto;
+                    /* width: 100%; */
+                    height: 100%;
+                    font-size: 6rem;
+                    padding: 0 4rem;
+                }
+
+                .formDiv input{
+                    height: 100%;
+                    font-size: 6rem;
+                }
+
+                .linkDiv{
+                    font-size: 4.5rem;
+                    display: flex;
+                    justify-content: space-around;
+                    margin: 2rem;
+                }
+    
         }
     

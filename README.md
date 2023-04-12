@@ -42,3 +42,4 @@ La entrega actual corresponde a la clase 25.
 * Autenticacion/Login - Session
 * Authorisation - Perfiles y Estrategia de autorizacion con Libreria Passport
 * Encriptacion de Password - bcrypt
+* Variables de Entorno - Enviroment

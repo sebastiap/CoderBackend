@@ -4,6 +4,8 @@ import passport from "passport";
 import MongoStore from "connect-mongo";
 import {validarUrlIndividual,validarURL,privateAccess,authorizationCall} from "./utils.js" ;
 
+import config from "./src/config/config.js"
+
 // Mis routers
 import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
 import ProductRouter from "./src/routes/web/product.router.js";
@@ -31,10 +33,14 @@ import initializePassport from "./src/config/passport.config.js";
 const app = express();
 
 
+console.log(config);
+
 
 app.use(session({
     store:MongoStore.create({
-        mongoUrl:"mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority",
+        mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
+        // mongoUrl:"mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority",
+    
         mongoOptions: {useNewUrlParser:true},
         ttl:3000,
     }),
@@ -59,7 +65,7 @@ app.use('/products',ProductRouter);
 app.use('/carts',CartRouter);
 app.use('/auth',AuthRouter);
 
-const httpServer = app.listen(8080, ()=> console.log('Listening on port 8080'));
+const httpServer = app.listen(config.port, ()=> console.log('Listening on port ' + config.port));
 
 app.engine('handlebars',handlebars.engine());
 app.set('views',__dirname+'/src/views');
@@ -80,7 +86,7 @@ else{
 
 // Para sacar el warning
 mongoose.set('strictQuery', true);
-mongoose.connect("mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority", error => {
+mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority", error => {
     if (error) {
         console.log("Cannot Connect to Database", error);
         process.exit();
