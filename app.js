@@ -25,21 +25,20 @@ import axios from "axios";
 import mongoose from "mongoose";
 
 // Manejo de los mensajes del chat
-import messageManager from "./src/dao/dbManagers/MessageManager.js";
-import CartManager from "./src/dao/dbManagers/CartManager.js";
+import messageManager from "./src/controllers/MessageManager.js";
+import CartManager from "./src/controllers/CartManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
 
 const app = express();
 
 
-console.log(config);
+// console.log(config);
 
 
 app.use(session({
     store:MongoStore.create({
         mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
-        // mongoUrl:"mongodb+srv://ecommerce:HxZgzDO58FSWBz4K@cluster0.mpljszi.mongodb.net/ecommerce?retryWrites=true&w=majority",
     
         mongoOptions: {useNewUrlParser:true},
         ttl:3000,
@@ -229,7 +228,7 @@ io.on('connection',  (socket) => {
 
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {
-            console.log(socket.handshake);
+            // console.log(socket.handshake);
             axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = qdata.cart;

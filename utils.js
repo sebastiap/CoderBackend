@@ -63,7 +63,6 @@ export const passportCall = (strategy) => {
 };
 export const authorizationCall = (role) => {
     return async (req, res, next) => {
-        console.log(req.session,role);
     if (!req.session.user) return res.status(401).send({ error: 'Unauthorized' });
     if (req.session.user.role != role) return res.status(403).send({ error: 'You need to be an administrator to access this page.'});
     next();

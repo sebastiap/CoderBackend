@@ -23,8 +23,16 @@ Un router en express nos permitirá separar los endpoints “comunes” en entid
 
 Websocket es un protocolo de comunicación basado en TCP para poder establecer esa conexión entre el cliente y el servidor. A diferencia de HTTP la comunicacion es bidireccional con la utilizacion de endpoints(Sockets) que emiten y reciben informacion.
 
+### Arquitecturas por Capas
+Cuando trabajamos con capas, entendemos que cada archivo debe cumplir una función específica, permitiendo así que, si llegase a ocurrir algún comportamiento no esperado o si llegase a requerirse modificación en algún punto, tengamos claro dónde debemos efectuar esos cambios.
+
+En este modelo contamos con 3 capas base:
+ * La capa de Modelo o Persistencia
+ * La capa de Controlador o Negocio
+ * La capa de Vista o Renderizacion
+
 ## Entrega Actual 
-La entrega actual corresponde a la clase 25.
+La entrega actual corresponde a la clase 27.
 
 ## Contenido - Practica Integradora
 
@@ -43,3 +51,4 @@ La entrega actual corresponde a la clase 25.
 * Authorisation - Perfiles y Estrategia de autorizacion con Libreria Passport
 * Encriptacion de Password - bcrypt
 * Variables de Entorno - Enviroment
+* Estructura de Capas - Capa de Persistencia,Capa de Negocio y Capa de Vista

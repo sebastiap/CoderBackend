@@ -1,5 +1,5 @@
 import { Router } from "express";
-import ProductManager from "../../dao/dbManagers/ProductManager.js";
+import ProductManager from "../../controllers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 

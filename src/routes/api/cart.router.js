@@ -1,5 +1,5 @@
 import { Router } from "express";
-import CartManager from "../../dao/dbManagers/CartManager.js";
+import CartManager from "../../controllers/CartManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
