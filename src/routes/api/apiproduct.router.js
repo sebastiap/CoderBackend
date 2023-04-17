@@ -43,7 +43,7 @@ router.get("/",async(req,res) =>{
 router.get('/:pid',async(req,res) =>{
     const producto = parseInt(req.params.pid);
     
-    let SearchedProduct = await manager.getByIdDB(producto);
+    let SearchedProduct = await manager.getById(producto);
     if (!SearchedProduct){
         let text = "No se encontro ningun producto con el id " + producto;
         res.send({error:{text}});

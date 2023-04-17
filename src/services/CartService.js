@@ -8,7 +8,7 @@ export default class CartManager {
         this.path = path;
     }
 
-    create = async (products) => {
+    createService = async (products) => {
         try {
             let newCart = {"products":products};
             let result =  await createModel(newCart);
@@ -20,12 +20,12 @@ export default class CartManager {
         }
     }
 
-    getAll = async() => {
+    getAllService = async() => {
         const searchedCart = await getAllModel();
         return searchedCart;
     }
 
-    getByIdDetailed = async(cid) => {
+    getByIdDetailService = async(cid) => {
         this.cart = cid;
         const searchedCart = await getPopulated(cid);
         if (!searchedCart || searchedCart.length == 0) {
@@ -34,7 +34,7 @@ export default class CartManager {
         return searchedCart;
     }
 
-    getById = async(cid) => {
+    getByIdService = async(cid) => {
         const searchedCart = await getOne({"_id":cid});
         if (!searchedCart || searchedCart.length == 0) {
             return 'Cart not found';
@@ -43,7 +43,7 @@ export default class CartManager {
     }
 
 
-    addProduct = async (cid,productId, quantity) => {
+    addProductService = async (cid,productId, quantity) => {
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
@@ -72,7 +72,7 @@ export default class CartManager {
         return 1;
     }
 
-    addQuantity = async (cid,productId, quantity) => {
+    addQuantityService = async (cid,productId, quantity) => {
 
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
@@ -100,12 +100,12 @@ export default class CartManager {
         return 1;
     }
 
-    delete= async (cid) => {
+    deleteService = async (cid) => {
         let result = await empty(cid);
         return result;
     }
 
-    update= async (cid,newprods) =>{
+    updateService = async (cid,newprods) =>{
         let result = await updateProducts(cid,newprods);
         return result;
     }

@@ -8,7 +8,7 @@ export default class ProductManager{
 
     }
 
-    add = async(product) => {
+    addService = async(product) => {
         try {
             if (this.maxid === 0){
                 await this.get();
@@ -39,7 +39,7 @@ export default class ProductManager{
 
     }
 
-    get = async() => {
+    getService = async() => {
         try{        
            let resultDB = await getAll();
            let max = Math.max(...resultDB.map(o => o.id));
@@ -55,7 +55,7 @@ export default class ProductManager{
 
     }
 
-    getPaginated = async(reqq) => {
+    getPaginatedService = async(reqq) => {
         const { limit = 10, page = 1, query , sort } = reqq
         let tquery = {};
         let urlquery = "";
@@ -117,7 +117,7 @@ export default class ProductManager{
 
     }
 
-    getById = async(pid) => {
+    getByIdService = async(pid) => {
         try{        
            let resultDB = await getByIdModel(pid);
            return resultDB;
@@ -128,7 +128,7 @@ export default class ProductManager{
 
     }
 
-    update = async(pid,product) => {
+    updateService = async(pid,product) => {
         try {
         product.id = pid;
         let updatedProduct = await updateModel(pid, product);
@@ -142,7 +142,7 @@ export default class ProductManager{
     }
 
     }
-    delete = async(id) => {
+    deleteService = async(id) => {
         try {
             let resultDB = await deleteModel(id);
             if (resultDB.deletedCount === 0){
@@ -159,7 +159,7 @@ export default class ProductManager{
 
     }
     
-    getFromSocket = async () => {
+    getFromSocketService = async () => {
         try{        
             let prods = this.get().then((res) => {return res;});
             return prods;

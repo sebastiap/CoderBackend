@@ -29,7 +29,7 @@ import messageManager from "./src/controllers/MessageManager.js";
 import CartManager from "./src/controllers/CartManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
-
+//TODOZ ajustar las URL para que se ajuste al env
 const app = express();
 
 
@@ -102,7 +102,7 @@ app.get('/', privateAccess, async (req, res) => {
 
 let result = await manager.getPaginated({limit: 8});
 let productosDB = result.payload; 
-let messagesDB = await msgmanager.getLast();
+let messagesDB = await msgmanager.getLast5();
 if (productosDB !== undefined) {
 
     productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
@@ -229,7 +229,8 @@ io.on('connection',  (socket) => {
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {
             // console.log(socket.handshake);
-            axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
+            // axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
+            axios.get('http://localhost:'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = qdata.cart;
 

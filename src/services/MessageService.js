@@ -5,14 +5,14 @@ export default class messageManager{
 
     }
 
-    getLast5 = () => {
+    getLast5Service = () => {
       let messages = [];
       messages = getLast(5);
       return messages;
  
     }
 
-    post = (data) => {
+    postService = (data) => {
       let newMessage = {user:data.user,message:data.message};
       create(newMessage);
     }
