@@ -1,5 +1,5 @@
 import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/dbManagers/CartDB.js'
-import {getByIdModel} from '../dao/dbManagers/ProductDB.js'
+import {getByIdModel as getProduct,getBy_IdModel} from '../dao/dbManagers/ProductDB.js'
 // TODOZ tienen que estar addProductQuantity y addProductToCart?
 export default class CartManager {
     constructor(path){
@@ -44,16 +44,18 @@ export default class CartManager {
 
 
     addProduct = async (cid,productId, quantity) => {
-        const cartToUpdate = await this.getById(cid);
+        const cartToUpdate = await getOne(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
+        console.log(cartToUpdate,"-----------------------",productos);
 
-        getByIdModel(productId).then((productExist) => {
+        getProduct(productId).then((productExist) => {
         if (productExist < 0) {
             return 4;
         }
         })
-        const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
+        const SearchedProductindex = productos.findIndex((prod)=> JSON.stringify(prod.product) == productId);
+        console.log(SearchedProductindex)
         if (SearchedProductindex < 0 ) {
         productToAdd = {product:productId, quantity:quantity};
         }
@@ -62,9 +64,13 @@ export default class CartManager {
             productToAdd = {product: productId, quantity: newQuantity};
             productos.splice(SearchedProductindex,1);
         }
+        console.log("productToAdd");
+        console.log("-----------------------------------");
+        console.log(productToAdd);
+        console.log(cid,cartToUpdate);
         productos.push(productToAdd);
-
-        let result = await  addProductToCart(cid,cartToUpdate);
+        console.log(cid,cartToUpdate);
+        let result = await addProductToCart(cid,cartToUpdate);
 
         if (result.modifiedCount != 1) {
             return 4;
@@ -74,13 +80,14 @@ export default class CartManager {
 
     addQuantity = async (cid,productId, quantity) => {
 
+        // const cartToUpdate = await this.getById(cid);
         const cartToUpdate = await this.getById(cid);
         let productToAdd;
         let productos = cartToUpdate.products;
 
         const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
         if (SearchedProductindex < 0 ) {
-            const productexist = await getByIdModel({_id:productId});
+            const productexist = await getBy_IdModel(productId);
             if (!productexist) {
                 return "An error ocurred with the id of the product to add";
             }

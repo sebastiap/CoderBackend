@@ -75,6 +75,7 @@ router.put('/:cid', async (req, res) => {
     const cartId = req.params.cid;
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
+    console.log("Valores: ",cartId,ProductId,quantity);
         const result = await manager.addQuantity(cartId,ProductId,quantity);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else if (result === "An error ocurred with the id of the product to add") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }

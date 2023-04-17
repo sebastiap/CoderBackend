@@ -50,7 +50,7 @@ export default class ProductManager{
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                console.log("Error al consultar en MongoDB1:" , error); 
         }
 
     }
@@ -112,18 +112,19 @@ export default class ProductManager{
         }
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                console.log("Error al consultar en MongoDB2:" , error); 
         }
 
     }
 
     getById = async(pid) => {
-        try{        
+        try{       
+            console.log("Este rompe todo: ",pid);
            let resultDB = await getByIdModel(pid);
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                console.log("Error al consultar en MongoDB3:" , error); 
         }
 
     }
