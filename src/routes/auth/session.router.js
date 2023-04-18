@@ -1,20 +1,21 @@
 import { Router } from "express";
 import passport from "passport";
 import {userModel} from '../../dao/models/user.model.js'
-import { isValidPassword,publicAccess,createHash,passportCall } from "../../../utils.js";
+import { publicAccess,createHash,passportCall } from "../../../utils.js";
+import config from "../../config/config.js";
 
 const router = Router();
 export default router;
 
 
 router.get('/login',publicAccess, async (req, res) => {
-    res.render('auth/login',{style:"login.css"})
+    res.render('auth/login',{title:"Spika Games - Login",port:config.port,style:"login.css"})
    });
 router.get('/reset',publicAccess, async (req, res) => {
-    res.render('auth/reset',{style:"login.css"})
+    res.render('auth/reset',{title:"Resetear Password",port:config.port,style:"login.css"})
    });
 router.get('/register',publicAccess, async (req, res) => {
-    res.render('auth/register',{style:"login.css"})
+    res.render('auth/register',{title:"Spika Games - Registro",port:config.port,style:"login.css"})
    });
 
 router.get('/fail-register',publicAccess, async (req, res) => {
@@ -26,29 +27,7 @@ router.get('/fail-login',publicAccess, async (req, res) => {
 
 
 router.post('/register',passport.authenticate('register',{failureRedirect: 'fail-register'}), async (req, res) => {
-    // const {first_name, last_name,email,age,password,admin,role} = req.body;
-
-    // try {
-    //     const exist = await userModel.findOne({ email });
-    //     if (exist) return res.status(400).send({status:'error', message:'the email is already registered in this site.'});
-
-    //     const user = {
-    //         first_name,
-    //         last_name,
-    //         email,
-    //         age,
-    //         admin,
-    //         role,
-    //         password: createHash(password),
-    //     };
-
-    //     await userModel.create(user);
-
         res.send({status:'success', message: 'user registered successfully.'});
-
-    // } catch (error) {
-    //     res.status(500).send({status:'error', message: error.message});
-    // }
 });
 
 router.post('/login',passportCall('login'), async (req, res) => {
@@ -58,15 +37,6 @@ router.post('/login',passportCall('login'), async (req, res) => {
 
     if (!email || !password) {res.status(400).send({status:'error', message:"Incomplete values"})}
 
-    // try {
-        // const user = await userModel.findOne({ email });
-        // if (!user) return res.status(400).send({status:'error', message:'User not found.'});
-        // if (!isValidPassword(user,password)) return res.status(401).send({status:'error', message:'incorrect password.'});
-        // // if (user.password != password) return res.status(401).send({status:'error', message:'incorrect password.'});
-
-        // delete user.password; 
-
-        //  req.session.user = user;
          req.session.user = {
             first_name: req.user.first_name,
             last_name: req.user.last_name,
@@ -76,14 +46,7 @@ router.post('/login',passportCall('login'), async (req, res) => {
             cart:req.user.cart
 
          };
-
-        // await userModel.create(user);
-
         res.send({status:'success', message: 'user was logged in successfully.'});
-
-    // } catch (error) {
-    //     res.status(501).send({status:'error', message: error.message});
-    // }
 });
 
 router.post('/reset', async (req, res) => {

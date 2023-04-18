@@ -26,15 +26,16 @@
 <body>
     <div class="header">
         <div class="headerLogo">
-            <a href="http://localhost:8080/"><img height="75px" src="/img/SPIKAGAMES.PNG"></a>
+            <a href="http://localhost:{{port}}/"><img height="75px" src="/img/SPIKAGAMES.PNG"></a>
         </div>
         <div class="headerButtonContainer">
-            {{!-- <a href="http://localhost:8080/carts/64135d02acdf495d33f1a229"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a> --}}
-            <a href="http://localhost:8080/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
-            <a href="http://localhost:8080/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="RTProductos"></a>
-            {{!-- <a href="http://localhost:8080/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a> --}}
-            <a href="http://localhost:8080/auth/login"><input  class="pagebutton" type="button" onclick="" name="" value="Login"></a>
-            <a href="http://localhost:8080/auth/register"><input  class="pagebutton" type="button" onclick="" name="" value="Register"></a>
+            {{copyrightYear}}
+            {{!-- <a href="http://localhost:{{port}}/carts/64135d02acdf495d33f1a229"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a> --}}
+            <a href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
+            <a href="http://localhost:{{port}}/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="RTProductos"></a>
+            {{!-- <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a> --}}
+            <a href="http://localhost:{{port}}/auth/login"><input  class="pagebutton" type="button" onclick="" name="" value="Login"></a>
+            <a href="http://localhost:{{port}}/auth/register"><input  class="pagebutton" type="button" onclick="" name="" value="Register"></a>
         </div>
     </div>
     {{{body}}}    

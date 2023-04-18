@@ -72,7 +72,6 @@ app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public')); 
 app.use(express.static('/',viewsrouter));
 
-
 app.get('/api/session/current', async (req, res) => {
 if (req.session.user) {
     res.send(req.session.user);
@@ -111,19 +110,19 @@ if (productosDB !== undefined) {
 else {
     productos = [];
 }
-res.render('home',{productos,messages,style:"styles.css"})
+res.render('home',{title:"Home",port:config.port,productos,messages,style:"styles.css"})
 
 }
 );
 
 // Chat
 app.get('/chat',privateAccess, async (req, res) => {
-    res.render('chat',{messages,style:"styles.css"})
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,messages,style:"styles.css"})
    })
 // realTimeProducts
 app.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
-    res.render('realTimeProducts',{productos,style:"styles.css"})
+    res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,productos,style:"styles.css"})
    })
 
 // Socket

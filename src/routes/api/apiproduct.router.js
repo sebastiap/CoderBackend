@@ -3,7 +3,6 @@ import ProductManager from "../../controllers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
-// utilizo router para redireccionar y organizar mis llamadas.
 const router = Router();
 
 // Se agrega esto para asegurarnos que corra donde corra este codigo
@@ -27,8 +26,6 @@ router.get("/",async(req,res) =>{
         page = 10;
     }
     if (!query){
-        // Se deberá poder buscar productos por categoría o por disponibilidad, 
-        // y se deberá poder realizar un ordenamiento de estos productos de manera ascendente o descendente por precio.
         query = {};
     }
     if (!sort){
@@ -72,7 +69,6 @@ router.post('/', async (req,res) => {
     else {    
         res.send({status: 'success', message:'A new product with id ' + product.code + ' was successfully created with id ' + product.id });
     }
-    // return result;
 });
 
 router.put('/:pid', async (req,res) => {

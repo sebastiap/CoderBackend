@@ -16,7 +16,7 @@ router.get('/:cid',privateAccess, async (req, res) => {
             thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity,id:productObj.product.id}
     })
         
-    res.render('carts',{cartProducts,cart:cartId,port:config.port,style:"styles.css"})
+    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,style:"styles.css"})
    }
    )
 

@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from "url";
 import config from "../../config/config.js" 
 
-import { privateAccess } from "../../../utils.js";
+import { privateAccess,validarURL } from "../../../utils.js";
 
 // utilizo router para redireccionar y organizar mis llamadas.
 const router = Router();
@@ -21,7 +21,10 @@ router.get("/",privateAccess,async(req,res) =>{
 
     let { limit = 10, page = 1, query , sort } = req.query
     let productosDB = await manager.getPaginated(req.query);
-    let productosFormated = productosDB.payload;
+    // let productosFormated = productosDB.payload;
+    // console.log(productosFormated);
+    let productosFormated = validarURL(productosDB.payload.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
+   
 
     let prev = 0;
     if (productosDB.hasPrevPage){
@@ -38,7 +41,7 @@ router.get("/",privateAccess,async(req,res) =>{
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     
-    res.render('products',{productos,pageConfig,user:req.session.user,cart:cart,port:config.port,style:"styles.css"});
+    res.render('products',{title:"Nuestros Productos",port:config.port,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
 })
 
 
