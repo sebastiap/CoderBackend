@@ -1,5 +1,8 @@
-import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/dbManagers/CartDB.js'
-import {getByIdModel as getProduct,getBy_IdModel} from '../dao/dbManagers/ProductDB.js'
+// import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/dbManagers/CartDB.js'
+// import {getByIdModel as getProduct,getBy_IdModel} from '../dao/dbManagers/ProductDB.js'
+
+import { create as createService,getAll as getAllService,PopulateService,getByIdService,addProductService,addQuantityService,updateService,deleteService} from "../services/CartService.js";
+
 // TODOZ tienen que estar addProductQuantity y addProductToCart?
 export default class CartManager {
     constructor(path){
@@ -10,8 +13,7 @@ export default class CartManager {
 
     create = async (products) => {
         try {
-            let newCart = {"products":products};
-            let result =  await createModel(newCart);
+            let result =  await createService(products);
             this.idIndex = this.idIndex + 1
             return result;
             
@@ -21,13 +23,18 @@ export default class CartManager {
     }
 
     getAll = async() => {
-        const searchedCart = await getAllModel();
-        return searchedCart;
+        try {
+            const searchedCart = await getAllService();
+            return searchedCart;
+        } catch (error) {
+              return error;
+        }
+
     }
 
     getByIdDetailed = async(cid) => {
         this.cart = cid;
-        const searchedCart = await getPopulated(cid);
+        const searchedCart = await PopulateService(cid);
         if (!searchedCart || searchedCart.length == 0) {
             return 'Cart not found';
           }
@@ -35,7 +42,7 @@ export default class CartManager {
     }
 
     getById = async(cid) => {
-        const searchedCart = await getOne({"_id":cid});
+        const searchedCart = await getByIdService(cid);
         if (!searchedCart || searchedCart.length == 0) {
             return 'Cart not found';
           }
@@ -44,76 +51,35 @@ export default class CartManager {
 
 
     addProduct = async (cid,productId, quantity) => {
-        const cartToUpdate = await getOne(cid);
-        let productToAdd;
-        let productos = cartToUpdate.products;
-        console.log(cartToUpdate,"-----------------------",productos);
 
-        getProduct(productId).then((productExist) => {
-        if (productExist < 0) {
-            return 4;
+        try {
+            const result = addProductService(cid,productId, quantity);
+            if (result == 1) {return "Product does not exist"}
+            if (result == 2) {}
+            if (result == 3) {return "Product does not exist"}
+            if (result == 4) {return "Cart was not updated"}
+        } catch (error) {
+            console.log(error);
         }
-        })
-        const SearchedProductindex = productos.findIndex((prod)=> JSON.stringify(prod.product) == productId);
-        console.log(SearchedProductindex)
-        if (SearchedProductindex < 0 ) {
-        productToAdd = {product:productId, quantity:quantity};
-        }
-        else {
-            let newQuantity = productos[SearchedProductindex].quantity + quantity;
-            productToAdd = {product: productId, quantity: newQuantity};
-            productos.splice(SearchedProductindex,1);
-        }
-        console.log("productToAdd");
-        console.log("-----------------------------------");
-        console.log(productToAdd);
-        console.log(cid,cartToUpdate);
-        productos.push(productToAdd);
-        console.log(cid,cartToUpdate);
-        let result = await addProductToCart(cid,cartToUpdate);
-
-        if (result.modifiedCount != 1) {
-            return 4;
-        }
-        return 1;
     }
 
     addQuantity = async (cid,productId, quantity) => {
-
-        // const cartToUpdate = await this.getById(cid);
-        const cartToUpdate = await this.getById(cid);
-        let productToAdd;
-        let productos = cartToUpdate.products;
-
-        const SearchedProductindex = productos.findIndex((prod)=> prod.product == productId);
-        if (SearchedProductindex < 0 ) {
-            const productexist = await getBy_IdModel(productId);
-            if (!productexist) {
-                return "An error ocurred with the id of the product to add";
-            }
-            productToAdd = {product: productId, quantity: quantity};
+        try {
+            const result = addQuantityService(cid,productId, quantity);
+            return result;
+        } catch (error) {
+            console.log(error);
         }
-        else {
-            let newQuantity = productos[SearchedProductindex].quantity + quantity;
-            productToAdd = {product: productId, quantity: newQuantity};
-            productos.splice(SearchedProductindex,1);
-        }
-        if (productToAdd.quantity >= 1) {productos.push(productToAdd);}
-        let result = await addProductQuantity(cid,cartToUpdate);
 
-        if (result.modifiedCount != 1) {
-            return 4;
-        }
-        return 1;
     }
 
     delete= async (cid) => {
-        let result = await empty(cid);
+        let result = await deleteService(cid);
         return result;
     }
 
     update= async (cid,newprods) =>{
-        let result = await updateProducts(cid,newprods);
+        let result = await updateService(cid,newprods);
         return result;
     }
 }
