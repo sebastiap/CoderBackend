@@ -4,7 +4,7 @@
         {{#if user}}
         <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}}</p>
             <p id="cart">{{cart}}</p> 
-            <a href="http://localhost:8080/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a>
+            <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a>
             {{#if this.user.email}}
             <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
             {{else}}
@@ -57,16 +57,16 @@
     </div>
     <div class="formDiv sortDiv">
         <div>
-            <a href="http://localhost:8080/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
-            <a href="http://localhost:8080/products/?query=Games&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
-            <a href="http://localhost:8080/products/?query=Clothing&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
-            <a href="http://localhost:8080/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
+            <a id="aport" href="http://localhost:{{port}}/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
+            <a href="http://localhost:{{port}}/products/?query=Games&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
+            <a href="http://localhost:{{port}}/products/?query=Clothing&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
+            <a href="http://localhost:{{port}}/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
         </div>
         <div>
             {{!-- {{#if (eq sort 'Employer')}} --}}
             
-            <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
-            <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
+            <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
+            <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
             {{!-- {{/if }} --}}
             {{!-- {{#if (sort eq "DESC") }}
             {{/if }} --}}

@@ -75,7 +75,6 @@ router.put('/:cid', async (req, res) => {
     const cartId = req.params.cid;
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
-    console.log("Valores: ",cartId,ProductId,quantity);
         const result = await manager.addQuantity(cartId,ProductId,quantity);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else if (result === "An error ocurred with the id of the product to add") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
@@ -85,13 +84,13 @@ router.put('/:cid', async (req, res) => {
     
     });
     
-// DELETE api/carts/:cid deberá eliminar todos los productos del carrito
 router.delete('/:cid',async (req, res) => {
         const cartid = req.params.cid;
         const result = await manager.delete(cartid);
         if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+        else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
         else {
-        res.send({status: 'success',message: 'The cart with ' + cartid + 'is now empty.'});
+        res.send({status: 'success',message: 'The cart with id ' + cartid + ' is now empty.'});
         return result;
 }});
     

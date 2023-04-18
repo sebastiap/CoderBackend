@@ -2,6 +2,7 @@ import { Router } from "express";
 import ProductManager from "../../controllers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
+import config from "../../config/config.js" 
 
 import { privateAccess } from "../../../utils.js";
 
@@ -37,7 +38,7 @@ router.get("/",privateAccess,async(req,res) =>{
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     
-    res.render('products',{productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
+    res.render('products',{productos,pageConfig,user:req.session.user,cart:cart,port:config.port,style:"styles.css"});
 })
 
 

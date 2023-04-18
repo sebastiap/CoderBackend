@@ -33,12 +33,18 @@ export default class CartManager {
     }
 
     getByIdDetailed = async(cid) => {
-        this.cart = cid;
-        const searchedCart = await PopulateService(cid);
-        if (!searchedCart || searchedCart.length == 0) {
-            return 'Cart not found';
-          }
-        return searchedCart;
+        try {
+            this.cart = cid;
+            const searchedCart = await PopulateService(cid);
+            console.log(searchedCart);
+            if (!searchedCart || searchedCart.length == 0) {
+                return 'Cart not found';
+              }
+            return searchedCart;
+        } catch (error) {
+            return error;
+        }
+
     }
 
     getById = async(cid) => {
@@ -74,12 +80,23 @@ export default class CartManager {
     }
 
     delete= async (cid) => {
-        let result = await deleteService(cid);
-        return result;
+        try {
+            if (cid.length != 24) { return 'The Cart id is invalid'}
+            let result = await deleteService(cid);
+            return result;
+        } catch (error) {
+            
+        }
+
     }
 
     update= async (cid,newprods) =>{
-        let result = await updateService(cid,newprods);
-        return result;
+        try {
+            let result = await updateService(cid,newprods);
+            return result;
+        } catch (error) {
+            console.log(error);
+        }
+
     }
 }

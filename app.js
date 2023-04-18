@@ -158,7 +158,7 @@ io.on('connection',  (socket) => {
 
     socket.on("Ingresar Nuevo Producto", producto => {
         try {
-            axios.post("http://localhost:8080/api/products/",producto)
+            axios.post("http://localhost:"+ config.port + "/api/products/",producto)
             .then(function () {
                 manager.getFromSocket().then((res) => {
                     let valor = validarURL(res);
@@ -209,11 +209,11 @@ io.on('connection',  (socket) => {
     socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
             let id = qdata.id;
-            axios.get('http://localhost:8080/api/products/'+id).then( (product) => {
+            axios.get('http://localhost:'+ config.port + '/api/products/'+id).then( (product) => {
             let dataid = JSON.stringify(product.data[0]._id);
             let cart = qdata.cart;
 
-            axios.delete(`http://localhost:8080/api/carts/${cart}/products/${dataid}`)
+            axios.delete(`http://localhost:${config.port}/api/carts/${cart}/products/${dataid}`)
             .then(function () {
                     socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
                 })
@@ -228,8 +228,6 @@ io.on('connection',  (socket) => {
 
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {
-            // console.log(socket.handshake);
-            // axios.get('http://localhost:8080/api/products/'+ qdata.id).then( (product) => {
             axios.get('http://localhost:'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = qdata.cart;
@@ -239,7 +237,7 @@ io.on('connection',  (socket) => {
                 "quantity":qdata.quantity
                 };
               // cartProducts.push(putData);
-              let putURL = `http://localhost:8080/api/carts/${cart}/products/`+dataid;
+              let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
             //   console.log(putURL);
               axios.put(putURL,putData)
             .then(function () {
