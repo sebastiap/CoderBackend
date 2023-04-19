@@ -1,11 +1,10 @@
-import { insert,getAll,getByIdModel,update as updateModel,deleteOne as deleteModel,paginate,getByCode } from "../dao/dbManagers/ProductDB.js";
+import {addService,getService,getByIdService,getByCodeService,getPaginatedService,updateService,deleteService} from "../services/ProductService.js";
 
 export default class ProductManager{
     constructor(path){
         this.maxid = 0;
         this.idIndex = 0 ;
         this.path = path;
-
     }
 
     add = async(product) => {
@@ -20,14 +19,14 @@ export default class ProductManager{
                 return 2;
             }
 
-            const existingProduct = await getByCode(product.code);
+            const existingProduct = await getByCodeService(product.code);
             if (existingProduct.length > 0){
                 return 1;
             }
 
             product.id = this.maxid + 1;
 
-            let result = await insert(product);
+            let result = await addService(product);
             this.maxid = product.id;
             return result;
 
@@ -41,7 +40,7 @@ export default class ProductManager{
 
     get = async() => {
         try{        
-           let resultDB = await getAll();
+           let resultDB = await getService();
            let max = Math.max(...resultDB.map(o => o.id));
            if (!max || max == null || max == -Infinity) {
             max = 0;
@@ -50,7 +49,7 @@ export default class ProductManager{
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB1:" , error); 
+                console.log("Error al consultar en MongoDB:" , error); 
         }
 
     }
@@ -60,7 +59,6 @@ export default class ProductManager{
         let tquery = {};
         let urlquery = "";
         let tsort = {};
-        let payload = [];
         let status = true;
 
         try{        
@@ -71,7 +69,6 @@ export default class ProductManager{
                 tsort = { price: sort.toUpperCase()};
             }
             
-
             if (query != undefined ) {
                 if(query == "Games" || query == "Clothing"|| query == "Misc") {
                     tquery = { category: query };
@@ -94,7 +91,7 @@ export default class ProductManager{
             }
         //    let paginateResults = await productModel.paginate(tquery,{limit:limit,page:page,sort:tsort});
            let params = {limit:limit,page:page,sort:tsort};
-           let paginateResults = await paginate(tquery,params);
+           let paginateResults = await getPaginatedService(tquery,params);
            
            let prevLink = `?page=${paginateResults.prevPage}&query=${urlquery}&sort=${JSON.stringify(tsort)}`;
            let nextLink = `?page=${paginateResults.nextPage}&query=${urlquery}&sort=${JSON.stringify(tsort)}`;
@@ -112,19 +109,18 @@ export default class ProductManager{
         }
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB2:" , error); 
+                console.log("Error al consultar en MongoDB:" , error); 
         }
 
     }
 
     getById = async(pid) => {
         try{       
-            console.log("Este rompe todo: ",pid);
-           let resultDB = await getByIdModel(pid);
+           let resultDB = await getByIdService(pid);
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB3:" , error); 
+                console.log("Error al consultar en MongoDB:" , error); 
         }
 
     }
@@ -132,7 +128,7 @@ export default class ProductManager{
     update = async(pid,product) => {
         try {
         product.id = pid;
-        let updatedProduct = await updateModel(pid, product);
+        let updatedProduct = await updateService(pid, product);
         if (updatedProduct.modifiedCount != 1) {
             return 4;
         }
@@ -145,7 +141,7 @@ export default class ProductManager{
     }
     delete = async(id) => {
         try {
-            let resultDB = await deleteModel(id);
+            let resultDB = await deleteService(id);
             if (resultDB.deletedCount === 0){
                 console.error('No existia un producto con ese id para ser borrado.');
                 return 4;
@@ -153,7 +149,6 @@ export default class ProductManager{
             else{
                 return 1;
             }
-            return resultDB;
         } catch (error) {
             console.error('Error al borrar en MongoDB:');
         }

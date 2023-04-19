@@ -19,18 +19,13 @@ const AddtoCart = async (productId) => {
   let stringId = productId;
   stringCart = cartDiv.innerHTML;
   let productToAdd = await axios.get('http://localhost:'+ port + '/api/products/'+stringId);
-  // let cartToFill = await axios.get('http://localhost:'+ port + '/api/carts/'+stringCart);
-  console.log("productToAdd",productToAdd);
 
   let dataid = productToAdd.data[0]._id;
-
-  console.log("dataid",dataid);
 
   let putData = {
     "quantity":1
     };
   let putURL = `http://localhost:${port}/api/carts/${stringCart}/products/${dataid}`;
-  console.log(putURL);
 
   await axios.put(putURL,putData)
   .then(function () {

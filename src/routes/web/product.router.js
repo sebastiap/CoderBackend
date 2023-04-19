@@ -21,11 +21,7 @@ router.get("/",privateAccess,async(req,res) =>{
 
     let { limit = 10, page = 1, query , sort } = req.query
     let productosDB = await manager.getPaginated(req.query);
-    // let productosFormated = productosDB.payload;
-    // console.log(productosFormated);
-    let productosFormated = validarURL(productosDB.payload.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
-   
-
+    let productosFormated = validarURL(productosDB.payload.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id,status: prod.status})));
     let prev = 0;
     if (productosDB.hasPrevPage){
         prev = productosDB.prevPage;
@@ -34,14 +30,13 @@ router.get("/",privateAccess,async(req,res) =>{
     if (productosDB.hasNextPage){
         next = productosDB.nextPage;
     }
-    // let cart = '64135d02acdf495d33f1a229';
     let cart = req.session.user.cart;
     let productos = productosFormated.map(prod => 
         ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     
-    res.render('products',{title:"Nuestros Productos",port:config.port,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
+    res.render('products',{title:"Nuestros Productos",port:config.port,admin:config.isAdmin,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
 })
 
 

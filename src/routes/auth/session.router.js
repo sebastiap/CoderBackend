@@ -33,7 +33,6 @@ router.post('/register',passport.authenticate('register',{failureRedirect: 'fail
 router.post('/login',passportCall('login'), async (req, res) => {
     if (!req.user) {res.status(400).send({status:'error', message:"Invalid credentials"})}
     const {email,password} = req.body;
-    console.log(email,password);
 
     if (!email || !password) {res.status(400).send({status:'error', message:"Incomplete values"})}
 
@@ -46,6 +45,7 @@ router.post('/login',passportCall('login'), async (req, res) => {
             cart:req.user.cart
 
          };
+        config.currentUser = req.user.cart;
         res.send({status:'success', message: 'user was logged in successfully.'});
 });
 

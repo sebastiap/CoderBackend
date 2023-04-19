@@ -29,13 +29,17 @@
             <a href="http://localhost:{{port}}/"><img height="75px" src="/img/SPIKAGAMES.PNG"></a>
         </div>
         <div class="headerButtonContainer">
-            {{copyrightYear}}
-            {{!-- <a href="http://localhost:{{port}}/carts/64135d02acdf495d33f1a229"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a> --}}
+            {{#if cart}}
+            <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="Mi Carrito"></a>
             <a href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
-            <a href="http://localhost:{{port}}/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="RTProductos"></a>
-            {{!-- <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a> --}}
+                {{#if admin}}
+                <a href="http://localhost:{{port}}/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="RTProductos"></a>
+                {{/if}}
+            <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a>
+            {{else}}
             <a href="http://localhost:{{port}}/auth/login"><input  class="pagebutton" type="button" onclick="" name="" value="Login"></a>
             <a href="http://localhost:{{port}}/auth/register"><input  class="pagebutton" type="button" onclick="" name="" value="Register"></a>
+            {{/if}}
         </div>
     </div>
     {{{body}}}    

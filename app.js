@@ -26,15 +26,9 @@ import mongoose from "mongoose";
 
 // Manejo de los mensajes del chat
 import messageManager from "./src/controllers/MessageManager.js";
-import CartManager from "./src/controllers/CartManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
-//TODOZ ajustar las URL para que se ajuste al env
 const app = express();
-
-
-// console.log(config);
-
 
 app.use(session({
     store:MongoStore.create({
@@ -72,15 +66,15 @@ app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public')); 
 app.use(express.static('/',viewsrouter));
 
-app.get('/api/session/current', async (req, res) => {
-if (req.session.user) {
-    res.send(req.session.user);
+// app.get('/api/session/current', async (req, res) => {
+// if (req.session.user) {
+//     res.send(req.session.user);
 
-}
-else{
-    return res.status(400).send({ error: 'There is no current session logged in.' });
-}
-});
+// }
+// else{
+//     return res.status(400).send({ error: 'There is no current session logged in.' });
+// }
+// });
 
 // Para sacar el warning
 mongoose.set('strictQuery', true);
@@ -117,12 +111,13 @@ res.render('home',{title:"Home",port:config.port,productos,messages,style:"style
 
 // Chat
 app.get('/chat',privateAccess, async (req, res) => {
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,messages,style:"styles.css"})
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:config.cart,admin:config.isAdmin,messages,style:"styles.css"})
    })
 // realTimeProducts
 app.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
-    res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,productos,style:"styles.css"})
+    //TODOZ arreglar botones de Logueo y admin
+    res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:config.cart,admin:config.isAdmin,productos,style:"styles.css"})
    })
 
 // Socket
@@ -203,8 +198,6 @@ io.on('connection',  (socket) => {
 
 
      // Cart Sockets
-    //  let cartManager = new CartManager;
-    
     socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
             let id = qdata.id;
@@ -235,12 +228,9 @@ io.on('connection',  (socket) => {
             let putData = {
                 "quantity":qdata.quantity
                 };
-              // cartProducts.push(putData);
               let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
-            //   console.log(putURL);
               axios.put(putURL,putData)
             .then(function () {
-                    // console.log("al menos entre aca");
                     socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");
                 })
                 .catch(err => {console.log(err);}); 

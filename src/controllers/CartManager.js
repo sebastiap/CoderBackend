@@ -1,9 +1,5 @@
-// import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/dbManagers/CartDB.js'
-// import {getByIdModel as getProduct,getBy_IdModel} from '../dao/dbManagers/ProductDB.js'
-
 import { create as createService,getAll as getAllService,PopulateService,getByIdService,addProductService,addQuantityService,updateService,deleteService} from "../services/CartService.js";
 
-// TODOZ tienen que estar addProductQuantity y addProductToCart?
 export default class CartManager {
     constructor(path){
         this.cart = {};
@@ -36,7 +32,6 @@ export default class CartManager {
         try {
             this.cart = cid;
             const searchedCart = await PopulateService(cid);
-            console.log(searchedCart);
             if (!searchedCart || searchedCart.length == 0) {
                 return 'Cart not found';
               }

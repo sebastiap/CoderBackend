@@ -1,4 +1,4 @@
-import { getLast,create } from "../dao/dbManagers/MessageDB.js";
+import {postService,getLastService} from "../services/MessageService.js"
 
 export default class messageManager{
     constructor(){
@@ -6,15 +6,13 @@ export default class messageManager{
     }
 
     getLast5 = () => {
-      let messages = [];
-      messages = getLast(5);
+      let messages = getLastService(5);
       return messages;
  
     }
 
     post = (data) => {
-      let newMessage = {user:data.user,message:data.message};
-      create(newMessage);
+      postService(data);
     }
 
 

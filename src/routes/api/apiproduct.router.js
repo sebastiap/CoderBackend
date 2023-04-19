@@ -73,15 +73,11 @@ router.post('/', async (req,res) => {
 
 router.put('/:pid', async (req,res) => {
     try {
-    // TODOZ validar errores 1 y 2
-    // const id = parseInt(req.params.pid);
+    // TODOZ validar errores 2?
     const id = req.params.pid;
     const productToUpdate = req.body;
     let result = await manager.update(id,productToUpdate);
-    if (result === 1){
-        res.status(400).send({status:'error', message:'The code is already in used in another Product'});
-    }
-    else if (result === 2){
+    if (result === 2){
         res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
     else if (result === 3) {
