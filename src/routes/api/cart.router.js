@@ -36,8 +36,9 @@ router.post('/:cid/product/:pid',async (req, res) => {
     const cartId = req.params.cid;
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
-    const result = await manager.addProduct(cartId,ProductId,quantity);
+    const result = await manager.addProduct(cartId,ProductId,quantity); 
     if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+    if (result === "Some error occurred while updating.") { res.send({status: 'error', message: "Some error occurred while updating."}) }
     else {
         res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + ''});
     };
@@ -51,7 +52,7 @@ router.delete('/:cid/products/:pid', async (req, res) => {
         }
         manager.getById(cartId).then((cart) => {
             let oldProducts = cart.products;
-            let newProducts = oldProducts.filter((prod) => JSON.stringify(prod.product) != String(productId));
+            let newProducts = oldProducts.filter((prod) => prod.product != productId);
             manager.update(cartId, newProducts).then((resupdate) => {
                 if (resupdate.modifiedCount >= 1){
                     res.send({status: 'success',message: 'The product with id ' + productId + ' was deleted successfully from cart ' + cartId + ''}); 

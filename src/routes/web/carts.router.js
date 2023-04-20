@@ -10,6 +10,7 @@ router.get('/:cid',privateAccess, async (req, res) => {
     let cartId = req.params.cid;
     let cartProm = await cartmanager.getByIdDetailed(cartId); 
     let cartArray = cartProm.products; 
+    currentCart = cartId;
     let cartProducts = cartArray.map(function(productObj){
         validarUrlIndividual(productObj.product);
         return productObj = {title:productObj.product.title, description:productObj.product.description,

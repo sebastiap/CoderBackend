@@ -26,23 +26,18 @@ export const getOne = async(cid) => {
         return searchedCart;
     }
 
-
-export const addProductToCart = async (cid,cartToUpdate) => {
-        let result = await cartModel.updateOne({id:cid},cartToUpdate);
-        return result;
-    }
-
 export const addProductQuantity = async (cid,cartToUpdate) => {
         let result = await cartModel.updateOne({_id:cid},cartToUpdate);
         return result;
     }
 
 export const empty = async (cid) => {
-        let result = await cartModel.updateOne({"_id": cid},{products:[]});
+        let result = await cartModel.updateMany({_id: cid},{products:[]});
         return result;
     }
 
 export const updateProducts = async (cid,newprods) =>{
-        let result = await cartModel.updateOne({"_id": cid},{products:newprods});
+        let result = await cartModel.updateOne({_id: cid},{products:newprods});
         return result;
     }
+  

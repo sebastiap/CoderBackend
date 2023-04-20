@@ -1,4 +1,4 @@
-import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/mongo/cart.mongo.js'
+import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductQuantity,empty,updateProducts} from '../dao/mongo/cart.mongo.js'
 import {getByIdModel as getProduct,getBy_IdModel} from '../dao/mongo/product.mongo.js';
 import config from '../config/config.js';
 
@@ -13,9 +13,6 @@ switch(persistance){
     default:
         break;
 }
-
-// TODOZ tienen que estar addProductQuantity y addProductToCart? Terminar de conectar los servicios. el try/catch lo haga en la capa de controller, y que ahi responda dependiendo como salio la operacion. 
-// Y lo que es toda la logica vendria a estar en la capa de servicio.
 export const create = async (products) => {
             let newCart = {"products":products};
             let result =  await createModel(newCart);
@@ -38,36 +35,36 @@ export const create = async (products) => {
     }
 
 
-    export const addProductService = async (cid,productId, quantity) => {
-        const cartToUpdate = await getOne(cid);
-        let productToAdd;
-        let productos = cartToUpdate.products;
+    // export const addProductService = async (cid,productId, quantity) => {
+    //     const cartToUpdate = await getOne(cid);
+    //     let productToAdd;
+    //     let productos = cartToUpdate.products;
 
-        getProduct(productId).then((productExist) => {
-        if (productExist < 0) {
-            return 4;
-        }
-        })
-        const SearchedProductindex = productos.findIndex((prod)=> JSON.stringify(prod.product) == productId);
-        if (SearchedProductindex < 0 ) {
-        productToAdd = {product:productId, quantity:quantity};
-        }
-        else {
-            let newQuantity = productos[SearchedProductindex].quantity + quantity;
-            productToAdd = {product: productId, quantity: newQuantity};
-            productos.splice(SearchedProductindex,1);
-        }
-        productos.push(productToAdd);
-        let result = await addProductQuantity(cid,cartToUpdate);
-        if (result.modifiedCount != 1) {
-            return 4;
-        }
-        return 1;
-    }
+    //     getProduct(productId).then((productExist) => {
+    //     if (productExist < 0) {
+    //         return 4;
+    //     }
+    //     })
+    //     const SearchedProductindex = productos.findIndex((prod)=> JSON.stringify(prod.product) == productId);
+    //     if (SearchedProductindex < 0 ) {
+    //     productToAdd = {product:productId, quantity:quantity};
+    //     }
+    //     else {
+    //         let newQuantity = productos[SearchedProductindex].quantity + quantity;
+    //         productToAdd = {product: productId, quantity: newQuantity};
+    //         productos.splice(SearchedProductindex,1);
+    //     }
+    //     productos.push(productToAdd);
+    //     console.log("cid,cartToUpdate",cid,cartToUpdate);
+    //     let result = await addProductToCart(cid,cartToUpdate);
+    //     if (result.modifiedCount != 1) {
+    //         return 4;
+    //     }
+    //     return 1;
+    // }
 
     export const addQuantityService = async (cid,productId, quantity) => {
 
-        // const cartToUpdate = await this.getById(cid);
         const cartToUpdate = await getByIdService(cid);
         if (cartToUpdate === "Cart not found"){ return "A cart with that id does not exist."}
 
@@ -99,10 +96,16 @@ export const create = async (products) => {
 
     export const deleteService = async (cid) => {
         let result = await empty(cid);
+        if (result.modifiedCount != 1) {
+            return 4;
+        }
         return result;
     }
 
     export const updateService = async (cid,newprods) =>{
         let result = await updateProducts(cid,newprods);
+        if (result.modifiedCount != 1) {
+            return 4;
+        }
         return result;
     }

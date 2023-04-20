@@ -20,7 +20,6 @@ const initializePassport = () => {
         try {
             const user = await userModel.findOne({email:username});
             if (user) {
-                console.log('El usuario ya existe.');
                 return done(null,false);
             }
             const resultCart = await cartModel.create({"products":[]});

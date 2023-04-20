@@ -1,4 +1,4 @@
-import { create as createService,getAll as getAllService,PopulateService,getByIdService,addProductService,addQuantityService,updateService,deleteService} from "../services/CartService.js";
+import { create as createService,getAll as getAllService,PopulateService,getByIdService,addQuantityService,updateService,deleteService} from "../services/CartService.js";
 
 export default class CartManager {
     constructor(path){
@@ -54,13 +54,14 @@ export default class CartManager {
     addProduct = async (cid,productId, quantity) => {
 
         try {
-            const result = addProductService(cid,productId, quantity);
+            const result = addQuantityService(cid,productId, quantity);
             if (result == 1) {return "Product does not exist"}
-            if (result == 2) {}
+            if (result == 2) {return "Product is incomplete. Some Values are missing"}
             if (result == 3) {return "Product does not exist"}
             if (result == 4) {return "Cart was not updated"}
         } catch (error) {
             console.log(error);
+            return "Some error occurred while updating.";
         }
     }
 
@@ -80,7 +81,7 @@ export default class CartManager {
             let result = await deleteService(cid);
             return result;
         } catch (error) {
-            
+            return error;
         }
 
     }

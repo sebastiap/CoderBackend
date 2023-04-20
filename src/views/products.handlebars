@@ -3,7 +3,6 @@
     <div class="listDiv">
         {{#if user}}
         <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}}</p>
-            <p id="cart">{{cart}}</p> 
            {{#if this.user.email}}
             <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
             {{else}}

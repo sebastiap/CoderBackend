@@ -73,7 +73,6 @@ router.post('/', async (req,res) => {
 
 router.put('/:pid', async (req,res) => {
     try {
-    // TODOZ validar errores 2?
     const id = req.params.pid;
     const productToUpdate = req.body;
     let result = await manager.update(id,productToUpdate);

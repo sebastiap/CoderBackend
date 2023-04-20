@@ -68,15 +68,7 @@ app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public')); 
 app.use(express.static('/',viewsrouter));
 
-// app.get('/api/session/current', async (req, res) => {
-// if (req.session.user) {
-//     res.send(req.session.user);
-
-// }
-// else{
-//     return res.status(400).send({ error: 'There is no current session logged in.' });
-// }
-// });
+global.currentCart = "Empty";
 
 // Para sacar el warning
 mongoose.set('strictQuery', true);
@@ -202,9 +194,9 @@ io.on('connection',  (socket) => {
             try {
             let id = qdata.id;
             axios.get('http://localhost:'+ config.port + '/api/products/'+id).then( (product) => {
-            let dataid = JSON.stringify(product.data[0]._id);
-            let cart = qdata.cart;
-
+            let dataid = product.data[0]._id;
+            let cart = currentCart;
+            if (cart == "Empty") { socket.emit('Refrescar'); return }
             axios.delete(`http://localhost:${config.port}/api/carts/${cart}/products/${dataid}`)
             .then(function () {
                     socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
@@ -222,9 +214,8 @@ io.on('connection',  (socket) => {
         try {
             axios.get('http://localhost:'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
-            let cart = qdata.cart;
-
-
+            let cart = currentCart;
+            if (cart == "Empty") { socket.emit('Refrescar'); return }
             let putData = {
                 "quantity":qdata.quantity
                 };

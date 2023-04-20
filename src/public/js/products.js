@@ -1,17 +1,14 @@
 const socket = io();
-let cartDiv = document.getElementById('cart');
 var url_string = window.location;
 var port = url_string.port;
 
 
 const deleteCart = async (id) => {
-  let stringCart = cartDiv.innerHTML;
-  let qdata = {id:id, cart:stringCart};
+  let qdata = {id:id};
   socket.emit("Borrar_Producto_Carro" , qdata);
 };
 const QuantityChange = async (id,q) => {
-  let stringCart = cartDiv.innerHTML;
-  let qdata = {id:id, quantity:q,cart:stringCart};
+  let qdata = {id:id, quantity:q};
   socket.emit("Cambiar_Cantidad_Carro" , qdata);
 };
 
@@ -25,6 +22,7 @@ const AddtoCart = async (productId) => {
   let putData = {
     "quantity":1
     };
+  // TODOZ volver esto un socket
   let putURL = `http://localhost:${port}/api/carts/${stringCart}/products/${dataid}`;
 
   await axios.put(putURL,putData)
@@ -68,5 +66,20 @@ socket.on('Mensaje_Carro',message =>{
 setTimeout(() => {window.location.reload()}, 1000);
 
 });
+
+socket.on('Refrescar',message =>{
+
+  Swal.fire({
+    title: 'Ha Ocurrido un error inesperado.',
+    toast: true,
+    icon:"error",
+    text: "Intente nuevamente",
+    position:"top-end",
+    showConfirmButton: false,
+    timer:2000
+});
+setTimeout(() => {window.location.reload()}, 1000);
+});
+
 
 

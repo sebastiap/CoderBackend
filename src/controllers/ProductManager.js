@@ -7,17 +7,22 @@ export default class ProductManager{
         this.path = path;
     }
 
+    isValid = (product) => {
+        let value = true;
+        if (!product.title || !product.description || !product.price 
+            // || !product.status || !product.stock
+            || !product.category || !product.code )
+            {value = false}
+        return value;
+    }
+
     add = async(product) => {
         try {
             if (this.maxid === 0){
                 await this.get();
             }
-            if (!product.title || !product.description || !product.price 
-                // || !product.status || !product.stock
-                || !product.category || !product.code )
-                {
-                return 2;
-            }
+            if (!this.isValid )
+                { return 2; }
 
             const existingProduct = await getByCodeService(product.code);
             if (existingProduct.length > 0){
@@ -128,6 +133,8 @@ export default class ProductManager{
     update = async(pid,product) => {
         try {
         product.id = pid;
+        if (!this.isValid )
+        { return 2; }
         let updatedProduct = await updateService(pid, product);
         if (updatedProduct.modifiedCount != 1) {
             return 4;
