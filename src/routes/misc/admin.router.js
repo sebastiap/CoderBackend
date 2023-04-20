@@ -7,7 +7,7 @@ const router = Router();
 router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
     const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.admin == 'admin');
+    const userisadmin = (req.session.user.role == 'admin');
     res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
    })
 

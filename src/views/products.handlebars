@@ -9,19 +9,15 @@
             <p>Logueado via Github</p>
             {{/if}}
         Segun nuestros registros tienes {{this.user.age}} años.
-        <a href="/auth/logout">Desloguearse</a>
         {{/if}}
         {{#if productos}}
         <h1 id="Ltitle">Lista de Productos Actuales </h1>
         <div class="paginationButtonDiv">
             {{#if pageConfig.prev}}
-            
-             {{!-- <a  href="http://localhost:8080/products/?query={{pageConfig.query}}&sort={{pageConfig.sort}}&page={{pageConfig.prev}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a> --}}
              <a  href={{pageConfig.prevLink}}"><input  class="button" type="button" onclick="" name="" value="Anterior"></a>
             {{/if }}
             {{#if pageConfig.next}}
             <a href={{pageConfig.nextLink}}><input  class="button" type="button" onclick="" name="" value="Siguiente"></a>
-            {{!-- <a href="http://localhost:8080/products/?query={{pageConfig.query}}&sort={{pageConfig.sort}}&page={{pageConfig.next}}"><input  class="button" type="button" onclick="" name="" value="Siguiente"></a> --}}
             {{/if }}
             </div>
         <div id="Listado">
@@ -60,17 +56,11 @@
             <a href="http://localhost:{{port}}/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
         </div>
         <div>
-            {{!-- {{#if (eq sort 'Employer')}} --}}
-            
             <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
             <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
-            {{!-- {{/if }} --}}
-            {{!-- {{#if (sort eq "DESC") }}
-            {{/if }} --}}
         </div>
     </div>
 </div>
-{{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
 </div>
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/js/products.js" ></script>

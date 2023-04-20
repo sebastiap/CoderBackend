@@ -99,7 +99,7 @@ else {
     productos = [];
 }
 const usercart = req.session.user.cart;
-const userisadmin = (req.session.user.admin == 'admin');
+const userisadmin = (req.session.user.role == 'admin');
 res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,productos,messages,style:"styles.css"})
 
 }
@@ -108,7 +108,7 @@ res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin
 // Chat
 app.get('/chat',privateAccess, async (req, res) => {
     const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.admin == 'admin');
+    const userisadmin = (req.session.user.role == 'admin');
     res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,admin:userisadmin,messages,style:"styles.css"})
    })
 
@@ -209,6 +209,27 @@ io.on('connection',  (socket) => {
               console.log(error);
         }
         })
+
+    socket.on("Agregar_Producto_Carro" ,  (qdata) => {
+        try {
+            let cart = currentCart;
+            if (cart == "Empty") { socket.emit('Refrescar'); return }
+            let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/${qdata.product}`
+            let putData = {
+                "quantity":qdata.quantity
+                };
+            axios.put(putURL,putData)
+            .then(function () {
+                    socket.emit('Mensaje_Carro',`Se agrego el producto ${qdata.title} al carrito.`);
+                })
+                .catch(err => {console.log(err);}); 
+            }
+
+        catch (error) {
+            console.log(error);
+        }
+    }
+    );
 
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {

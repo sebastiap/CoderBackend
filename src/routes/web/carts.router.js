@@ -16,7 +16,7 @@ router.get('/:cid',privateAccess, async (req, res) => {
         return productObj = {title:productObj.product.title, description:productObj.product.description,
             thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity,id:productObj.product.id}
     })
-    const userisadmin = (req.session.user.admin == 'admin');    
+    const userisadmin = (req.session.user.role == 'admin');    
     res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,admin:userisadmin,cartProducts,cart:cartId,style:"styles.css"})
    }
    )
