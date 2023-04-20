@@ -4,12 +4,10 @@
         {{#if user}}
         <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}}</p>
             <p id="cart">{{cart}}</p> 
-            <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a>
-            {{#if this.user.email}}
+           {{#if this.user.email}}
             <p>Logueado como {{this.user.role}} - {{this.user.email}}</p>
             {{else}}
             <p>Logueado via Github</p>
-            {{!-- <a href="http://localhost:8080/carts/{{cart}}"><input class="pagebutton" type="button" onclick="" name="" value="MyCart"></a> --}}
             {{/if}}
         Segun nuestros registros tienes {{this.user.age}} años.
         <a href="/auth/logout">Desloguearse</a>

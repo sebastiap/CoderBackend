@@ -10,7 +10,6 @@ import passport from 'passport';
 
 //Funciones Genericas
 export const validarUrlIndividual = (product) => {
-    // console.log(product);
     if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
         product.thumbnail = "https://picsum.photos/200/300";
 }; 
@@ -52,7 +51,6 @@ export const passportCall = (strategy) => {
         passport.authenticate(strategy,function(err, user, info) {
 
         if (err) return next(err);
-        console.log("usuario",user,info,err);
         if (!user) {
             return res.status(401).send({error:info.message?info.message:info.toString()});
         }

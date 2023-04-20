@@ -1,4 +1,4 @@
-import { insert,getAll,getByIdModel,update as updateModel,deleteOne as deleteModel,paginate,getByCode } from "../dao/dbManagers/ProductDB.js";
+import { insert,getAll,getByIdModel,update as updateModel,deleteOne as deleteModel,paginate,getByCode } from "../dao/mongo/product.mongo.js";
 
 export const addService = async(product) => {
             let result = await insert(product);

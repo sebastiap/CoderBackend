@@ -1,4 +1,4 @@
-import express, { json } from "express";
+import express from "express";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
@@ -13,6 +13,7 @@ import ApiCartRouter from "./src/routes/api/cart.router.js"
 import CartRouter from "./src/routes/web/carts.router.js"
 import AuthRouter from "./src/routes/auth/session.router.js"
 import viewsrouter from './src/routes/views.router.js';
+import adminrouter from './src/routes/misc/admin.router.js'
 
 import __dirname from './utils.js';
 // Handlebars
@@ -57,6 +58,7 @@ app.use('/api/carts',ApiCartRouter);
 app.use('/products',ProductRouter);
 app.use('/carts',CartRouter);
 app.use('/auth',AuthRouter);
+app.use('/admin',adminrouter);
 
 const httpServer = app.listen(config.port, ()=> console.log('Listening on port ' + config.port));
 
@@ -104,20 +106,18 @@ if (productosDB !== undefined) {
 else {
     productos = [];
 }
-res.render('home',{title:"Home",port:config.port,productos,messages,style:"styles.css"})
+const usercart = req.session.user.cart;
+const userisadmin = (req.session.user.admin == 'admin');
+res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,productos,messages,style:"styles.css"})
 
 }
 );
 
 // Chat
 app.get('/chat',privateAccess, async (req, res) => {
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:config.cart,admin:config.isAdmin,messages,style:"styles.css"})
-   })
-// realTimeProducts
-app.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
-    let productos = [];
-    //TODOZ arreglar botones de Logueo y admin
-    res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:config.cart,admin:config.isAdmin,productos,style:"styles.css"})
+    const usercart = req.session.user.cart;
+    const userisadmin = (req.session.user.admin == 'admin');
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,admin:userisadmin,messages,style:"styles.css"})
    })
 
 // Socket

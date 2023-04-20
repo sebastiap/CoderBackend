@@ -1,4 +1,4 @@
-import { getLast,create } from "../dao/dbManagers/MessageDB.js";
+import { getLast,create } from "../dao/mongo/message.mongo.js";
 
 export const getLastService = (quantity) => {
       let messages = [];

@@ -45,7 +45,6 @@ router.post('/login',passportCall('login'), async (req, res) => {
             cart:req.user.cart
 
          };
-        config.currentUser = req.user.cart;
         res.send({status:'success', message: 'user was logged in successfully.'});
 });
 

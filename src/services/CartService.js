@@ -1,5 +1,19 @@
-import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/dbManagers/CartDB.js'
-import {getByIdModel as getProduct,getBy_IdModel} from '../dao/dbManagers/ProductDB.js'
+import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductToCart,addProductQuantity,empty,updateProducts} from '../dao/mongo/cart.mongo.js'
+import {getByIdModel as getProduct,getBy_IdModel} from '../dao/mongo/product.mongo.js';
+import config from '../config/config.js';
+
+//Patron Factory
+const persistance = config.persistance;
+switch(persistance){
+    case "MONGO":
+        const { default:cartMongo} = await import('../dao/mongo/cart.mongo.js');
+        break;
+    case "FILE":
+        const { default:fileMongo} = await import('../dao/file/cart.file.js');;
+    default:
+        break;
+}
+
 // TODOZ tienen que estar addProductQuantity y addProductToCart? Terminar de conectar los servicios. el try/catch lo haga en la capa de controller, y que ahi responda dependiendo como salio la operacion. 
 // Y lo que es toda la logica vendria a estar en la capa de servicio.
 export const create = async (products) => {
