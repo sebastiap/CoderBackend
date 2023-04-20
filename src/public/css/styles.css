@@ -83,6 +83,11 @@ justify-content: flex-end
     min-height: 94vh;
 }
 
+.listDiv > p {
+font-size: 1.5rem;
+text-align: center;
+}
+
 .listDivHome {
     margin: 0;
     background: radial-gradient(ellipse at 58% 125%,#d9395c, rgba(255,144,168,1));
@@ -232,6 +237,17 @@ margin-bottom: 5vh;
     /* width: 100%; */
 }
 
+.featuredbutton{
+    background-color: slateblue;
+    color: var(--grey);
+}
+
+.logoutbutton{
+    background-color: #E4DFDA;
+    color: var(--hovergreen);
+    font-weight: bold;
+}
+
 .submitbutton{
     padding: 10px 24px;
     background-color: slateblue;
@@ -370,7 +386,8 @@ margin-right: 2rem;
 }
 
 
-.footer{
+
+.footer {
     background-color: #2C666E;
     width: 100%;
     height: 7vh;
@@ -381,6 +398,10 @@ margin-right: 2rem;
     bottom: 0;
     font-size: 2rem;
     color: rgb(160, 166, 155);
+    }
+
+    .containerCart {
+        padding-bottom: 3rem;
     }
 
 @media (min-width: 768px) {
