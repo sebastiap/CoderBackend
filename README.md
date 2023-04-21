@@ -52,3 +52,23 @@ La entrega actual corresponde a la clase 27.
 * Encriptacion de Password - bcrypt
 * Variables de Entorno - Enviroment
 * Estructura de Capas - Capa de Persistencia,Capa de Negocio y Capa de Vista
+
+## Arquitectura
+```mermaid
+graph TD;
+
+    Browser-->Views;
+    Views-->App.js;
+    Views-->Router;
+    Public/Static-->Views;
+    App.js-->Router;
+    Router-->Controller;
+    Controller-->Service;
+    Config-->App.js;
+    Config-->Controller;
+    Config-->Service;
+    Config-->Router;
+    Service-->Dao;
+    
+    
+```
