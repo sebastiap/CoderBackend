@@ -8,7 +8,7 @@ program.parse();
 const environment = program.opts().mode;
 
 dotenv.config({
-    path:environment==="DEVELOPMENT"?"./.env.development":"./.env.production"
+    path:environment==="DEVELOPMENT"?"./env/.env.development":"./env/.env.production"
 });
 
 export default {
