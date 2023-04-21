@@ -53,10 +53,10 @@ const initializePassport = () => {
                 if (!isValidPassword(user,password)) {return done(null,false)}
                 if (user.email.slice(0,5) === 'admin'){
                     user.role = 'admin';
-                    config.isAdmin = true;
                 }
-                else {
-                    config.isAdmin = false;
+                else if (user.email === user.adminName  && password === user.adminPassword)
+                {
+                    user.role = 'superadmin';
                 }
                 return done(null,user);
             } catch (error) {
