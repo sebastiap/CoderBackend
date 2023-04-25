@@ -45,6 +45,17 @@ const initializePassport = () => {
         },
         async (username, password, done) => {
             try {
+                if (username === config.adminName  && password === config.adminPassword)
+
+                {
+                    const user = {};
+                    user.email = 'Super Admin';
+                    user.role = 'superadmin';
+                    console.log(user);
+                    return done(null,user);
+
+                }
+
                 const user = await userModel.findOne({ email:username });
                 if (!user) { 
                     console.log('El usuario no existe.');

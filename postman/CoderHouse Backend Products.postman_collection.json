@@ -7,65 +7,11 @@
 	},
 	"item": [
 		{
-			"name": "Get Products",
-			"request": {
-				"method": "GET",
-				"header": [
-					{
-						"key": "product",
-						"value": "1",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"url": {
-					"raw": "http://localhost:8080/api/products/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"products",
-						""
-					]
-				}
-			},
-			"response": [
+			"name": "Products",
+			"item": [
 				{
-					"name": "Get Products Limit",
-					"originalRequest": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:8080/api/products/?limit=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "8080",
-							"path": [
-								"api",
-								"products",
-								""
-							],
-							"query": [
-								{
-									"key": "limit",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
-				},
-				{
-					"name": "Get Products Nro 1",
-					"originalRequest": {
+					"name": "Get Products",
+					"request": {
 						"method": "GET",
 						"header": [
 							{
@@ -76,7 +22,7 @@
 							}
 						],
 						"url": {
-							"raw": "http://localhost:8080/api/products/1",
+							"raw": "http://localhost:8080/api/products/",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -85,54 +31,82 @@
 							"path": [
 								"api",
 								"products",
-								"1"
+								""
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
-				}
-			]
-		},
-		{
-			"name": "Post Product",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\"title\":\"Postal Personalizada\",\r\n\"description\":\"Una Postal con tus imagenes favoritas\",\r\n\"price\":3200,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/f/f7/Postal_a%C3%B1o_1898%2C_de_Costa_Rica.jpg\",\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"response": [
+						{
+							"name": "Get Products Limit",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/products/?limit=20",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										""
+									],
+									"query": [
+										{
+											"key": "limit",
+											"value": "20"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Get Products Nro 1",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "product",
+										"value": "1",
+										"type": "text",
+										"disabled": true
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/api/products/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"1"
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/products/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"products",
-						""
 					]
-				}
-			},
-			"response": [
+				},
 				{
-					"name": "Post Incomplete Product",
-					"originalRequest": {
+					"name": "Post Product",
+					"request": {
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"title\":\"Postal Personalizada\",\r\n\"description\":\"Una Postal con tus imagenes favoritas\",\r\n\"price\":3200,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/f/f7/Postal_a%C3%B1o_1898%2C_de_Costa_Rica.jpg\",\r\n\"code\":\"Post01\",\r\n\r\n}",
+							"raw": "{\r\n\"title\":\"Entradas Evento Geekuin Septiembre\",\r\n\"description\":\"Entradas preventa para el evento Geekuin Septiembre 2023\",\r\n\"price\":4000,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Free_Geekguin.jpg/1200px-Free_Geekguin.jpg\",\r\n\"code\":\"GeekSep\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":false\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -153,51 +127,78 @@
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
-				}
-			]
-		},
-		{
-			"name": "Update Product",
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n\"title\":\"Producto Updateado\",\r\n\"description\":\"Este es un producto actualizado con update en MongoDB\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/products/:pid",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"products",
-						":pid"
-					],
-					"variable": [
+					"response": [
 						{
-							"key": "pid",
-							"value": "603"
+							"name": "Post Incomplete Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"title\":\"Postal Personalizada\",\r\n\"description\":\"Una Postal con tus imagenes favoritas\",\r\n\"price\":3200,\r\n\"thumbnail\":\"https://upload.wikimedia.org/wikipedia/commons/f/f7/Postal_a%C3%B1o_1898%2C_de_Costa_Rica.jpg\",\r\n\"code\":\"Post01\",\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Post Massive Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"title\":\"7 Wonders\",\r\n\"description\":\"Juego de Mesa de hasta 7 jugadores\",\r\n\"price\":32200,\r\n\"thumbnail\":\"https://www.ubuy.com.ar/productimg/?image=aHR0cHM6Ly9tLm1lZGlhLWFtYXpvbi5jb20vaW1hZ2VzL1cvSU1BR0VSRU5ERVJJTkdfNTIxODU2LVQxL2ltYWdlcy9JLzgxdjZYNzc0STNMLl9BQ19TTDE1MDBfLmpwZw.jpg\",\r\n\"code\":\"Post11\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/products/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
 					]
-				}
-			},
-			"response": [
+				},
 				{
-					"name": "Update non existing Product",
-					"originalRequest": {
+					"name": "Update Product",
+					"request": {
 						"method": "PUT",
 						"header": [],
 						"body": {
@@ -224,171 +225,411 @@
 							"variable": [
 								{
 									"key": "pid",
-									"value": "299"
+									"value": "2"
 								}
 							]
 						}
 					},
-					"_postman_previewlanguage": null,
-					"header": null,
-					"cookie": [],
-					"body": null
+					"response": [
+						{
+							"name": "Update non existing Product",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"title\":\"Producto Updateado\",\r\n\"description\":\"Este es un producto actualizado con update en MongoDB\",\r\n\"price\":3200,\r\n\"code\":\"Post01\",\r\n\"stock\":25,\r\n\"category\":\"Misc\",\r\n\"status\":true\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/products/:pid",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										":pid"
+									],
+									"variable": [
+										{
+											"key": "pid",
+											"value": "299"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/products/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"products",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "pid",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
 		{
-			"name": "Delete Product",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/products/:pid",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"products",
-						":pid"
-					],
-					"variable": [
-						{
-							"key": "pid",
-							"value": "603"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Cart",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\"products\":[{\"id\":7,\"quantity\":5},{\"id\":0,\"quantity\":1}]}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/carts/",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						""
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "GetCart",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carts/:cid",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						":cid"
-					],
-					"variable": [
-						{
-							"key": "cid",
-							"value": "1"
-						}
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "AddProductToCart",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "urlencoded",
-					"urlencoded": [
-						{
-							"key": "quantity",
-							"value": "17",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/carts/:cid/product/:pid",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						":cid",
-						"product",
-						":pid"
-					],
-					"variable": [
-						{
-							"key": "cid",
-							"value": "0"
+			"name": "Cart",
+			"item": [
+				{
+					"name": "Create Cart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"products\":[]}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
 						},
+						"url": {
+							"raw": "http://localhost:8080/api/carts/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetCart",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "64135d02acdf495d33f1a229"
+								}
+							]
+						}
+					},
+					"response": [
 						{
-							"key": "pid",
-							"value": "3"
+							"name": "GetAllCarts",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/carts/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"carts",
+										""
+									]
+								}
+							},
+							"_postman_previewlanguage": null,
+							"header": null,
+							"cookie": [],
+							"body": null
 						}
 					]
+				},
+				{
+					"name": "AddProductToCart",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"quantity\":720\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid/product/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid",
+								"product",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "643dd22c768b83cb6579fc85"
+								},
+								{
+									"key": "pid",
+									"value": "640efafa130d57a081c9cfda"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteProductFromCart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid/products/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid",
+								"products",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "643dd22c768b83cb6579fc85"
+								},
+								{
+									"key": "pid",
+									"value": "\"640bc2f9681bbd0c4a4a994c\""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putProductsOnCart",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "[{\"product\":\"640bc2f9681bbd0c4a4a994c\",\"quantity\":5730 },\r\n{\"product\":\"640bc2d4681bbd0c4a4a9942\",\"quantity\":600 },\r\n{\"product\":\"640efafa130d57a081c9cfda\",\"quantity\":1 }\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "64138d85b7e69806cd95ebe7"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "putQuantityOnProduct",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"quantity\":9\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid/products/:pid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid",
+								"products",
+								":pid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "64135d02acdf495d33f1a229"
+								},
+								{
+									"key": "pid",
+									"value": "64161392d6cf015aea885779"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ResetCart",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/carts/:cid",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"carts",
+								":cid"
+							],
+							"variable": [
+								{
+									"key": "cid",
+									"value": "64135d02acdf495d33f1a229"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Delete Cart",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/carts/:cid",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"carts",
-						":cid"
-					],
-					"variable": [
-						{
-							"key": "cid",
-							"value": "0"
+			"name": "Auth",
+			"item": [
+				{
+					"name": "RegisterUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"first_name\":\"Sebastian\",\"last_name\":\"Picardi\",\"age\":\"43\",\"email\":\"sebastiap@gmail.com\",\"password\":\"12\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
 						}
-					]
+					},
+					"response": []
+				},
+				{
+					"name": "LoginUser",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"email\":\"sebastiap@gmail.com\",\"password\":\"12\"}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }

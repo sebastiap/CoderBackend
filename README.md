@@ -57,18 +57,19 @@ La entrega actual corresponde a la clase 27.
 ```mermaid
 graph TD;
 
-    Browser-->Views;
+    Browser-->Views
     Views-->App.js;
     Views-->Router;
     Public/Static-->Views;
     App.js-->Router;
     Router-->Controller;
     Controller-->Service;
-    Config-->App.js;
+    Config(((Support Layer)))-->App.js;
     Config-->Controller;
     Config-->Service;
     Config-->Router;
     Service-->Dao;
-    
+    Dao-->Mongo[(Mongo)];
+    Dao-->Files>Files];
     
 ```

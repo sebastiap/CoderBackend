@@ -1,5 +1,4 @@
 import {cartModel} from '../models/cart.model.js'
-import {productModel} from '../models/product.model.js'
 
 export const create = async (cart) => {
         try {
