@@ -17,4 +17,6 @@ export default {
     adminName:process.env.ADMIN_NAME,
     adminPassword:process.env.ADMIN_PASSWORD,
     persistance:process.env.PERSISTANCE,
+    mail:process.env.MAIL,
+    mailPassword:process.env.MAILPWD,
 }

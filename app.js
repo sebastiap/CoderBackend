@@ -105,6 +105,36 @@ res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin
 }
 );
 
+import nodemailer from 'nodemailer';
+
+const transport = nodemailer.createTransport({
+    service:'gmail',
+    port:587,
+    auth:{
+        user:config.mail,
+        pass:config.mailPassword
+    }
+})
+
+// Mail
+app.get('/mail',privateAccess, async (req, res) => {
+let result = await transport.sendMail({
+    from:"CoderNode",
+    to:config.mail,
+    subject:"Correo de Prueba",
+    html:`<div>
+    <h1>Esto es una Prueba</h1>
+    <img src="cid:Logo"/>
+    <div>`,
+    attachments:[{
+        filename:"SPIKAGAMES.png",
+        path:__dirname + "/src/public/img/SPIKAGAMES.png",
+        cid:"Logo"
+    }]
+}) 
+   })
+
+
 // Chat
 app.get('/chat',privateAccess, async (req, res) => {
     const usercart = req.session.user.cart;

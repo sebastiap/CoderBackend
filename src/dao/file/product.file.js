@@ -1,4 +1,3 @@
-import { randomInt } from 'crypto';
 import fs  from 'fs';
 
 //Esto es solo para borrarlo rapido y testear

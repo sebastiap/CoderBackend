@@ -1,6 +1,5 @@
 import { Router } from "express";
 import CartManager from "../../controllers/CartManager.js";
-import {create as createTicket} from "../../services/TicketService.js"
 import path from 'path';
 import { fileURLToPath } from "url";
 
@@ -95,30 +94,6 @@ router.delete('/:cid',async (req, res) => {
         res.send({status: 'success',message: 'The cart with id ' + cartid + ' is now empty.'});
         return result;
 }});
-
-
-router.post('/:cid/purchase',async (req, res) => {
-    const cartid = req.params.cid;
-    // const stock = parseInt(req.body.stock);
-    console.log(req.session)
-    let user = ""
-    if (req.session.user == undefined) {
-        user = "1"
-    }
-    else {
-        user = req.session.user.email; 
-    }
-    const cartData = {purchaser:user,cartid:cartid};
-    console.log("cartData",cartData);
-    const result = await createTicket(cartData);
-    // if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
-    // else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
-    // else {
-    res.send({status: 'success',message: 'The purchase was successful.'});
-    return result;
-});
-
-
     
 
 export default router;

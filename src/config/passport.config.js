@@ -51,7 +51,6 @@ const initializePassport = () => {
                     const user = {};
                     user.email = 'Super Admin';
                     user.role = 'superadmin';
-                    console.log(user);
                     return done(null,user);
 
                 }
