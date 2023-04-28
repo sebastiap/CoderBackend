@@ -1,12 +1,12 @@
 import { Router } from "express";
 import CartManager from "../../controllers/CartManager.js";
-import {validarUrlIndividual,privateAccess } from "../../../utils.js" 
+import {validarUrlIndividual,privateAccess,authorizationCall } from "../../../utils.js" 
 import config from "../../config/config.js" 
 
 const router = Router();
 let cartmanager = new CartManager();
 
-router.get('/:cid',privateAccess, async (req, res) => {
+router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => {
     let cartId = req.params.cid;
     let cartProm = await cartmanager.getByIdDetailed(cartId); 
     let cartArray = cartProm.products; 
@@ -16,8 +16,8 @@ router.get('/:cid',privateAccess, async (req, res) => {
         return productObj = {title:productObj.product.title, description:productObj.product.description,
             thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity,id:productObj.product.id}
     })
-    const userisadmin = (req.session.user.role == 'admin');    
-    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,admin:userisadmin,cartProducts,cart:cartId,style:"styles.css"})
+    // const userisadmin = (req.session.user.role == 'admin');    
+    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,style:"styles.css"})
    }
    )
 

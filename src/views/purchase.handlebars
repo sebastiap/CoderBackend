@@ -1,0 +1,22 @@
+    <div class="listDivHome">
+        <b class="maintitle">Compra Exitosa! </b>
+        {{#if left}}
+                <p> Aunque algunos productos no tenian stock suficiente: </p>
+            {{#each left}}
+                <div class="productDiv">
+                <p class="title"><b>{{this.title}}</b></p>
+                <p>{{this.description}}</p> 
+                {{!-- <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" /> --}}
+                <p><b>Precio:</b> {{this.price}}</p>
+                <p><b>Codigo de Producto:</b> {{this.code}}</p>
+                <p><b>Stock Disponible: </b> {{this.stock}}</p>
+                </div>
+            {{/each }}
+        {{/if}}
+    </div>
+      <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+  <script src="/js/index.js" ></script>
+

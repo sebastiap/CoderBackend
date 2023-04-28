@@ -30,12 +30,13 @@
         </div>
         <div class="headerButtonContainer">
             {{#if cart}}
-            <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton featuredbutton" type="button" onclick="" name="" value="Mi Carrito"></a>
-            <a href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
                 {{#if admin}}
-                <a href="http://localhost:{{port}}/admin/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="RTProductos"></a>
+                    <a href="http://localhost:{{port}}/admin/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="ABM Productos"></a>
+                {{else}}
+                    <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton featuredbutton" type="button" onclick="" name="" value="Mi Carrito"></a>
+                    <a href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
+                    <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a>
                 {{/if}}
-            <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a>
             <a href="http://localhost:{{port}}/auth/logout"><input  class="pagebutton logoutbutton" type="button" onclick="" name="" value="Desloguearse"></a>
             {{else}}
             {{#if user}}

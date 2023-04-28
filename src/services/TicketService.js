@@ -1,6 +1,7 @@
 import {create as createTicket,getAll as getAllTickets,getOne} from '../dao/mongo/ticket.mongo.js';
 import { getPopulated } from '../dao/mongo/cart.mongo.js';
 import {updateService as updateProduct} from '../services/ProductService.js'
+import {updateService as updateCart} from '../services/CartService.js'
 import config from '../config/config.js';
 import { randomInt } from 'crypto';
 
@@ -18,26 +19,34 @@ switch(persistance){
 export const create = async (cartData) => {
 
     // const cartData = {purchaser:req.session.user.email,cartid:cartid,stock:stock}
-    let newCode = "";
-    newCode= String(randomInt());
-    
+    let newCode = "1";
+    newCode= "C" + randomInt(999999);
+    // console.log("newCode",newCode);
     let total = 0;
     const cart = await getPopulated(cartData.cartid);
     let purchasedProducts = [];
     let canceledProducts = [];
+    let canceledList = [];
+    console.log("cart",cart);
 
-    cart.array.forEach(Cartproduct => {
-        if (Cartproduct.product.stock < Cartproduct.quantity) {
-            total += Cartproduct.quantity;
+    cart.products.forEach(Cartproduct => {
+        if (Cartproduct.product.stock >= Cartproduct.quantity) {
+            total += Cartproduct.quantity * Cartproduct.product.price;
             Cartproduct.product.stock -= Cartproduct.quantity;
+            // SERIA UN ERROR, PROBAR
+            if (Cartproduct.product.stock <0) {Cartproduct.product.stock = 0 }
             purchasedProducts.push(Cartproduct.product);
             let result = updateProduct(Cartproduct.product.id,Cartproduct.product);
-            // restar producto
         }
         else {
-            canceledProducts.push(Cartproduct.product);
+            // {"product":"640efafa130d57a081c9cfda","quantity":1 }
+            canceledProducts.push({"product":Cartproduct.product._id,"quantity":Cartproduct.quantity});
+            canceledList.push(Cartproduct.product);
         }
     });
+    console.log("canceledList",canceledList);
+    console.log("canceledProducts",canceledProducts);
+    console.log("purchasedProducts",purchasedProducts);
 
 
             let newTicket = {
@@ -47,8 +56,16 @@ export const create = async (cartData) => {
                 amount:total,
                 purchaser:cartData.purchaser
             };
-            let result =  await createTicket(newTicket);
-            return result;
+            if (purchasedProducts.length > 0) {
+                let resultT =  await createTicket(newTicket);
+                let resultU =  await updateCart(cartData.cartid,canceledProducts);
+                return canceledList;
+            }
+            else
+            {
+                return "No pudo realizarse la compra, ningun producto de los su carro posee stock."
+            }
+
     }
 // TODOZ ver si se usan
     export const  getAll = async() => {

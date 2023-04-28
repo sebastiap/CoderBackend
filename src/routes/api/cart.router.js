@@ -3,6 +3,7 @@ import CartManager from "../../controllers/CartManager.js";
 import {create as createTicket} from "../../services/TicketService.js"
 import path from 'path';
 import { fileURLToPath } from "url";
+import config from "../../config/config.js"
 
 const router = Router();
 const filename = fileURLToPath(import.meta.url);
@@ -97,13 +98,19 @@ router.delete('/:cid',async (req, res) => {
 }});
 
 
-router.post('/:cid/purchase',async (req, res) => {
+// router.get('/:cid/purchase',async (req, res) => {
+//     const cartid = req.params.cid;
+//     axios.post('/:cid/purchase').then((req, res) => {    
+//         res.send({status: 'success',message: 'The purchase was successful.'});
+//     })
+// });
+
+router.get('/:cid/purchase',async (req, res) => {
     const cartid = req.params.cid;
-    // const stock = parseInt(req.body.stock);
     console.log(req.session)
     let user = ""
     if (req.session.user == undefined) {
-        user = "1"
+        user = "POSTMAN"
     }
     else {
         user = req.session.user.email; 
@@ -111,10 +118,16 @@ router.post('/:cid/purchase',async (req, res) => {
     const cartData = {purchaser:user,cartid:cartid};
     console.log("cartData",cartData);
     const result = await createTicket(cartData);
-    // if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+    if (result === "No pudo realizarse la compra, ningun producto de los su carro posee stock.") { res.send({status: 'error', message: "No pudo realizarse la compra, ningun producto de los su carro posee stock."}) }
     // else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
-    // else {
-    res.send({status: 'success',message: 'The purchase was successful.'});
+    else {
+        console.log("result",result);
+        let productos = result.map(prod => 
+            ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
+                code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
+        res.render('purchase',{title:"Compra Exitosa!",port:config.port,cart:cartid,left:productos,style:"styles.css"})
+    // res.send({status: 'success',message: 'The purchase was successful.'});
+    }
     return result;
 });
 

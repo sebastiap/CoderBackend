@@ -4,7 +4,7 @@ import path from 'path';
 import { fileURLToPath } from "url";
 import config from "../../config/config.js" 
 
-import { privateAccess,validarURL } from "../../../utils.js";
+import { privateAccess,validarURL,authorizationCall } from "../../../utils.js";
 
 // utilizo router para redireccionar y organizar mis llamadas.
 const router = Router();
@@ -16,7 +16,7 @@ const dirname = path.dirname(filename);
 
 export const manager = new ProductManager(path.join(dirname,"../../data",'productos.json'));
 
-router.get("/",privateAccess,async(req,res) =>{
+router.get("/",privateAccess,authorizationCall('User'),async(req,res) =>{
 
 
     let { limit = 10, page = 1, query , sort } = req.query
@@ -37,8 +37,8 @@ router.get("/",privateAccess,async(req,res) =>{
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
 
-    const userisadmin = (req.session.user.role == 'admin');
-    res.render('products',{title:"Nuestros Productos",port:config.port,admin:userisadmin,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
+    // const userisadmin = (req.session.user.role == 'admin');
+    res.render('products',{title:"Nuestros Productos",port:config.port,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
 })
 
 

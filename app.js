@@ -136,10 +136,10 @@ let result = await transport.sendMail({
 
 
 // Chat
-app.get('/chat',privateAccess, async (req, res) => {
+app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {
     const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.role == 'admin');
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,admin:userisadmin,messages,style:"styles.css"})
+    // const userisadmin = (req.session.user.role == 'admin');
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,messages,style:"styles.css"})
    })
 
 // Socket

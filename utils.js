@@ -36,7 +36,6 @@ export const isValidPassword  = (user,password ) =>
 
 // Funciones de Validacion de Acceso
 export const publicAccess = (req, res,next) => {
-
     if (req.session.user) return res.redirect('/products/');
     next();
 };
@@ -61,8 +60,9 @@ export const passportCall = (strategy) => {
 };
 export const authorizationCall = (role) => {
     return async (req, res, next) => {
+    // console.log(req.session.user.role);
     if (!req.session.user) return res.status(401).send({ error: 'Unauthorized' });
-    if (req.session.user.role != role) return res.status(403).send({ error: 'You need to be an administrator to access this page.'});
+    if (req.session.user.role != role) return res.status(403).send({ error: 'Your role is not allowed to access this page.'});
     next();
 }
 };
