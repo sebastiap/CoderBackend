@@ -134,6 +134,15 @@ let result = await transport.sendMail({
 }) 
    })
 
+// TODOZ Modificar la ruta  /current Para evitar enviar información sensible,
+// enviar un DTO del usuario sólo con la información necesaria.
+
+// current
+app.get('/current',privateAccess,authorizationCall('User'), async (req, res) => {
+    const usercart = req.session.user.cart;
+    // const userisadmin = (req.session.user.role == 'admin');
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,messages,style:"styles.css"})
+   })
 
 // Chat
 app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {

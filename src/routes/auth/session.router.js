@@ -1,10 +1,11 @@
 import { Router } from "express";
 import passport from "passport";
-import {userModel} from '../../dao/models/user.model.js'
+import UserManager from "../../controllers/UserManager.js";
 import { publicAccess,createHash,passportCall } from "../../../utils.js";
 import config from "../../config/config.js";
 
 const router = Router();
+const manager = new UserManager;
 export default router;
 
 
@@ -54,11 +55,11 @@ router.post('/reset', async (req, res) => {
     if (!email || !password) {res.status(400).send({status:'error', message:"Incomplete values"})}
 
     try {
-        const user = await userModel.findOne({ email });
+        const user = await manager.getOne(email);
         if (!user) return res.status(400).send({status:'error', message:'User not found.'});
         user.password = createHash(password);
 
-        await userModel.updateOne({email},user);
+        await manager.update(email,user);
 
         res.send({status:'success', message: 'The password was reseted successfully.'});
 

@@ -1,13 +1,15 @@
-const form = document.getElementById('registerForm');
+const form = document.getElementById('resetForm');
 const errorMessage = document.getElementById('mensajeError');
 
-form.addEventListener('submit', function(e) {
+form.addEventListener("submit", (e) => {
     e.preventDefault();
+    console.log("HOLA")
 
     const data = new FormData(form);
     const obj = {};
 
     data.forEach((value,key) => obj[key] = value);
+    let newObj = JSON.stringify(obj);
 
     fetch('/auth/reset', {
         method: 'POST',
