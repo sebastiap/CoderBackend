@@ -7,27 +7,25 @@ import { randomInt } from 'crypto';
 
 //Patron Factory
 const persistance = config.persistance;
-switch(persistance){
-    case "MONGO":
-        const { default:cartMongo} = await import('../dao/mongo/ticket.mongo.js');
-        break;
-    case "FILE":
-        const { default:fileMongo} = await import('../dao/file/ticket.file.js');;
-    default:
-        break;
-}
+// switch(persistance){
+//     case "MONGO":
+//         const { default:cartMongo} = await import('../dao/mongo/ticket.mongo.js');
+//         break;
+//     case "FILE":
+//         const { default:fileMongo} = await import('../dao/file/ticket.file.js');;
+//     default:
+//         break;
+// }
 export const create = async (cartData) => {
 
     // const cartData = {purchaser:req.session.user.email,cartid:cartid,stock:stock}
     let newCode = "1";
     newCode= "C" + randomInt(999999);
-    // console.log("newCode",newCode);
     let total = 0;
     const cart = await getPopulated(cartData.cartid);
     let purchasedProducts = [];
     let canceledProducts = [];
     let canceledList = [];
-    console.log("cart",cart);
 
     cart.products.forEach(Cartproduct => {
         if (Cartproduct.product.stock >= Cartproduct.quantity) {
@@ -44,9 +42,6 @@ export const create = async (cartData) => {
             canceledList.push(Cartproduct.product);
         }
     });
-    console.log("canceledList",canceledList);
-    console.log("canceledProducts",canceledProducts);
-    console.log("purchasedProducts",purchasedProducts);
 
 
             let newTicket = {

@@ -1,4 +1,4 @@
-import { create as createService,getAll as getAllService,PopulateService,getByIdService,addQuantityService,updateService,deleteService} from "../services/CartService.js";
+import { create as createService,getAll as getAllService,PopulateService,getByIdService,addQuantityService,updateService,deleteService,validate as validateService} from "../services/CartService.js";
 
 export default class CartManager {
     constructor(path){
@@ -94,5 +94,10 @@ export default class CartManager {
             console.log(error);
         }
 
+    }
+
+    validate= (product) => {
+       let result = validateService(product);
+       return result;
     }
 }

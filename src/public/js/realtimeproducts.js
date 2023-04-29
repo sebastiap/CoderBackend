@@ -10,8 +10,12 @@ let category = 'Misc';
 let mensajeError = document.getElementById("mensajeError");
 let mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
 
-const Borro = (id) => {
+const Edito = (id) => {
     socket.emit("Producto Borrado" , id);
+};
+
+const Borro = (id) => {
+  socket.emit("Producto Borrado" , id);
 };
 
 const ActualizarLista = (lista) => {

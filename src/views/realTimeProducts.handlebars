@@ -4,7 +4,6 @@
         {{#if productos}}
         <h1 id="Ltitle">Lista de Productos Actuales </h1>
         <div id="Listado">
-            
             {{#each productos}}
             <div class="productDiv">
                 <p class="title"><b>{{this.title}}</b></p>
@@ -13,7 +12,8 @@
                 <p><b>Precio:</b> {{this.price}}</p>
                 <p><b>Codigo de Producto:</b> {{this.code}}</p>
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
-                <input  class="button" type="button" onclick="Borro({{this.id}})" name="" value="Borrar">
+                <input class="button" type="button" onclick="Edito({{this.id}})" name="Editar" value="Editar">
+                <input class="button" type="button" onclick="Borro({{this.id}})" name="Borrard" value="Borrasr">
             </div>
             {{/each }}
         </div>
@@ -89,7 +89,6 @@
         <p id="mensajeConfirmacion"></p>
     </div>
 </div>
-{{!-- <div style="margin-top: 10vh; height: 100%"></div> --}}
 </div>
 <script src="/socket.io/socket.io.js" ></script>
 <script src="/js/realtimeproducts.js" ></script>

@@ -22,4 +22,12 @@ Si pasamos el parametro, lean:true en la parte de paginacion, completara con un 
 ## Que es Dao?
 En software de computadores, un objeto de acceso a datos (en inglés, data access object, abreviado DAO) es un componente de software que suministra una interfaz común entre la aplicación y uno o más dispositivos de almacenamiento de datos, tales como una Base de datos o un archivo. El término se aplica frecuentemente al Patrón de diseño Object.
 
+## El patrón DAO 
+Consiste en separar la lógica de acceso a la fuente de datos en un archivo. Éste contará con métodos homologados de manera que, si en algún momento necesitamos cambiar el acceso a los datos, el DAO de la nueva fuente de datos tenga exactamente el mismo nombre de métodos que el anterior
+
+## Patrón Factory
+La idea del patrón Factory, es basarse en una variable de entorno o configuración por argumentos, la cual tomará para decidir qué tipo de persistencia manejar.
+Esta “Fábrica” se encargará de devolver sólo el DAO que necesitemos acorde con lo solicitado en el entorno o los argumentos. 
+
+
 

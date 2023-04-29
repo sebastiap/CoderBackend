@@ -10,4 +10,20 @@ export const getLast = (limit) => {
       messageModel.create(newMessage);
     }
 
+    export default class Message {
+      constructor(){
+
+      }
+
+      getLast = (limit) => {
+        let messages = messageModel.find().limit(limit).sort({"_id":-1});
+        return messages;
+        
+      }
+      
+      create = (newMessage) => {
+        messageModel.create(newMessage);
+      }
+    }
+
 

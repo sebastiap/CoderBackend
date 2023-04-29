@@ -1,8 +1,8 @@
 import {create as createModel,getAll as getAllModel,getPopulated,getOne,addProductQuantity,empty,updateProducts} from '../dao/mongo/cart.mongo.js'
 import {getByIdModel as getProduct,getBy_IdModel} from '../dao/mongo/product.mongo.js';
 import config from '../config/config.js';
+import cartDTO from './dto/cart.dto.js';
 
-//Patron Factory
 const persistance = config.persistance;
 switch(persistance){
     case "MONGO":
@@ -108,4 +108,11 @@ export const create = async (products) => {
             return 4;
         }
         return result;
+    }
+
+    export const validate = (product) => {
+        let validator = new cartDTO(product);
+        let validatedCart = validator.formatted;
+        return validatedCart;
+
     }

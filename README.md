@@ -32,7 +32,7 @@ En este modelo contamos con 3 capas base:
  * La capa de Vista o Renderizacion
 
 ## Entrega Actual 
-La entrega actual corresponde a la clase 27.
+La entrega actual corresponde a la clase 30.
 
 ## Contenido - Practica Integradora
 
@@ -46,12 +46,17 @@ La entrega actual corresponde a la clase 27.
 * WebSockets - (En app.js se utilizan sockets para comunicarse con realtimeproducts.js)
 * MongoDB - CRUD en bases de datos no relacionales
 * Mongoose - conexion de Node con MongoDB Atlas
-* DAO - objeto de acceso a datos - Managers(clases) y Models(Esquemas)
+* Patron DAO - objeto de acceso a datos - Managers(clases) y Models(Esquemas)
 * Autenticacion/Login - Session
 * Authorisation - Perfiles y Estrategia de autorizacion con Libreria Passport
+* Perfiles con actividad diferenciada
 * Encriptacion de Password - bcrypt
 * Variables de Entorno - Enviroment
 * Estructura de Capas - Capa de Persistencia,Capa de Negocio y Capa de Vista
+* Mailing
+* Patron Factory para persistencia
+* DTO para validacion de formato de carritos.
+* Factory para persistencia de mensajes
 
 ## Arquitectura
 ```mermaid

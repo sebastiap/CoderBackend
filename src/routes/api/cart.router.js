@@ -111,7 +111,7 @@ router.get('/:cid/purchase',async (req, res) => {
     let user = ""
     if (req.session.user == undefined) {
         user = "POSTMAN"
-    }
+    } 
     else {
         user = req.session.user.email; 
     }
