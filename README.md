@@ -54,9 +54,8 @@ La entrega actual corresponde a la clase 30.
 * Variables de Entorno - Enviroment
 * Estructura de Capas - Capa de Persistencia,Capa de Negocio y Capa de Vista
 * Mailing
-* Patron Factory para persistencia
-* DTO para validacion de formato de carritos.
-* Factory para persistencia de mensajes
+* Patron Factory para persistencia de mensajes.
+* DTO para validacion de formato de carritos y validacion de datos sensibles de usuario.
 
 ## Arquitectura
 ```mermaid

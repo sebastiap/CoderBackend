@@ -2,11 +2,8 @@
 
 
 import config from '../config/config.js';
-
-// TODOZ APlicar Patron Factory
 let persMode;
 const persistance = config.persistance;
-// console.log(persistance) 
 switch(persistance){
     case "MONGO":
         const { default:messageMongo } = await import('../dao/mongo/message.mongo.js');

@@ -39,8 +39,9 @@
                 {{/if}}
             <a href="http://localhost:{{port}}/auth/logout"><input  class="pagebutton logoutbutton" type="button" onclick="" name="" value="Desloguearse"></a>
             {{else}}
-            {{#if user}}
-                <a href="http://localhost:{{port}}/auth/logout"><input  class="pagebutton logoutbutton" type="button" onclick="" name="" value="Desloguearse"></a>
+            {{#if admin}}
+                    <a href="http://localhost:{{port}}/admin/realtimeproducts"><input  class="pagebutton" type="button" onclick="" name="" value="ABM Productos"></a>
+                    <a href="http://localhost:{{port}}/auth/logout"><input  class="pagebutton logoutbutton" type="button" onclick="" name="" value="Desloguearse"></a>
             {{else}}
             <a href="http://localhost:{{port}}/auth/login"><input  class="pagebutton" type="button" onclick="" name="" value="Login"></a>
             <a href="http://localhost:{{port}}/auth/register"><input  class="pagebutton" type="button" onclick="" name="" value="Register"></a>

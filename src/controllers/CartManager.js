@@ -7,6 +7,14 @@ export default class CartManager {
         this.path = path;
     }
 
+    aproveCreation= async (role,products) => {
+        if (role == "User"){
+            let result =  await this.create(products);
+            return result;
+        }
+        return false;
+    }
+
     create = async (products) => {
         try {
             let result =  await createService(products);

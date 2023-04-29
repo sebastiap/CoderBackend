@@ -1,19 +1,18 @@
 import {create,getAll,getById,getOne,update} from '../dao/mongo/user.mongo.js'
-import config from '../config/config.js';
 import userDTO from './dto/user.dto.js';
 
-export const createService = async (newCart) => {
-            let result =  await createModel(newCart);
+export const createService = async (newUser) => {
+            let result =  await create(newUser);
             return result;
     }
 
     export const  getAllService = async() => {
-            const searchedUsers = await getAllModel();
+            const searchedUsers = await getAll();
             return searchedUsers;
     }
 
     export const getByIdService = async(cid) => {
-        const searchedUser = await getOne(cid);
+        const searchedUser = await getById(cid);
         return searchedUser;
     }
 
@@ -28,9 +27,9 @@ export const createService = async (newCart) => {
             return result;
     }
 
-    export const validate = (product) => {
-        let validator = new userDTO(product);
-        let validatedUser = validator.formatted;
+    export const validateService = (suser) => {
+        let validator = new userDTO(suser);
+        let validatedUser = validator.formatUser();
         return validatedUser;
 
     }

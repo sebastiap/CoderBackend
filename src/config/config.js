@@ -17,6 +17,8 @@ export default {
     adminName:process.env.ADMIN_NAME,
     adminPassword:process.env.ADMIN_PASSWORD,
     persistance:process.env.PERSISTANCE,
+    githubId:process.env.GITHUBID,
+    githubSecret:process.env.GITHUBSECRET,
     mail:process.env.MAIL,
     mailPassword:process.env.MAILPWD,
 }

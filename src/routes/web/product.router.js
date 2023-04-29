@@ -37,7 +37,6 @@ router.get("/",privateAccess,authorizationCall('User'),async(req,res) =>{
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
 
-    // const userisadmin = (req.session.user.role == 'admin');
     res.render('products',{title:"Nuestros Productos",port:config.port,productos,pageConfig,user:req.session.user,cart:cart,style:"styles.css"});
 })
 

@@ -1,5 +1,6 @@
 export default class userDTO {
     constructor(user){
-        this.formatted = cart.map(p =>({"product":p.product, "quantity": p.quantity})) 
+        this.formatted = {"name":user.first_name + " " + user.last_name, "mail": user.email,"age":user.age}
     }
+    formatUser= () => this.formatted;
 };

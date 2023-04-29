@@ -27,6 +27,7 @@ import mongoose from "mongoose";
 
 // Manejo de los mensajes del chat
 import messageManager from "./src/controllers/MessageManager.js";
+import UserManager from "./src/controllers/UserManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
 const app = express();
@@ -99,7 +100,7 @@ else {
     productos = [];
 }
 const usercart = req.session.user.cart;
-const userisadmin = (req.session.user.role == 'admin');
+const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
 res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,productos,messages,style:"styles.css"})
 
 }
@@ -135,13 +136,14 @@ let result = await transport.sendMail({
    })
 
 // TODOZ Modificar la ruta  /current Para evitar enviar información sensible,
-// enviar un DTO del usuario sólo con la información necesaria.
 
 // current
-app.get('/current',privateAccess,authorizationCall('User'), async (req, res) => {
-    const usercart = req.session.user.cart;
-    // const userisadmin = (req.session.user.role == 'admin');
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,messages,style:"styles.css"})
+const userManager = new UserManager;
+
+app.get('/current',privateAccess, async (req, res) => {
+    const usercart = req.session.user;
+    let viewUser = userManager.validate(usercart);
+    res.send({status: 'success',message: 'User currently logged is: ' + viewUser.name + `(${viewUser.age}) ` +' and is logged with the mail ' + viewUser.mail })
    })
 
 // Chat

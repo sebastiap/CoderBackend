@@ -60,9 +60,10 @@ export const passportCall = (strategy) => {
 };
 export const authorizationCall = (role) => {
     return async (req, res, next) => {
-    // console.log(req.session.user.role);
+    let userRole = req.session.user.role;
+    if (userRole === 'superadmin') {userRole = 'admin'}
     if (!req.session.user) return res.status(401).send({ error: 'Unauthorized' });
-    if (req.session.user.role != role) return res.status(403).send({ error: 'Your role is not allowed to access this page.'});
+    if (userRole != role) return res.status(403).send({ error: 'Your role is not allowed to access this page.'});
     next();
 }
 };

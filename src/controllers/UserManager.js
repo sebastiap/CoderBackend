@@ -1,4 +1,5 @@
-import { createService,getAllService,getOneService,getByIdService,updateService } from "../services/UserService.js";
+import { createService,getAllService,getOneService,getByIdService,updateService,validateService } from "../services/UserService.js";
+import config from "../config/config.js"
 export default class UserManager {
     constructor(path){
         this.idIndex = 0 ;
@@ -13,6 +14,25 @@ export default class UserManager {
         } catch (error) {
             return error;
         }
+    }
+
+    // clasify = (user) => {
+    //     let role = "User";
+    //     let adminrole = this.isAdmin(user);
+    //     if (adminrole) {role = adminrole}
+    //     return role;
+    // }
+
+    isAdmin = (username,password) => {
+        let role = "User";
+        if (username.slice(0,5) === 'admin'){
+            role = 'admin';
+        }
+        else if (username === config.adminName  && password === config.adminPassword)
+        {
+            role = 'superadmin';
+        }
+        return role;
     }
 
     getAll = async() => {
@@ -39,6 +59,10 @@ export default class UserManager {
         }
     update = async(email,user) => {
             const uuser = await updateService( email,user ); 
+                return uuser;
+            }
+    validate = (suser) => {
+            const uuser =  validateService( suser ); 
                 return uuser;
             }
 
