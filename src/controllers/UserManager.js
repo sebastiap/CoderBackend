@@ -50,7 +50,7 @@ export default class UserManager {
         if (!searchedUser || searchedUser.length == 0) {
             return 'User not found';
           }
-        return searchedTicket;
+        return searchedUser;
     }
 
     getOne = async(email) => {

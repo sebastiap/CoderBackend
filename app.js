@@ -135,12 +135,10 @@ let result = await transport.sendMail({
 }) 
    })
 
-// TODOZ Modificar la ruta  /current Para evitar enviar información sensible,
-
 // current
 const userManager = new UserManager;
 
-app.get('/current',privateAccess, async (req, res) => {
+app.get('/api/session/current',privateAccess, async (req, res) => {
     const usercart = req.session.user;
     let viewUser = userManager.validate(usercart);
     res.send({status: 'success',message: 'User currently logged is: ' + viewUser.name + `(${viewUser.age}) ` +' and is logged with the mail ' + viewUser.mail })
