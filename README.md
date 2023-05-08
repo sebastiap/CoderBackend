@@ -57,6 +57,8 @@ La entrega actual corresponde a la clase 30.
 * Patron Factory para persistencia de mensajes.
 * DTO para validacion de formato de carritos y validacion de datos sensibles de usuario.
 
+
+
 ## Arquitectura
 ```mermaid
 graph TD;
