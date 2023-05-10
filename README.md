@@ -56,8 +56,15 @@ La entrega actual corresponde a la clase 30.
 * Mailing
 * Patron Factory para persistencia de mensajes.
 * DTO para validacion de formato de carritos y validacion de datos sensibles de usuario.
+* Docker
+* Mock Test con faker-jsfa
 
+Te dejo unos detalles a tener en cuenta: 
 
+Al realizar la compra hace falta retornar la informacion del ticket, en la terminal puedo ver algunos datos y desde postman no pude recuperarlos. Es un detalle pero suma, te pido que lo corrijas. 
+Luego de realizar la compra es necesario que te redirija por ejemplo, a vista de productos y por como es tu proyecto sumaria mucho una notificacion de que se realizó la compra.
+Esto es extra, creo que te sumaria, poder ver el listado de tickets del usuario, no es necesario pero se veria bueno.
+Por tu arduo trabajo estas aprobado, saludos y cualquier cosa estoy a dispocision.
 
 ## Arquitectura
 ```mermaid

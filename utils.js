@@ -8,6 +8,8 @@ const __dirname = path.dirname(filename);
 import bcrypt from "bcrypt";
 import passport from 'passport';
 
+import {faker} from '@faker-js/faker';
+
 //Funciones Genericas
 export const validarUrlIndividual = (product) => {
     if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
@@ -67,6 +69,28 @@ export const authorizationCall = (role) => {
     next();
 }
 };
+
+export const generateProducts = () => {
+faker.locale = 'es';
+// const numberOfProducts = parseInt(faker.random.numeric(1,{
+//     bannedDigits: ["0"]
+// }));
+// for (let i = 0; i < numberOfProducts; i++) {
+//     product.push();
+// }
+
+return {
+    "id":faker.database.mongodbObjectId(),
+    "title": faker.commerce.product(),
+    "description": faker.commerce.productDescription(),
+    "price": faker.commerce.price(100,1500),
+    "thumbnail": faker.image.imageUrl(),
+    "stock": faker.commerce.price(10,200),
+    "code": faker.commerce.product()+ faker.random.numeric(4),
+    "category": "Misc",
+    "status": true,
+}
+}
 
 export default __dirname;
 

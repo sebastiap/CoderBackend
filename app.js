@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
-import {validarUrlIndividual,validarURL,privateAccess,authorizationCall} from "./utils.js" ;
+import {generateProducts,validarURL,privateAccess,authorizationCall} from "./utils.js" ;
 
 import config from "./src/config/config.js"
 
@@ -137,6 +137,18 @@ let result = await transport.sendMail({
 
 // current
 const userManager = new UserManager;
+
+app.get('/mockingproducts',privateAccess, async (req, res) => {
+    let products = [];
+    for(let i=0 ; i < 100 ;i++){
+        products.push(generateProducts())
+    }
+    res.send({status: 'success',
+    count:products.length,
+    data:products,
+    message: 'User currently logged is: '})
+   })
+
 
 app.get('/api/session/current',privateAccess, async (req, res) => {
     const usercart = req.session.user;
