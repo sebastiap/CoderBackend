@@ -116,16 +116,17 @@ router.get('/:cid/purchase',async (req, res) => {
         user = req.session.user.email; 
     }
     const cartData = {purchaser:user,cartid:cartid};
-    console.log("cartData",cartData);
+    console.log("cartData",cartData); 
     const result = await createTicket(cartData);
     if (result === "No pudo realizarse la compra, ningun producto de los su carro posee stock.") { res.send({status: 'error', message: "No pudo realizarse la compra, ningun producto de los su carro posee stock."}) }
     // else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
     else {
         console.log("result",result);
-        let productos = result.map(prod => 
+        let productos = result.canceledList.map(prod => 
             ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
                 code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
-        res.render('purchase',{title:"Compra Exitosa!",port:config.port,cart:cartid,left:productos,style:"styles.css"})
+        let ticketData = result.ticketData;
+        res.render('purchase',{title:"Compra Exitosa!",port:config.port,cart:cartid,left:productos,ticketData,style:"styles.css"})
     // res.send({status: 'success',message: 'The purchase was successful.'});
     }
     return result;

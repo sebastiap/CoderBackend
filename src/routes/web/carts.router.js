@@ -21,7 +21,7 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
         }
         else {
         validarUrlIndividual(productObj.product);
-        return productObj = {title:productObj.product.title, description:productObj.product.description,
+        return productObj = {title:productObj.product.title, description:productObj.product.description,price:productObj.product.price,
             thumbnail:productObj.product.thumbnail, code:productObj.product.code, quantity:productObj.quantity,id:productObj.product.id}
         }
     })  

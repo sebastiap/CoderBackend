@@ -199,6 +199,14 @@ margin-bottom: 5vh;
     text-shadow: 3px 3px 3px#2C666E;
 }
 
+.ticketDiv{
+    text-align: center;
+    font-size: 3vh;
+    border-radius: 100px;
+    background-color: var(--bisque);
+    padding: 3vh 0;
+    margin: 0 33vh;
+}
 
 .title{
     background-color: #48A9A6;

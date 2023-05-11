@@ -51,10 +51,11 @@ export const create = async (cartData) => {
                 amount:total,
                 purchaser:cartData.purchaser
             };
+            let resultFinal = {ticketData:newTicket, canceledList:canceledList};
             if (purchasedProducts.length > 0) {
                 let resultT =  await createTicket(newTicket);
                 let resultU =  await updateCart(cartData.cartid,canceledProducts);
-                return canceledList;
+                return resultFinal;
             }
             else
             {
