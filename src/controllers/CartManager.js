@@ -64,11 +64,11 @@ export default class CartManager {
         try {
             //TODOZ ver error de headers aca vs Productos que anda bien
             const result = await addQuantityService(cid,productId, quantity);
-            console.log(result);
             if (result == 1) {return "Product does not exist"}
             if (result == 2) {return "Product is incomplete. Some Values are missing"}
             if (result == 3) {return "Product does not exist"}
             if (result == 4) {return "Cart was not updated"}
+            if (result == 5) {return 5}
         } catch (error) {
             console.log(error);
             return "Some error occurred while updating.";

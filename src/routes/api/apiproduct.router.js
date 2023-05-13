@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 //Manejo de errores
 import CustomError from "../../controllers/errors/ErrorManager.js";
 import dictErrores from "../../controllers/errors/enums.js";
-import {generateduplicatedProductInfo,generateInvalidProductInfo} from "../../controllers/errors/info.js";
+import {generateduplicatedProductInfo,generateInvalidProductInfo,generateDatabaseErrorInfo,generateProdNotFoundInfo} from "../../controllers/errors/info.js";
 
 
 const router = Router();
@@ -84,15 +84,21 @@ try {
             });
         // res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
-    else if (result === 3) {
-        res.status(400).send({status:'error', message:'Some error occurred'});
+    else if (result === dictErrores.DATABASE_ERROR) {
+        throw CustomError.createError({
+            name: 'Database Error',
+            cause: generateDatabaseErrorInfo(),
+            message: 'An error ocurred while trying to use the database. Please try again later.',
+            code:dictErrores.DATABASE_ERROR
+            });
+        // res.status(400).send({status:'error', message:'Some error occurred'});
     }
     else {    
         res.send({status: 'success', message:'A new product with id ' + product.code + ' was successfully created with id ' + product.id });
     }
 } 
     catch (error) {
-        res.status(422).send({
+        res.status(400).send({
             status:"error",
             error:error.name,
             message:error.cause,
@@ -106,20 +112,50 @@ router.put('/:pid', async (req,res) => {
     const id = req.params.pid;
     const productToUpdate = req.body;
     let result = await manager.update(id,productToUpdate);
-    if (result === 2){
-        res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
+    // if (result === 2){
+    //     res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
+    //     }
+    if (result === dictErrores.PRODUCT_INCOMPLETE){
+        throw CustomError.createError({
+            name: 'Incomplete Product',
+            cause: generateInvalidProductInfo(),
+            message: 'A required field of the product you wish to enter is empty or was not sent.',
+            code:dictErrores.PRODUCT_INCOMPLETE
+            });
+        // res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
-    else if (result === 3) {
-        res.status(400).send({status:'error', message:'Some error occurred while updating.'});
-    }
-    else if (result === 4) {
-        res.status(400).send({status:'error', message:'A product with the specified id was not found'});
+    else if (result === dictErrores.DATABASE_ERROR) {
+            throw CustomError.createError({
+                name: 'Database Error',
+                cause: generateDatabaseErrorInfo(),
+                message: 'An error ocurred while trying to use the database. Please try again later.',
+                code:dictErrores.DATABASE_ERROR
+                });
+            // res.status(400).send({status:'error', message:'Some error occurred'});
+        }
+    // else if (result === 4) {
+    //     res.status(400).send({status:'error', message:'A product with the specified id was not found'});
+    // }
+    else if (result === dictErrores.PRODUCT_NOT_FOUND) {
+        throw CustomError.createError({
+            name: 'Product Not Found',
+            cause: generateProdNotFoundInfo(),
+            message: 'A product with the specified id was not found.',
+            code:dictErrores.PRODUCT_NOT_FOUND
+            });
+        // res.status(400).send({status:'error', message:'Some error occurred'});
     }
     else {    
         res.send({status: 'success',message: 'Product with the specified id was successfully updated'});
     }
-} catch (error) {
-        console.log(error.message);
+} 
+catch (error) {
+    res.status(400).send({
+        status:"error",
+        error:error.name,
+        message:error.cause,
+        code:error.code
+    });
 }
 });
 
@@ -127,14 +163,26 @@ router.delete('/:pid', async (req,res)=> {
     try {
  const id = parseInt(req.params.pid);
  let result = await manager.delete(id);
- if (result === 4) {
-    return res.status(400).send({status:'error',message:'A product with the specified id was not found'});
- }
+ if (result === dictErrores.PRODUCT_NOT_FOUND) {
+    throw CustomError.createError({
+        name: 'Product Not Found',
+        cause: generateProdNotFoundInfo(),
+        message: 'A product with the specified id was not found.',
+        code:dictErrores.PRODUCT_NOT_FOUND
+        });
+    // res.status(400).send({status:'error', message:'Some error occurred'});
+}
  else{
     res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
  }
-} catch (error) {
-        console.log(error);
+} 
+catch (error) {
+    res.status(400).send({
+        status:"error",
+        error:error.name,
+        message:error.cause,
+        code:error.code
+    });
 }
 
 });

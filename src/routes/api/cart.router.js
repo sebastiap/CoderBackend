@@ -5,6 +5,12 @@ import path from 'path';
 import { fileURLToPath } from "url";
 import config from "../../config/config.js"
 
+import errorDictionary from "../../controllers/errors/enums.js";
+import CustomError from "../../controllers/errors/ErrorManager.js";
+import {generateCartNotFoundInfo} from "../../controllers/errors/info.js";
+
+
+
 const router = Router();
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
@@ -39,13 +45,33 @@ router.post('/:cid/product/:pid',async (req, res) => {
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
     const result = await manager.addProduct(cartId,ProductId,quantity); 
-    console.log("result",result);
+
+try {
+
+    if (result === errorDictionary.CART_NOT_FOUND) { 
+        throw CustomError.createError({
+            name: 'CART NOT FOUND',
+            cause: generateCartNotFoundInfo(),
+            message: 'A cart with that id does not exist.',
+            code:errorDictionary.CART_NOT_FOUND
+            });
+     }
     if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
     if (result === "Product does not exist") { res.send({status: 'error', message: "Product does not exist"}) }
     if (result === "Some error occurred while updating.") { res.send({status: 'error', message: "Some error occurred while updating."}) }
     else {
         res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + ''});
     };
+
+        
+} catch (error) {
+        res.status(400).send({
+            status:"error",
+            error:error.name,
+            message:error.cause,
+            code:error.code
+        });
+    }
 });
 // DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
 router.delete('/:cid/products/:pid', async (req, res) => {
@@ -109,7 +135,6 @@ router.delete('/:cid',async (req, res) => {
 
 router.get('/:cid/purchase',async (req, res) => {
     const cartid = req.params.cid;
-    console.log(req.session)
     let user = ""
     if (req.session.user == undefined) {
         user = "POSTMAN"
@@ -118,12 +143,10 @@ router.get('/:cid/purchase',async (req, res) => {
         user = req.session.user.email; 
     }
     const cartData = {purchaser:user,cartid:cartid};
-    console.log("cartData",cartData); 
     const result = await createTicket(cartData);
     if (result === "No pudo realizarse la compra, ningun producto de los su carro posee stock.") { res.send({status: 'error', message: "No pudo realizarse la compra, ningun producto de los su carro posee stock."}) }
     // else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
     else {
-        console.log("result",result);
         let productos = result.canceledList.map(prod => 
             ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,
                 code: prod.code,category: prod.category,id:prod.id,status:prod.status}));

@@ -3,6 +3,8 @@ import {getByIdModel as getProduct,getBy_IdModel} from '../dao/mongo/product.mon
 import config from '../config/config.js';
 import cartDTO from './dto/cart.dto.js';
 
+import dictErrores from "../controllers/errors/enums.js";
+
 const persistance = config.persistance;
 switch(persistance){
     case "MONGO":
@@ -66,8 +68,9 @@ export const create = async (products) => {
     export const addQuantityService = async (cid,productId, quantity) => {
 
         const cartToUpdate = await getByIdService(cid);
-        if (cartToUpdate === "Cart not found"){ return "A cart with that id does not exist."}
-
+        console.log(cartToUpdate);
+        if (cartToUpdate === "Cart not found" || cartToUpdate === null){ return 5 }
+        // "A cart with that id does not exist."
         let productToAdd;
         let productos = cartToUpdate.products;
 
