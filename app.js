@@ -30,6 +30,9 @@ import messageManager from "./src/controllers/MessageManager.js";
 import UserManager from "./src/controllers/UserManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
+// Manejo de errores
+import errorHandler from "./src/controllers/errors/middleware.js"
+
 const app = express();
 
 app.use(session({
@@ -68,6 +71,8 @@ app.set('views',__dirname+'/src/views');
 app.set('view engine','handlebars');
 app.use(express.static(__dirname+'/src/public')); 
 app.use(express.static('/',viewsrouter));
+
+app.use(errorHandler);
 
 global.currentCart = "Empty";
 
@@ -204,6 +209,8 @@ io.on('connection',  (socket) => {
                 });;
             })
             .catch(function (error) {
+                
+                console.log("LOGUEATE ESTO: ",error.response.data);
                 socket.emit("error_al_insertar", error.response.data.message);
                 if (error.response) {
                   // The request was made and the server responded with a status code

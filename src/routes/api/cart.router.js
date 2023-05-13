@@ -39,7 +39,9 @@ router.post('/:cid/product/:pid',async (req, res) => {
     const ProductId = req.params.pid;
     const quantity = parseInt(req.body.quantity);
     const result = await manager.addProduct(cartId,ProductId,quantity); 
+    console.log("result",result);
     if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+    if (result === "Product does not exist") { res.send({status: 'error', message: "Product does not exist"}) }
     if (result === "Some error occurred while updating.") { res.send({status: 'error', message: "Some error occurred while updating."}) }
     else {
         res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + ''});

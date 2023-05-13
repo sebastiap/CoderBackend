@@ -62,7 +62,9 @@ export default class CartManager {
     addProduct = async (cid,productId, quantity) => {
 
         try {
-            const result = addQuantityService(cid,productId, quantity);
+            //TODOZ ver error de headers aca vs Productos que anda bien
+            const result = await addQuantityService(cid,productId, quantity);
+            console.log(result);
             if (result == 1) {return "Product does not exist"}
             if (result == 2) {return "Product is incomplete. Some Values are missing"}
             if (result == 3) {return "Product does not exist"}

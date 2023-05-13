@@ -91,7 +91,7 @@ export const create = async (products) => {
         if (result.modifiedCount != 1) {
             return 4;
         }
-        return 1;
+        return 0;
     }
 
     export const deleteService = async (cid) => {

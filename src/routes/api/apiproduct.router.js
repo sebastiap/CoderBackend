@@ -3,6 +3,12 @@ import ProductManager from "../../controllers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
 
+//Manejo de errores
+import CustomError from "../../controllers/errors/ErrorManager.js";
+import dictErrores from "../../controllers/errors/enums.js";
+import {generateduplicatedProductInfo,generateInvalidProductInfo} from "../../controllers/errors/info.js";
+
+
 const router = Router();
 
 // Se agrega esto para asegurarnos que corra donde corra este codigo
@@ -55,19 +61,43 @@ router.get('/:pid',async(req,res) =>{
 
 router.post('/', async (req,res) => {
     const product = req.body;
+try {
+    
 
     let result = await manager.add(product);
-    if (result === 1){
-        res.status(400).send({status:'error', message:'The code is already in used in another Product'});
+    console.log("Da el error?",result);
+    if (result === dictErrores.PRODUCT_CODE_DUPLICATED){
+        throw CustomError.createError({
+        name: 'Duplicate Product',
+        cause: generateduplicatedProductInfo(),
+        message: 'The code is already in use by another Product',
+        code:dictErrores.PRODUCT_CODE_DUPLICATED
+        });
+        // res.status(400).send({status:'error', message:'The code is already in used in another Product'});
     }
-    else if (result === 2){
-        res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
+    else if (result === dictErrores.PRODUCT_INCOMPLETE){
+        throw CustomError.createError({
+            name: 'Incomplete Product',
+            cause: generateInvalidProductInfo(),
+            message: 'A required field of the product you wish to enter is empty or was not sent.',
+            code:dictErrores.PRODUCT_INCOMPLETE
+            });
+        // res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
     else if (result === 3) {
         res.status(400).send({status:'error', message:'Some error occurred'});
     }
     else {    
         res.send({status: 'success', message:'A new product with id ' + product.code + ' was successfully created with id ' + product.id });
+    }
+} 
+    catch (error) {
+        res.status(422).send({
+            status:"error",
+            error:error.name,
+            message:error.cause,
+            code:error.code
+        });
     }
 });
 

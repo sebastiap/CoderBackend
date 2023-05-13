@@ -21,7 +21,14 @@ export default class ProductManager{
             if (this.maxid === 0){
                 await this.get();
             }
-            if (!this.isValid )
+            // TODOZ ver porque dejo de andar if (!this.isValid )
+            if (!product.title || !product.description || !product.price 
+                || !product.status || !product.stock
+                || !product.category || !product.code 
+                || product.title === undefined|| product.description === undefined || product.price === undefined
+                || product.stock === undefined
+                || product.code === undefined
+                )
                 { return 2; }
 
             const existingProduct = await getByCodeService(product.code);
