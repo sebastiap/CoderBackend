@@ -1,10 +1,12 @@
 import { Router } from "express";
 import CartManager from "../../controllers/CartManager.js";
+import TicketManager from "../../controllers/TicketManager.js";
 import {validarUrlIndividual,privateAccess,authorizationCall } from "../../../utils.js" 
 import config from "../../config/config.js" 
 
 const router = Router();
 let cartmanager = new CartManager();
+let ticketManager = new TicketManager();
 
 router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => {
     let cartId = req.params.cid;
@@ -35,6 +37,18 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
         }
     res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,style:"styles.css"})
    }
-   )
+)
+router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, res) => {
+    let cartId = req.params.cid;
+    let user = req.session.user.email;
+    let unformatTickets = await ticketManager.getByUser(user);
+    let userTickets = unformatTickets.map(ticket => ({
+        code: ticket.code,
+        purchase_datetime: ticket.purchase_datetime,
+        amount: ticket.amount,
+    }))
+    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,userTickets,cart:cartId,style:"styles.css"})
+   }
+)
 
 export default router;

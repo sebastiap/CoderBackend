@@ -1,0 +1,35 @@
+<div class="containerCart">
+    <div class="cartDiv">
+        {{#if userTickets}}
+        <h1 id="Ltitle">Mis Compras </h1>
+        <div id="Carrito">
+            {{#each userTickets}}
+            <div class="productDiv">
+                <p class="title"><b>{{this.code}}</b></p>
+                <p><b>Hora de la Compra:</b>{{this.purchase_datetime}}</p>
+                <p><b>Precio:</b> {{this.amount}}</p>
+                {{!-- <p>{{this.amount}}</p> --}}
+                {{!-- <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
+                <p><b>Cantidad: </b> {{this.quantity}}</p>
+                <input  class="button" type="button" onclick="QuantityChange({{this.id}},-1)" name="" value="-">
+                <input  class="button" type="button" onclick="deleteCart({{this.id}})" name="" value="Quitar del Carrito">
+                <input  class="button" type="button" onclick="QuantityChange({{this.id}},1)" name="" value="+"> --}}
+            </div>
+            {{/each }}
+            {{!-- <a id="aport" class="centered" href="http://localhost:{{port}}/api/carts/{{cart}}/purchase"><input  class="pagebutton" type="button" onclick="" name="" value="Comprar"></a> --}}
+        </div>
+        {{else }}
+        <h1 id="Ltitle"></h1>
+        <div id="Listado">
+        </div>
+        <div id="NoProdHero">
+            <div class="noPdiv">
+                <img src="https://img.freepik.com/free-vector/add-cart-concept-illustration_114360-1435.jpg?w=826&t=st=1678233850~exp=1678234450~hmac=e83dfbf30df5a067add1aca70bb273e7fabf6de157bde44f9f84358889d3f9f1" />
+            </div>
+            <h1 class="centered">Parece que todavia no realizaste ninguna compra. </h1>
+            <h2> Observa nuestra variedad de productos para realizar tu primera operacion! </h2>
+            <a id="aport" class="centered" href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Ver Todos los Productos"></a>
+        </div>
+        {{/if }}
+    </div>
+</div>

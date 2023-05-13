@@ -1,4 +1,4 @@
-import {create as createTicket,getAll as getAllTickets,getOne} from '../dao/mongo/ticket.mongo.js';
+import {create as createTicket,getAll as getAllTickets,getOne,getByUser} from '../dao/mongo/ticket.mongo.js';
 import { getPopulated } from '../dao/mongo/cart.mongo.js';
 import {updateService as updateProduct} from '../services/ProductService.js'
 import {updateService as updateCart} from '../services/CartService.js'
@@ -69,7 +69,11 @@ export const create = async (cartData) => {
             return searchedCart;
     }
 
-    export const getByIdService = async(cid) => {
-        const searchedCart = await getOne({"_id":cid});
+    export const getByIdService = async(tid) => {
+        const searchedCart = await getOne(tid);
+        return searchedCart;
+    }
+    export const getByUserService = async(user) => {
+        const searchedCart = await getByUser(user);
         return searchedCart;
     }

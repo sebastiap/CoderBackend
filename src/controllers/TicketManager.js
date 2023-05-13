@@ -1,4 +1,4 @@
-import { create as createService,getAll as getAllService,getById as getByIdService } from "../services/TicketService.js";
+import { create as createService,getAll as getAllService,getByIdService,getByUserService } from "../services/TicketService.js";
 export default class TicketManager {
     constructor(path){
         this.idIndex = 0 ;
@@ -31,6 +31,11 @@ export default class TicketManager {
             return 'Ticket not found';
           }
         return searchedTicket;
+    }
+
+    getByUser = async(user) => {
+        const userTickets = await getByUserService(String(user));
+        return userTickets;
     }
 
 

@@ -19,4 +19,8 @@ export const getOne = async(tid) => {
         const searchedTicket = await ticketModel.findOne({"_id":tid});
         return searchedTicket;
     }
+export const getByUser = async(user) => {
+        const searchedTicket = await ticketModel.find({"purchaser":user});
+        return searchedTicket;
+    }
   
