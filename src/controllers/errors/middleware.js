@@ -3,7 +3,6 @@ import errorDictionary from './enums.js'
 //middleware de errores
 export default (error,req,res,next) => {
     // if (error != undefined) {
-    console.log("Entre aca",error);
 
     switch(error.code){
         case errorDictionary.PRODUCT_CODE_DUPLICATED:

@@ -41,14 +41,16 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
 router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, res) => {
     let cartId = req.params.cid;
     let user = req.session.user.email;
+    let title = "Mis Compras";
     let unformatTickets = await ticketManager.getByUser(user);
     let userTickets = unformatTickets.map(ticket => ({
         code: ticket.code,
         purchase_datetime: ticket.purchase_datetime,
         amount: ticket.amount,
     }))
-    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,userTickets,cart:cartId,style:"styles.css"})
+    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,Ptitle:title,userTickets,cart:cartId,style:"styles.css"})
    }
 )
+
 
 export default router;

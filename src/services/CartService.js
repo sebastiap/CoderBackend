@@ -57,7 +57,6 @@ export const create = async (products) => {
     //         productos.splice(SearchedProductindex,1);
     //     }
     //     productos.push(productToAdd);
-    //     console.log("cid,cartToUpdate",cid,cartToUpdate);
     //     let result = await addProductToCart(cid,cartToUpdate);
     //     if (result.modifiedCount != 1) {
     //         return 4;
@@ -68,7 +67,6 @@ export const create = async (products) => {
     export const addQuantityService = async (cid,productId, quantity) => {
 
         const cartToUpdate = await getByIdService(cid);
-        console.log(cartToUpdate);
         if (cartToUpdate === "Cart not found" || cartToUpdate === null){ return 5 }
         // "A cart with that id does not exist."
         let productToAdd;

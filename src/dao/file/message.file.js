@@ -18,7 +18,6 @@ export default class Message {
           else {
             messages = await JSON.parse(data);
           }
-          console.log("PASE POR ACA", messages)
           
           return messages;
       }

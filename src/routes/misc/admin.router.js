@@ -1,6 +1,9 @@
 import { Router } from "express";
 import { privateAccess,authorizationCall } from "../../../utils.js";
 import config from "../../config/config.js";
+import TicketManager from "../../controllers/TicketManager.js";
+
+const ticketManager = new TicketManager;
 
 const router = Router();
 // realTimeProducts
@@ -11,5 +14,18 @@ router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (
     res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
    })
 
+   router.get('/tickets',privateAccess,authorizationCall('admin'), async (req, res) => {
+    let unformatTickets = await ticketManager.getAll();
+    const usercart = req.session.user.cart;
+    const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
+    let title = "Compras Realizadas en el sitio, de todos los usuarios";
+    let userTickets = unformatTickets.map(ticket => ({
+        code: ticket.code,
+        purchase_datetime: ticket.purchase_datetime,
+        amount: ticket.amount,
+        user:ticket.purchaser
+    }))
+    res.render('tickets',{title:"Spika Games - Compras de Usuarios",port:config.port,Ptitle:title,userTickets,cart:usercart,admin:userisadmin,style:"styles.css"})
+   })
 
 export default router;

@@ -63,7 +63,6 @@ export const create = async (cartData) => {
             }
 
     }
-// TODOZ ver si se usan
     export const  getAll = async() => {
             const searchedCart = await getAllTickets();
             return searchedCart;

@@ -1,23 +1,16 @@
 <div class="containerCart">
     <div class="cartDiv">
         {{#if userTickets}}
-        <h1 id="Ltitle">Mis Compras </h1>
+        <h1 id="Ltitle">{{Ptitle}}</h1>
         <div id="Carrito">
             {{#each userTickets}}
             <div class="productDiv">
                 <p class="title"><b>{{this.code}}</b></p>
                 <p><b>Hora de la Compra:</b>{{this.purchase_datetime}}</p>
                 <p><b>Precio:</b> {{this.amount}}</p>
-                {{!-- <p>{{this.amount}}</p> --}}
-                {{!-- <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" />
-                <p><b>Cantidad: </b> {{this.quantity}}</p>
-                <input  class="button" type="button" onclick="QuantityChange({{this.id}},-1)" name="" value="-">
-                <input  class="button" type="button" onclick="deleteCart({{this.id}})" name="" value="Quitar del Carrito">
-                <input  class="button" type="button" onclick="QuantityChange({{this.id}},1)" name="" value="+"> --}}
             </div>
             {{/each }}
-            {{!-- <a id="aport" class="centered" href="http://localhost:{{port}}/api/carts/{{cart}}/purchase"><input  class="pagebutton" type="button" onclick="" name="" value="Comprar"></a> --}}
-        </div>
+       </div>
         {{else }}
         <h1 id="Ltitle"></h1>
         <div id="Listado">

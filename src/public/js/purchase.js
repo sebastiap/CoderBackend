@@ -1,5 +1,3 @@
-console.log("Aca estoy");
-
 Swal.fire({
     title: 'Compra Exitosa!.',
     toast: true,

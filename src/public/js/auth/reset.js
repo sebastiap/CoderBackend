@@ -3,7 +3,6 @@ const errorMessage = document.getElementById('mensajeError');
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-    console.log("HOLA")
 
     const data = new FormData(form);
     const obj = {};

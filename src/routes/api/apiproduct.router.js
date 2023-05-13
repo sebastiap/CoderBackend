@@ -65,7 +65,6 @@ try {
     
 
     let result = await manager.add(product);
-    console.log("Da el error?",result);
     if (result === dictErrores.PRODUCT_CODE_DUPLICATED){
         throw CustomError.createError({
         name: 'Duplicate Product',

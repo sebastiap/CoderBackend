@@ -57,13 +57,8 @@ La entrega actual corresponde a la clase 30.
 * Patron Factory para persistencia de mensajes.
 * DTO para validacion de formato de carritos y validacion de datos sensibles de usuario.
 * Docker
-* Mock Test con faker-js
-
-
-TODOZ
-Luego de realizar la compra es necesario que te redirija por ejemplo, a vista de productos y por como es tu proyecto sumaria mucho una notificacion de que se realizó la compra.
-Esto es extra, creo que te sumaria, poder ver el listado de tickets del usuario, no es necesario pero se veria bueno.
-Por tu arduo trabajo estas aprobado, saludos y cualquier cosa estoy a dispocision.
+* Error Handling utilizando generador personalizado de errores y diccionario de errores.
+* Mock con faker-js
 
 ## Arquitectura
 ```mermaid

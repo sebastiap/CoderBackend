@@ -9,8 +9,6 @@ import errorDictionary from "../../controllers/errors/enums.js";
 import CustomError from "../../controllers/errors/ErrorManager.js";
 import {generateCartNotFoundInfo} from "../../controllers/errors/info.js";
 
-
-
 const router = Router();
 const filename = fileURLToPath(import.meta.url);
 const dirname = path.dirname(filename);
