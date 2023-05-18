@@ -89,7 +89,7 @@ text-align: center;
 }
 
 .listDivHome {
-    margin: 0;
+    margin: 3vh 0;
     background: radial-gradient(ellipse at 58% 125%,#d9395c, rgba(255,144,168,1));
     min-height: 94vh;
 }
@@ -206,6 +206,18 @@ margin-bottom: 5vh;
     background-color: var(--bisque);
     padding: 3vh 0;
     margin: 0 33vh;
+}
+
+.ticketDeclines{
+    text-align: center;
+    font-size: 3vh;
+    border-radius: 100px;
+    background-color: var(--bisque);
+    margin: 1vh 33vh;
+}
+
+.divDeclines{
+    padding-bottom: 10vh;
 }
 
 .title{

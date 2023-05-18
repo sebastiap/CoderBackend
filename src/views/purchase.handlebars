@@ -7,10 +7,11 @@
             <p class="">Comprador: {{ticketData.purchaser}} </p>
         </div>
         {{#if left}}
+        <div class="divDeclines">
                 <p> Aunque algunos productos no tenian stock suficiente: </p>
             {{#each left}}
-                <div class="productDiv">
-                <p class="title"><b>{{this.title}}</b></p>
+                <div class="ticketDeclines">
+                <p><b>{{this.title}}</b></p>
                 <p>{{this.description}}</p> 
                 {{!-- <img src={{this.thumbnail}} width="100em" height="100em" alt="imagen" /> --}}
                 <p><b>Precio:</b> {{this.price}}</p>
@@ -18,6 +19,7 @@
                 <p><b>Stock Disponible: </b> {{this.stock}}</p>
                 </div>
             {{/each }}
+        </div>
         {{/if}}
     </div>
       <link

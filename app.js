@@ -73,6 +73,7 @@ app.use(express.static(__dirname+'/src/public'));
 app.use(express.static('/',viewsrouter));
 
 app.use(errorHandler);
+app.use(addLogger);
 
 global.currentCart = "Empty";
 
@@ -80,7 +81,7 @@ global.currentCart = "Empty";
 mongoose.set('strictQuery', true);
 mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority", error => {
     if (error) {
-        console.log("Cannot Connect to Database", error);
+        req.logger.error("Cannot Connect to Database " + error);
         process.exit();
     }
 });
@@ -89,6 +90,18 @@ mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword 
 let messages  = [];
 let productos = [];
 let msgmanager = new messageManager();
+
+// Crear un endpoint /loggerTest que permita probar todos los logs
+app.get('/loggerTest', async (req, res) => {
+    req.logger.debug('DEBUG');
+    req.logger.http('http');
+    req.logger.info('INFO');
+    req.logger.warning('WARNING');
+    req.logger.error('error');
+    req.logger.fatal('fatal');
+
+    res.render('home',{title:"Home",port:config.port,style:"styles.css"})
+    });
 
 // Home
 app.get('/', privateAccess, async (req, res) => {
@@ -112,6 +125,7 @@ res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin
 );
 
 import nodemailer from 'nodemailer';
+import { addLogger,customLogger } from "./src/logger/logger.js";
 
 const transport = nodemailer.createTransport({
     service:'gmail',
@@ -174,7 +188,8 @@ const io = new Server(httpServer);
 io.on('connection',  (socket) => {
 
     socket.on('Client_Connect', message => {
-        console.log(message);
+        // console.log(message);
+        req.logger.info(message);
         manager.getFromSocket().then((res) => {
         let mapProd = res.map(prod => (
             {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id}));
@@ -209,12 +224,14 @@ io.on('connection',  (socket) => {
                 });;
             })
             .catch(function (error) {
-                
-                console.log("LOGUEATE ESTO: ",error.response.data);
+                // req.logger.error("error_al_insertar" + error.response.data.message);
                 socket.emit("error_al_insertar", error.response.data.message);
                 if (error.response) {
                   // The request was made and the server responded with a status code
                   // that falls out of the range of 2xx
+                //   req.logger.error("error_al_insertar" + error.response.data.message);
+                //   req.logger.error("error_al_insertar" + error.response.data.message);
+                //   req.logger.error("error_al_insertar" + error.response.data.message);
                   console.log(error.response.data);
                   console.log(error.response.status);
                   console.log(error.response.headers);

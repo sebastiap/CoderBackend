@@ -70,7 +70,7 @@ export default class CartManager {
             if (result == 4) {return "Cart was not updated"}
             if (result == 5) {return 5}
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
             return "Some error occurred while updating.";
         }
     }
@@ -80,7 +80,7 @@ export default class CartManager {
             const result = addQuantityService(cid,productId, quantity);
             return result;
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
         }
 
     }
@@ -101,7 +101,7 @@ export default class CartManager {
             let result = await updateService(cid,newprods);
             return result;
         } catch (error) {
-            console.log(error);
+            req.logger.error(error);
         }
 
     }

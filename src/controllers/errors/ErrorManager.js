@@ -4,7 +4,6 @@ export default class CustomError {
         let error = new Error(message,{cause});
         error.name = name;
         error.code = code;
-        console.log("error Manager",error);
         return error;
     } 
 }

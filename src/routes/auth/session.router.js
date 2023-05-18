@@ -4,6 +4,8 @@ import UserManager from "../../controllers/UserManager.js";
 import { publicAccess,createHash,passportCall } from "../../../utils.js";
 import config from "../../config/config.js";
 
+import { customLogger } from "../../logger/logger.js";
+
 const router = Router();
 const manager = new UserManager;
 export default router;
@@ -28,6 +30,8 @@ router.get('/fail-login',publicAccess, async (req, res) => {
 
 
 router.post('/register',passport.authenticate('register',{failureRedirect: 'fail-register'}), async (req, res) => {
+        customLogger(req);
+        req.logger.info('user registered successfully.');
         res.send({status:'success', message: 'user registered successfully.'});
 });
 
@@ -46,6 +50,8 @@ router.post('/login',passportCall('login'), async (req, res) => {
             cart:req.user.cart
 
          };
+        customLogger(req);
+        req.logger.info('user was logged in successfully.');
         res.send({status:'success', message: 'user was logged in successfully.'});
 });
 
@@ -60,7 +66,8 @@ router.post('/reset', async (req, res) => {
         user.password = createHash(password);
 
         await manager.update(email,user);
-
+        customLogger(req);
+        req.logger.info('The password was reseted successfully.');
         res.send({status:'success', message: 'The password was reseted successfully.'});
 
     } catch (error) {
@@ -72,6 +79,8 @@ router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {return res.status(500).send({status:'error', message})}
     });
+    customLogger(req);
+    req.logger.info('User logout successfully.');
     currentCart = "Empty";
     res.redirect('/');
 });

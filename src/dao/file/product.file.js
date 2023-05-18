@@ -37,13 +37,14 @@ export default class ProductManager{
             // Agrega el producto al arreglo de productos
             products.push(product);
 
-            console.log("Se agrego correctamente el producto con id", product.id);
+            // console.log("Se agrego correctamente el producto con id", product.id);
+            req.logger.info("Se agrego correctamente el producto con id" + product.id);
             await fs.promises.writeFile(this.path,JSON.stringify(products));
             return product;
 
 
         } catch (error) {
-            console.log("error:" , error);
+            req.logger.error("error " + error);
             return 3;
         }
 
@@ -98,7 +99,8 @@ export default class ProductManager{
          // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
         await fs.writeFileSync(this.path,JSON.stringify(allProducts));
-        console.log("Se actualizo satisfactoriamente el producto con id", id);
+        // console.log("Se actualizo satisfactoriamente el producto con id", id);
+        req.logger.info("Se actualizo satisfactoriamente el producto con id" + id);
 
         return allProducts;
     } catch (error) {

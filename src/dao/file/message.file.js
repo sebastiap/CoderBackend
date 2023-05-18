@@ -27,7 +27,7 @@ export default class Message {
       }
   }
       catch(error){ 
-          console.log("error:" , error); 
+        req.logger.error(error);
   } 
   }
   

@@ -6,6 +6,8 @@ import { fileURLToPath } from "url";
 //Manejo de errores
 import CustomError from "../../controllers/errors/ErrorManager.js";
 import dictErrores from "../../controllers/errors/enums.js";
+// Logger
+import { customLogger } from "../../logger/logger.js";
 import {generateduplicatedProductInfo,generateInvalidProductInfo,generateDatabaseErrorInfo,generateProdNotFoundInfo} from "../../controllers/errors/info.js";
 
 
@@ -48,6 +50,8 @@ router.get('/:pid',async(req,res) =>{
     
     let SearchedProduct = await manager.getById(producto);
     if (!SearchedProduct){
+        customLogger(req);
+        req.logger.warning("No se encontro ningun producto con el id " + producto);
         let text = "No se encontro ningun producto con el id " + producto;
         res.send({error:{text}});
     
@@ -62,10 +66,10 @@ router.get('/:pid',async(req,res) =>{
 router.post('/', async (req,res) => {
     const product = req.body;
 try {
-    
-
     let result = await manager.add(product);
+    customLogger(req);
     if (result === dictErrores.PRODUCT_CODE_DUPLICATED){
+        req.logger.error("The code is already in use by another Product");
         throw CustomError.createError({
         name: 'Duplicate Product',
         cause: generateduplicatedProductInfo(),
@@ -75,6 +79,7 @@ try {
         // res.status(400).send({status:'error', message:'The code is already in used in another Product'});
     }
     else if (result === dictErrores.PRODUCT_INCOMPLETE){
+        req.logger.error("A required field of the product you wish to enter is empty or was not sent.");
         throw CustomError.createError({
             name: 'Incomplete Product',
             cause: generateInvalidProductInfo(),
@@ -84,6 +89,7 @@ try {
         // res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
     else if (result === dictErrores.DATABASE_ERROR) {
+        req.logger.error("An error ocurred while trying to use the database. Please try again later.");
         throw CustomError.createError({
             name: 'Database Error',
             cause: generateDatabaseErrorInfo(),
@@ -92,11 +98,13 @@ try {
             });
         // res.status(400).send({status:'error', message:'Some error occurred'});
     }
-    else {    
+    else {
+        req.logger.info('A new product with id ' + product.code + ' was successfully created with id ' + product.id);
         res.send({status: 'success', message:'A new product with id ' + product.code + ' was successfully created with id ' + product.id });
     }
 } 
     catch (error) {
+        req.logger.error(error.cause);
         res.status(400).send({
             status:"error",
             error:error.name,
@@ -108,6 +116,7 @@ try {
 
 router.put('/:pid', async (req,res) => {
     try {
+    customLogger(req);
     const id = req.params.pid;
     const productToUpdate = req.body;
     let result = await manager.update(id,productToUpdate);
@@ -115,6 +124,7 @@ router.put('/:pid', async (req,res) => {
     //     res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
     //     }
     if (result === dictErrores.PRODUCT_INCOMPLETE){
+        req.logger.error('A required field of the product you wish to enter is empty or was not sent.');
         throw CustomError.createError({
             name: 'Incomplete Product',
             cause: generateInvalidProductInfo(),
@@ -124,6 +134,7 @@ router.put('/:pid', async (req,res) => {
         // res.status(400).send({status:'error', message:'A required field of the product you wish to enter is empty or was not sent.'});
         }
     else if (result === dictErrores.DATABASE_ERROR) {
+            req.logger.fatal('An error ocurred while trying to use the database. Please try again later.');
             throw CustomError.createError({
                 name: 'Database Error',
                 cause: generateDatabaseErrorInfo(),
@@ -136,6 +147,7 @@ router.put('/:pid', async (req,res) => {
     //     res.status(400).send({status:'error', message:'A product with the specified id was not found'});
     // }
     else if (result === dictErrores.PRODUCT_NOT_FOUND) {
+        req.logger.error('A product with the specified id was not found.');
         throw CustomError.createError({
             name: 'Product Not Found',
             cause: generateProdNotFoundInfo(),
@@ -145,6 +157,7 @@ router.put('/:pid', async (req,res) => {
         // res.status(400).send({status:'error', message:'Some error occurred'});
     }
     else {    
+        req.logger.info('Product with the specified id was successfully updated');
         res.send({status: 'success',message: 'Product with the specified id was successfully updated'});
     }
 } 
@@ -160,22 +173,26 @@ catch (error) {
 
 router.delete('/:pid', async (req,res)=> {
     try {
- const id = parseInt(req.params.pid);
- let result = await manager.delete(id);
- if (result === dictErrores.PRODUCT_NOT_FOUND) {
-    throw CustomError.createError({
-        name: 'Product Not Found',
-        cause: generateProdNotFoundInfo(),
-        message: 'A product with the specified id was not found.',
-        code:dictErrores.PRODUCT_NOT_FOUND
-        });
+        customLogger(req);
+        const id = parseInt(req.params.pid);
+        let result = await manager.delete(id);
+        if (result === dictErrores.PRODUCT_NOT_FOUND) {
+            req.logger.error('A product with the specified id was not found.');
+            throw CustomError.createError({
+                name: 'Product Not Found',
+                cause: generateProdNotFoundInfo(),
+                message: 'A product with the specified id was not found.',
+                code:dictErrores.PRODUCT_NOT_FOUND
+                });
     // res.status(400).send({status:'error', message:'Some error occurred'});
 }
  else{
+    req.logger.info('Product with the specified id was successfully deleted');
     res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
  }
 } 
 catch (error) {
+    req.logger.error(error.cause);
     res.status(400).send({
         status:"error",
         error:error.name,
