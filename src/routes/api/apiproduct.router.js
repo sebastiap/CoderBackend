@@ -177,7 +177,7 @@ router.delete('/:pid', async (req,res)=> {
         const id = parseInt(req.params.pid);
         let result = await manager.delete(id);
         if (result === dictErrores.PRODUCT_NOT_FOUND) {
-            req.logger.error('A product with the specified id was not found.');
+            req.logger.error('A product with the specified id was not found.')
             throw CustomError.createError({
                 name: 'Product Not Found',
                 cause: generateProdNotFoundInfo(),
@@ -192,7 +192,6 @@ router.delete('/:pid', async (req,res)=> {
  }
 } 
 catch (error) {
-    req.logger.error(error.cause);
     res.status(400).send({
         status:"error",
         error:error.name,

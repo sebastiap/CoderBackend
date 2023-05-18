@@ -4,11 +4,14 @@ import TicketManager from "../../controllers/TicketManager.js";
 import {validarUrlIndividual,privateAccess,authorizationCall } from "../../../utils.js" 
 import config from "../../config/config.js" 
 
+import { customLogger } from "../../logger/logger.js";
+
 const router = Router();
 let cartmanager = new CartManager();
 let ticketManager = new TicketManager();
 
 router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => {
+    customLogger(req);
     let cartId = req.params.cid;
     let cartProm = await cartmanager.getByIdDetailed(cartId); 
     let cartArray = cartProm.products; 
@@ -35,10 +38,12 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
             let newCart = cartmanager.validate(toFixCart);
             await cartmanager.update(cartId,newCart);
         }
+    req.logger.info("Accediendo al Carro")
     res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,style:"styles.css"})
    }
 )
 router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, res) => {
+    customLogger(req);
     let cartId = req.params.cid;
     let user = req.session.user.email;
     let title = "Mis Compras";
@@ -48,6 +53,7 @@ router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, 
         purchase_datetime: ticket.purchase_datetime,
         amount: ticket.amount,
     }))
+    req.logger.info("Viendo tickets del usuario")
     res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,Ptitle:title,userTickets,cart:cartId,style:"styles.css"})
    }
 )

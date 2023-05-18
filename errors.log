@@ -7,3 +7,22 @@ error: error
 fatal: fatal
 error: error
 fatal: fatal
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database MongoServerError: bad auth : authentication failed
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: Cannot Connect to Database ReferenceError: error is not defined
+error: The code is already in use by another Product
+error: El codigo de producto esta duplicado.
+error: A required field of the product you wish to enter is empty or was not sent.
+error: Una o mas propiedades del producto a insertar no fueron enviadas.

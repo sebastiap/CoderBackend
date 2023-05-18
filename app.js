@@ -35,6 +35,37 @@ import errorHandler from "./src/controllers/errors/middleware.js"
 
 const app = express();
 
+// TODOZ VER MANEJO DE ERRORES
+// async function sessionConnection() {
+//     try {
+//         let req = {};
+//         customLogger(req);
+//         console.log("aca estoy")
+//         session({
+//             store:MongoStore.create({
+//                 mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
+            
+//                 mongoOptions: {useNewUrlParser:true},
+//                 ttl:3000,
+//             }),
+//             secret:'codename',
+//             resave:true,
+//             saveUninitialized:true
+        
+//         })
+//         if (error) {
+//             console.log("aca estoy")
+//             req.logger.error("Cannot Connect to Database " + error);
+//             process.exit();
+//         }
+//     } catch (error) {
+//         let req = {};
+//         customLogger(req);
+//         console.log("aca estoy")
+//         req.logger.error("Cannot Connect to Database " + error);
+//     }
+//     }
+
 app.use(session({
     store:MongoStore.create({
         mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
@@ -77,14 +108,29 @@ app.use(addLogger);
 
 global.currentCart = "Empty";
 
+
+async function makeConnection() {
 // Para sacar el warning
 mongoose.set('strictQuery', true);
-mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority", error => {
-    if (error) {
-        req.logger.error("Cannot Connect to Database " + error);
-        process.exit();
+try {
+    let req = {};
+    customLogger(req);
+    let result = await mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority", error => {
+        if (error) {
+            req.logger.error("Cannot Connect to Database " + error);
+            process.exit();
+        }
+    });  
+} catch(err) {
+    if(err == "MongoNetworkError") {
+        req.logger.error("No Connection");
     }
-});
+
+    console.log(err)
+    // Send email
+}
+}
+makeConnection();
 
 // Chat Variables
 let messages  = [];
