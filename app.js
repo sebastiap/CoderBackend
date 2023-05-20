@@ -35,37 +35,7 @@ import errorHandler from "./src/controllers/errors/middleware.js"
 
 const app = express();
 
-// TODOZ VER MANEJO DE ERRORES
-// async function sessionConnection() {
-//     try {
-//         let req = {};
-//         customLogger(req);
-//         console.log("aca estoy")
-//         session({
-//             store:MongoStore.create({
-//                 mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
-            
-//                 mongoOptions: {useNewUrlParser:true},
-//                 ttl:3000,
-//             }),
-//             secret:'codename',
-//             resave:true,
-//             saveUninitialized:true
-        
-//         })
-//         if (error) {
-//             console.log("aca estoy")
-//             req.logger.error("Cannot Connect to Database " + error);
-//             process.exit();
-//         }
-//     } catch (error) {
-//         let req = {};
-//         customLogger(req);
-//         console.log("aca estoy")
-//         req.logger.error("Cannot Connect to Database " + error);
-//     }
-//     }
-
+try {
 app.use(session({
     store:MongoStore.create({
         mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
@@ -78,6 +48,12 @@ app.use(session({
     saveUninitialized:true
 
 }));
+} catch (error) {
+    let req = {};
+    customLogger(req);
+    req.logger.error("Cannot Connect to Database with MongoStore " + error);
+}
+
 
 // configuracion de Passport
 initializePassport();
@@ -145,8 +121,7 @@ app.get('/loggerTest', async (req, res) => {
     req.logger.warning('WARNING');
     req.logger.error('error');
     req.logger.fatal('fatal');
-
-    res.render('home',{title:"Home",port:config.port,style:"styles.css"})
+    res.send({status: "success", message:"Se logueo un error de cada nivel"});
     });
 
 // Home

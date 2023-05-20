@@ -59,6 +59,7 @@ La entrega actual corresponde a la clase 30.
 * Docker
 * Error Handling utilizando generador personalizado de errores y diccionario de errores.
 * Mock con faker-js
+* Logeo por niveles con Winston
 
 ## Arquitectura
 ```mermaid
