@@ -61,6 +61,17 @@ La entrega actual corresponde a la clase 30.
 * Mock con faker-js
 * Logeo por niveles con Winston
 
+
+##  Patrones de diseño
+* El patrón DAO 
+* Patrón Factory
+* Chain of Responsibility
+* Decorator
+* Proxy
+* MVC
+* Singleton
+
+
 ## Arquitectura
 ```mermaid
 graph TD;

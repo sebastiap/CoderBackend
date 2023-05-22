@@ -29,5 +29,26 @@ Consiste en separar la lógica de acceso a la fuente de datos en un archivo. És
 La idea del patrón Factory, es basarse en una variable de entorno o configuración por argumentos, la cual tomará para decidir qué tipo de persistencia manejar.
 Esta “Fábrica” se encargará de devolver sólo el DAO que necesitemos acorde con lo solicitado en el entorno o los argumentos. 
 
+## Cadena de responsabilidades
 
+Permite que, cuando algún elemento envía información (sender) y existe alguien que lo reciba (receiver), a esa petición puedan recibirla y procesarla múltiples objetos (o funciones). Esto permite tener un mejor control de la petición, agregar filtros y reenviar el objeto con sus respectivas alteraciones.
+
+## Decorador
+
+Permite mantener un objeto inicial genérico para poder procesar información, pero al ser utilizado éste está abierto a ser transformado a lo largo del flujo del proceso. 
+De no querer que un objeto tenga añadiduras nuevas, podemos congelar el objeto con “Object.freeze()”, sin embargo, rompería con el patrón decorador al no permitir que se le cambie.
+
+## Proxy
+
+También conocido como Proxy routing o simplemente Routing pattern, implica tener un sustituto (surrogate), el cual reciba una petición y controlar el acceso hacia otro objeto (subject). El sustituto recibirá todas las peticiones, para después corroborar a quién debería corresponder dicha petición y enviársela.
+El sustituto y el objeto final deben contar con la misma interfaz. 
+
+## Patrón MVC
+Es un patrón que ya se ha platicado ampliamente en las últimas clases, éste consistiendo en la separación de capas de modelo (persistencia), Vista (presentación) y Controlador (Negocio).
+Recordemos que al final el objetivo es mantener un flujo con actividades bien delegadas y así poder tener mejor control sobre el código. 
+
+## Patrón Singleton
+Es un patrón utilizado para tener una instancia global a nivel aplicación. 
+En ocasiones, se requiere que la aplicación tenga una única instancia de dicha clase (Por ejemplo, al abrir una conexión en base de datos). 
+El patrón singleton corrobora si ya existe una instancia de esta clase. En caso de que sí, devolverá la instancia, caso contrario creará la instancia.
 
