@@ -10,6 +10,7 @@ import config from "./src/config/config.js"
 import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
 import ProductRouter from "./src/routes/web/product.router.js";
 import ApiCartRouter from "./src/routes/api/cart.router.js"
+import ApiUsersRouter from "./src/routes/api/users.router.js"
 import CartRouter from "./src/routes/web/carts.router.js"
 import AuthRouter from "./src/routes/auth/session.router.js"
 import viewsrouter from './src/routes/views.router.js';
@@ -66,6 +67,7 @@ app.use(express.urlencoded({extended:true}));
 
 app.use('/api/products',ApiProductRouter);
 app.use('/api/carts',ApiCartRouter);
+app.use('/api/users',ApiUsersRouter);
 app.use('/products',ProductRouter);
 app.use('/carts',CartRouter);
 app.use('/auth',AuthRouter);
@@ -165,6 +167,8 @@ let result = await transport.sendMail({
     subject:"Correo de Prueba",
     html:`<div>
     <h1>Esto es una Prueba</h1>
+    <a href="http://localhost:${config.port}/reset"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
+    Presione para resetear su password
     <img src="cid:Logo"/>
     <div>`,
     attachments:[{
@@ -172,7 +176,9 @@ let result = await transport.sendMail({
         path:__dirname + "/src/public/img/SPIKAGAMES.png",
         cid:"Logo"
     }]
-}) 
+});
+res.send({status: 'success',message: 'Mail sent' })
+
    })
 
 // current
@@ -210,7 +216,7 @@ io.on('connection',  (socket) => {
 
     socket.on('Client_Connect', message => {
         // console.log(message);
-        req.logger.info(message);
+        // req.logger.info(message);
         manager.getFromSocket().then((res) => {
         let mapProd = res.map(prod => (
             {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id}));

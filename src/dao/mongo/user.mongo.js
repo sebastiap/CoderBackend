@@ -29,4 +29,8 @@ export const update = async(email,user) => {
         const result = await userModel.updateOne({email},user);
             return result;
     }
+export const updateRole = async(email,role) => {
+        const result = await userModel.updateOne({email},{role:role});
+            return result;
+    }
   

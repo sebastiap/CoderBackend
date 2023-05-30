@@ -60,6 +60,7 @@ La entrega actual corresponde a la clase 30.
 * Error Handling utilizando generador personalizado de errores y diccionario de errores.
 * Mock con faker-js
 * Logeo por niveles con Winston
+* Valdria la pena usar Artillery para testing de performance?
 
 
 ##  Patrones de diseño

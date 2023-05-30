@@ -15,6 +15,8 @@ const productSchema = mongoose.Schema({
     "category":{type:String,
                 enum:["Games","Clothing","Misc"],
                 default:'Misc'},
+    "owner":{type:String,
+        default:'admin'},
     "status":Boolean
 });
 

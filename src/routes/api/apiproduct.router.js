@@ -99,8 +99,8 @@ try {
         // res.status(400).send({status:'error', message:'Some error occurred'});
     }
     else {
-        req.logger.info('A new product with id ' + product.code + ' was successfully created with id ' + product.id);
-        res.send({status: 'success', message:'A new product with id ' + product.code + ' was successfully created with id ' + product.id });
+        req.logger.info('A new product with code ' + product.code + ' was successfully created with id ' + product.id);
+        res.send({status: 'success', message:'A new product with code ' + product.code + ' was successfully created with id ' + product.id });
     }
 } 
     catch (error) {

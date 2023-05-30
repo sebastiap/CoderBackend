@@ -16,4 +16,4 @@ https://github.com/kelektiv/node.bcrypt.js/issues/824
 * Para crear la imagen:
 docker build -t app-node .
 * Para correr la imagen:
-docker run --name app-node -p 8080:8080 app-node
+docker run --name app-node -p 3000:3000 app-node

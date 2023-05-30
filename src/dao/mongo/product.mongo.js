@@ -13,6 +13,14 @@ export const getAll = async() => {
 
 export const  paginate = async(tquery,params) => {
             let paginateResults = await productModel.paginate(tquery,params);
+            // console.log(paginateResults);
+            // let result2 = await  productModel.updateMany(
+            //   { security_deposit: { id: 52 } },
+            //   {
+            //     $set: { owner: "admin"}
+            //   }
+            // );
+            // console.log(result2);
             return paginateResults;
 
     }
