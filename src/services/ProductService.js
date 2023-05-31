@@ -1,4 +1,4 @@
-import { insert,getAll,getByIdModel,update as updateModel,deleteOne as deleteModel,paginate,getByCode } from "../dao/mongo/product.mongo.js";
+import { insert,getAll,getByIdModel,update as updateModel,deleteOne as deleteModel,paginate,getByCode,getByUserModel } from "../dao/mongo/product.mongo.js";
 
 
 
@@ -20,6 +20,10 @@ export const addService = async(product) => {
 
     export const  getByIdService = async(pid) => {    
            let resultDB = await getByIdModel(pid);
+           return resultDB;
+    }
+    export const  getByUserService = async(email) => {    
+           let resultDB = await getByUserModel(email);
            return resultDB;
     }
 

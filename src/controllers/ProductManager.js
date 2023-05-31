@@ -1,4 +1,4 @@
-import {addService,getService,getByIdService,getByCodeService,getPaginatedService,updateService,deleteService} from "../services/ProductService.js";
+import {addService,getService,getByIdService,getByCodeService,getByUserService,getPaginatedService,updateService,deleteService} from "../services/ProductService.js";
 
 export default class ProductManager{
     constructor(path){
@@ -129,6 +129,16 @@ export default class ProductManager{
     getById = async(pid) => {
         try{       
            let resultDB = await getByIdService(pid);
+           return resultDB;
+        }
+            catch(error){ 
+                console.log("Error al consultar en MongoDB:" , error); 
+        }
+
+    }
+    getByUser = async(email) => {
+        try{       
+           let resultDB = await getByUserService(email);
            return resultDB;
         }
             catch(error){ 

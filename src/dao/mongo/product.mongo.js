@@ -29,6 +29,10 @@ export const  paginate = async(tquery,params) => {
            let resultDB = await productModel.find({id:pid});
            return resultDB;
     }
+  export const getByUserModel = async(email) => {    
+           let resultDB = await productModel.find({owner:email});
+           return resultDB;
+    }
 
   export const getBy_IdModel = async(pid) => {    
       let resultDB = await productModel.find({_id:pid});
