@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { privateAccess,authorizationCall } from "../../../utils.js";
+import { privateAccess,authorizationCall,formatearProductos } from "../../../utils.js";
 import config from "../../config/config.js";
 import TicketManager from "../../controllers/TicketManager.js";
 import Productmanager from "../../controllers/ProductManager.js";
@@ -20,8 +20,11 @@ router.get('/premiumproducts',privateAccess, async (req, res) => {
     let productos = [];
     const usercart = req.session.user.cart;
     const userisadmin = false;
-    productos = await productmanager.getByUser(req.session.user.email);
-    res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
+    const mail = req.session.user.email;
+    let productosDB = await productmanager.getByUser(req.session.user.email);
+    productos = formatearProductos(productosDB);
+    console.log(productos);
+    res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,productos,mail,style:"styles.css"})
    });
 
    router.get('/tickets',privateAccess,authorizationCall('admin'), async (req, res) => {

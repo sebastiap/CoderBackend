@@ -13,16 +13,25 @@ const QuantityChange = async (id,q) => {
 
 const AddtoCart = async (productId) => {
   let stringId = productId;
+  let activeUser;
   let productToAdd = await axios.get('http://localhost:'+ port + '/api/products/'+stringId);
   let dataid = productToAdd.data[0]._id;
+  let owner = productToAdd.data[0].owner;
+  console.log(productToAdd);
 
   let putData = {
     "quantity":1,
     "product":dataid,
     "title":productToAdd.data[0].title,
     };
-
-  socket.emit("Agregar_Producto_Carro" , putData); 
+  
+ if (activeUser !== owner){
+   // socket.emit("Agregar_Producto_Carro" , putData); 
+ }
+ else {
+  //TODO AGREGAR ESTO
+   // socket.emit("Error_Agregar_Producto_Premium" , putData); 
+ }
 
 };
 

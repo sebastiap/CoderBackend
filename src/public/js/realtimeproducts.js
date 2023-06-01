@@ -9,13 +9,26 @@ let code = document.getElementById("code");
 let category = 'Misc';
 let mensajeError = document.getElementById("mensajeError");
 let mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
+let pmail = document.getElementById("mail");
+let mail = "";
+if (pmail != undefined) {
+  mail = String(pmail.innerHTML);
+  console.log(pmail);
+  console.log(mail);
+}
+
 
 const Edito = (id) => {
     socket.emit("Producto Borrado" , id);
 };
 
 const Borro = (id) => {
-  socket.emit("Producto Borrado" , id);
+  let owner = "admin";
+  console.log(id);
+  if (mail != "" ){
+    owner = mail;
+  }
+  socket.emit("Producto Borrado" , {id,owner});
 };
 
 const ActualizarLista = (lista) => {
@@ -56,7 +69,9 @@ const socket = io();
 socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
-      ActualizarLista(data);
+  if (pmail == undefined){
+    ActualizarLista(data);
+  }
 
 
 })
@@ -66,13 +81,17 @@ myform.addEventListener("submit", (e) => {
     category = document.querySelector('input[name="tools"]:checked').id;
     if (category == null || category == undefined){
       category = 'Misc'
-    }
+    } 
+    let creator = "admin";
+    if (pmail != undefined){
+      creator = mail;
+    };
+    console.log(creator);
     const producto = {"title": title.value, "description": description.value, "price": price.value , 
     "thumbnail": thumbnail.value, "stock": stock.value, "code": code.value,
-    "category":category , "status":true
+    "category":category , "owner":creator,"status":true
 };
-
-    socket.emit("Ingresar Nuevo Producto",producto);
+    socket.emit("Ingresar Nuevo Producto",{producto:producto,creator:creator});
   });
 
   socket.on("error_al_insertar", (error) => {

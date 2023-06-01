@@ -17,6 +17,11 @@ export const validarUrlIndividual = (product) => {
 }; 
 };
 
+export const formatearProductos = (productos) => {
+    let result = productos.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id,owner:prod.owner}))
+    return result;
+}
+
 export const validarURL = (listadoProductos) => {
     //Validar por formulario o que la URL empiece con http
     listadoProductos.map((product => { 

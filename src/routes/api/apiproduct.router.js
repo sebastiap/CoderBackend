@@ -66,6 +66,7 @@ router.get('/:pid',async(req,res) =>{
 router.post('/', async (req,res) => {
     const product = req.body;
 try {
+    // BORRAR console.log(product);
     let result = await manager.add(product);
     customLogger(req);
     if (result === dictErrores.PRODUCT_CODE_DUPLICATED){

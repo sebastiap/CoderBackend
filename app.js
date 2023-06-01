@@ -38,7 +38,7 @@ const app = express();
 
 try {
 app.use(session({
-    store:MongoStore.create({
+    store:MongoStore.create({ 
         mongoUrl:"mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority",
     
         mongoOptions: {useNewUrlParser:true},
@@ -227,21 +227,34 @@ io.on('connection',  (socket) => {
     });
 
     socket.on("Producto Borrado" ,async data =>{
-
-        manager.delete(data).then(result =>{
-
-            let result2 = manager.getFromSocket().then((res) => {
-                let valor = validarURL(res);
-                socket.emit('Listado de Productos Actualizados',valor);
-                socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${data}`);
-            });
-            return result2;
+        console.log(data);
+        let id = data.id;
+        let owner = data.owner;
+       let algo = await manager.getById(id).then(result =>{
+            console.log(result);
+            console.log(result[0].owner);
+            console.log("owner", owner);
+            if (owner === "admin" || owner === result[0].owner) {
+                console.log("Puedo borrar!") 
+                    manager.delete(id).then(result =>{
+                            let result2 = manager.getFromSocket().then((res) => {
+                                    let valor = validarURL(res);
+                                    socket.emit('Listado de Productos Actualizados',valor);
+                                    socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${id}`);
+                                });
+                                return result2;
+                        })
+                    }
+    });     
     })
-        
-    })
 
-    socket.on("Ingresar Nuevo Producto", producto => {
+    socket.on("Ingresar Nuevo Producto", context => {
+        console.log("ESTE ES EL CONTEXTO", context);
         try {
+            let producto = context.producto;
+            let creator = context.creator;
+            console.log(creator);
+            // console.log(req.session.user);
             axios.post("http://localhost:"+ config.port + "/api/products/",producto)
             .then(function () {
                 manager.getFromSocket().then((res) => {
