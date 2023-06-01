@@ -65,13 +65,19 @@ const initializePassport = () => {
 
                 }
                 const user = await manager.getOne(username);
+                console.log(user);
                 if (!user) { 
                     req.logger.error('El usuario no existe.');
                     // console.log('El usuario no existe.');
                     return done(null,false);   
                 };
                 if (!isValidPassword(user,password)) {return done(null,false)}
-                user.role = role;
+                if (role != 'User')
+                {
+                    user.role = role;
+                }
+
+                console.log(user);
                 return done(null,user);
             } catch (error) {
                 return done(`Error al Loguear usuario ${error}`);

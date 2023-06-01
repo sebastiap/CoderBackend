@@ -40,7 +40,6 @@ router.post('/login',passportCall('login'), async (req, res) => {
     const {email,password} = req.body;
 
     if (!email || !password) {res.status(400).send({status:'error', message:"Incomplete values"})}
-
          req.session.user = {
             first_name: req.user.first_name,
             last_name: req.user.last_name,

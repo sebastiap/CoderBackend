@@ -203,10 +203,11 @@ app.get('/api/session/current',privateAccess, async (req, res) => {
    })
 
 // Chat
-app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {
+app.get('/chat',privateAccess, async (req, res) => {
+    //restringir a admin?
     const usercart = req.session.user.cart;
-    // const userisadmin = (req.session.user.role == 'admin');
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,cart:usercart,messages,style:"styles.css"})
+    const premium = (req.session.user.role == "premium");
+    res.render('chat',{title:"Bienvenido al Chat",port:config.port,premium,cart:usercart,messages,style:"styles.css"})
    })
 
 // Socket

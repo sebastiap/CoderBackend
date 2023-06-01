@@ -16,14 +16,13 @@ router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (
     res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
    });
 
-router.get('/premiumproducts',privateAccess, async (req, res) => {
+router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async (req, res) => {
     let productos = [];
     const usercart = req.session.user.cart;
     const userisadmin = false;
     const mail = req.session.user.email;
     let productosDB = await productmanager.getByUser(req.session.user.email);
     productos = formatearProductos(productosDB);
-    console.log(productos);
     res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,productos,mail,style:"styles.css"})
    });
 

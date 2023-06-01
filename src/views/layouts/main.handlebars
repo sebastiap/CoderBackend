@@ -36,6 +36,9 @@
                 {{else}}
                     <a href="http://localhost:{{port}}/carts/{{cart}}/tickets"><input class="pagebutton featuredbutton" type="button" onclick="" name="" value="Mis Compras"></a>
                     <a href="http://localhost:{{port}}/carts/{{cart}}"><input class="pagebutton featuredbutton" type="button" onclick="" name="" value="Mi Carrito"></a>
+                    {{#if premium}}
+                    <a href="http://localhost:{{port}}/admin/premiumproducts"><input  class="pagebutton" type="button" onclick="" name="" value="Mis Productos"></a>
+                    {{/if}}
                     <a href="http://localhost:{{port}}/products"><input  class="pagebutton" type="button" onclick="" name="" value="Productos"></a>
                     <a href="http://localhost:{{port}}/chat"><input  class="pagebutton" type="button" onclick="" name="" value="Chat"></a>
                 {{/if}}
