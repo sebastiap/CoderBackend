@@ -1,6 +1,12 @@
 const socket = io();
 var url_string = window.location;
 var port = url_string.port;
+let pmail = document.getElementById("mail");
+let mail = "";
+if (pmail != undefined) {
+  mail = String(pmail.innerHTML);
+}
+
 
 const deleteCart = async (id) => {
   let qdata = {id:id};
@@ -13,26 +19,30 @@ const QuantityChange = async (id,q) => {
 
 const AddtoCart = async (productId) => {
   let stringId = productId;
-  let activeUser;
   let productToAdd = await axios.get('http://localhost:'+ port + '/api/products/'+stringId);
   let dataid = productToAdd.data[0]._id;
   let owner = productToAdd.data[0].owner;
-  console.log(productToAdd);
 
-  let putData = {
-    "quantity":1,
-    "product":dataid,
-    "title":productToAdd.data[0].title,
-    };
-  
- if (activeUser !== owner){
-   // socket.emit("Agregar_Producto_Carro" , putData); 
- }
- else {
-  //TODO AGREGAR ESTO
-   // socket.emit("Error_Agregar_Producto_Premium" , putData); 
- }
-
+  if (mail === owner){
+    Swal.fire({
+      title: 'No es posible cargar el producto.',
+      toast: true,
+      icon:"error",
+      text: "Este producto fue creado por usted, por lo que no es posible agregarlo al carrito.",
+      position:"top-end",
+      showConfirmButton: false,
+      timer:2000
+  });
+  }
+  else {
+    let putData = {
+      "quantity":1,
+      "product":dataid,
+      "title":productToAdd.data[0].title,
+      };
+    
+     socket.emit("Agregar_Producto_Carro" , putData); 
+  }
 };
 
 socket.on('Mensaje_Carro',message =>{

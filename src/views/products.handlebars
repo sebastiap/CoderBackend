@@ -4,7 +4,7 @@
         {{#if user}}
         <p>Bienvenido {{this.user.first_name}}  {{this.user.last_name}} -
            {{#if this.user.email}}
-            Logueado como {{this.user.email}}</p>
+            Logueado como <b id="mail">{{this.user.email}}</b></p>
             {{else}}
             Logueado via Github</p>
             {{/if}}
