@@ -7,7 +7,6 @@ const __dirname = path.dirname(filename);
 
 import bcrypt from "bcrypt";
 import passport from 'passport';
-
 import {faker} from '@faker-js/faker';
 
 //Funciones Genericas
@@ -38,6 +37,7 @@ export const createHash = (password) =>
 bcrypt.hashSync(password,bcrypt.genSaltSync(10));
 
 export const isValidPassword  = (user,password ) => 
+// bcrypt.compare(user_entered_password, database_encrypted_password)
     bcrypt.compareSync(password,user.password);
 
 
@@ -77,12 +77,6 @@ export const authorizationCall = (role) => {
 
 export const generateProducts = () => {
 faker.locale = 'es';
-// const numberOfProducts = parseInt(faker.random.numeric(1,{
-//     bannedDigits: ["0"]
-// }));
-// for (let i = 0; i < numberOfProducts; i++) {
-//     product.push();
-// }
 
 return {
     "id":faker.database.mongodbObjectId(),

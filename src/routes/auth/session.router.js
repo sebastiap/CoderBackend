@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import UserManager from "../../controllers/UserManager.js";
-import { publicAccess,createHash,passportCall } from "../../../utils.js";
+import { publicAccess,createHash,passportCall, isValidPassword } from "../../../utils.js";
 import config from "../../config/config.js";
 
 import { customLogger } from "../../logger/logger.js";
@@ -17,6 +17,20 @@ router.get('/login',publicAccess, async (req, res) => {
 router.get('/reset',publicAccess, async (req, res) => {
     res.render('auth/reset',{title:"Resetear Password",port:config.port,style:"login.css"})
    });
+
+router.get('/reset/:time',publicAccess, async (req, res) => {
+    let now = Date.now();
+    let limit = time + 3600000; 
+    let time = req.params.time;
+    console.log(now,limit,time);
+    if (now < limit){
+        res.render('auth/reset',{title:"Resetear Password",port:config.port,style:"login.css"})
+    }
+    else
+    {
+        res.send({status:'error', message: 'Your reset link has expired. Please try again, a new link will be created is you access ' + `http://localhost:${config.port}/mail`});
+    }
+});
 router.get('/register',publicAccess, async (req, res) => {
     res.render('auth/register',{title:"Spika Games - Registro",port:config.port,style:"login.css"})
    });
@@ -62,12 +76,29 @@ router.post('/reset', async (req, res) => {
     try {
         const user = await manager.getOne(email);
         if (!user) return res.status(400).send({status:'error', message:'User not found.'});
+        let oldPassword = user.password;
+        let newPassword = createHash(password);
         user.password = createHash(password);
+        console.log(oldPassword,newPassword);
+        console.log(password);
+        console.log(!isValidPassword(user,password));
+        console.log(user.password);
+        console.log(!isValidPassword(user,oldPassword));
 
-        await manager.update(email,user);
-        customLogger(req);
-        req.logger.info('The password was reseted successfully.');
-        res.send({status:'success', message: 'The password was reseted successfully.'});
+        if (!isValidPassword(user,password)) 
+        ;
+        // if (!isValidPassword(user,newPassword))
+        {
+        //     await manager.update(email,user);
+        //     customLogger(req);
+        //     req.logger.info('The password was reseted successfully.');
+        //     res.send({status:'success', message: 'The password was reseted successfully.'});
+        // }
+        // else {
+            res.send({status:'error', message: 'The new password must be different than the old one.'});
+        // 
+    }
+
 
     } catch (error) {
         res.status(501).send({status:'error', message: error.message});
