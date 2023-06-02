@@ -162,13 +162,15 @@ const transport = nodemailer.createTransport({
 // Mail
 app.get('/mail', async (req, res) => {
 let now = Date.now();
+let mail = req.query.mail;
+console.log(mail);
 let result = await transport.sendMail({
     from:"CoderNode",
-    to:config.mail,
+    to:mail,
     subject:"Correo de Prueba",
     html:`<div>
     <h1>Esto es una Prueba</h1>
-    <a href="http://localhost:${config.port}/auth/reset?${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
+    <a href="http://localhost:${config.port}/auth/reset/${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
     Presione para resetear su password
     <img src="cid:Logo"/>
     <div>`,

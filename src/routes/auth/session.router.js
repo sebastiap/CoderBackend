@@ -15,16 +15,18 @@ router.get('/login',publicAccess, async (req, res) => {
     res.render('auth/login',{title:"Spika Games - Login",port:config.port,style:"login.css"})
    });
 router.get('/reset',publicAccess, async (req, res) => {
-    res.render('auth/reset',{title:"Resetear Password",port:config.port,style:"login.css"})
+    let reset = false;
+    res.render('auth/reset',{title:"Resetear Password",port:config.port,reset,style:"login.css"})
    });
 
 router.get('/reset/:time',publicAccess, async (req, res) => {
     let now = Date.now();
-    let limit = time + 3600000; 
     let time = req.params.time;
-    console.log(now,limit,time);
+    let limit = Number(time) + 3600000; 
+    // console.log(now,limit,time);
     if (now < limit){
-        res.render('auth/reset',{title:"Resetear Password",port:config.port,style:"login.css"})
+        let reset = true;
+        res.render('auth/reset',{title:"Resetear Password",port:config.port,reset,style:"login.css"})
     }
     else
     {
