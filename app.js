@@ -142,7 +142,8 @@ else {
 }
 const usercart = req.session.user.cart;
 const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,productos,messages,style:"styles.css"})
+const premium = (req.session.user.role == "premium");
+res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,premium,productos,messages,style:"styles.css"})
 
 }
 );
@@ -167,9 +168,10 @@ console.log(mail);
 let result = await transport.sendMail({
     from:"CoderNode",
     to:mail,
-    subject:"Correo de Prueba",
+    subject:"Link de Recuperacion de Password",
     html:`<div>
-    <h1>Esto es una Prueba</h1>
+    <h1>Recuperar Password</h1>
+    <h1>Ingrese al siguiente link para resetear su password. Este link tiene validez por una hora.</h1>
     <a href="http://localhost:${config.port}/auth/reset/${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
     Presione para resetear su password
     <img src="cid:Logo"/>
@@ -206,7 +208,7 @@ app.get('/api/session/current',privateAccess, async (req, res) => {
    })
 
 // Chat
-app.get('/chat',privateAccess, async (req, res) => {
+app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {
     //restringir a admin?
     const usercart = req.session.user.cart;
     const premium = (req.session.user.role == "premium");

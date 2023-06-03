@@ -23,7 +23,8 @@ router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async 
     const mail = req.session.user.email;
     let productosDB = await productmanager.getByUser(req.session.user.email);
     productos = formatearProductos(productosDB);
-    res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,productos,mail,style:"styles.css"})
+    const premium = (req.session.user.role == "premium");
+    res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,premium,productos,mail,style:"styles.css"})
    });
 
    router.get('/tickets',privateAccess,authorizationCall('admin'), async (req, res) => {

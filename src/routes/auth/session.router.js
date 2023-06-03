@@ -1,7 +1,7 @@
 import { Router } from "express";
 import passport from "passport";
 import UserManager from "../../controllers/UserManager.js";
-import { publicAccess,createHash,passportCall, isValidPassword } from "../../../utils.js";
+import { publicAccess,createHash,passportCall,isValidPassword } from "../../../utils.js";
 import config from "../../config/config.js";
 
 import { customLogger } from "../../logger/logger.js";
@@ -23,14 +23,14 @@ router.get('/reset/:time',publicAccess, async (req, res) => {
     let now = Date.now();
     let time = req.params.time;
     let limit = Number(time) + 3600000; 
-    // console.log(now,limit,time);
     if (now < limit){
         let reset = true;
         res.render('auth/reset',{title:"Resetear Password",port:config.port,reset,style:"login.css"})
     }
     else
     {
-        res.send({status:'error', message: 'Your reset link has expired. Please try again, a new link will be created is you access ' + `http://localhost:${config.port}/mail`});
+        let timeerror = "El link utilizado ha expirado. Intenta nuevamente."
+        res.render('auth/reset',{title:"Resetear Password",port:config.port,reset:false,timeerror,style:"login.css"})
     }
 });
 router.get('/register',publicAccess, async (req, res) => {
@@ -77,28 +77,19 @@ router.post('/reset', async (req, res) => {
 
     try {
         const user = await manager.getOne(email);
-        if (!user) return res.status(400).send({status:'error', message:'User not found.'});
-        let oldPassword = user.password;
-        let newPassword = createHash(password);
-        user.password = createHash(password);
-        console.log(oldPassword,newPassword);
-        console.log(password);
-        console.log(!isValidPassword(user,password));
-        console.log(user.password);
-        console.log(!isValidPassword(user,oldPassword));
-
+        if (!user) return res.status(401).send({status:'error', message:'User not found.'});
+        
         if (!isValidPassword(user,password)) 
-        ;
-        // if (!isValidPassword(user,newPassword))
         {
-        //     await manager.update(email,user);
-        //     customLogger(req);
-        //     req.logger.info('The password was reseted successfully.');
-        //     res.send({status:'success', message: 'The password was reseted successfully.'});
-        // }
-        // else {
-            res.send({status:'error', message: 'The new password must be different than the old one.'});
-        // 
+            user.password = createHash(password);
+            await manager.update(email,user);
+            customLogger(req);
+            req.logger.info('The password was reseted successfully.');
+            res.send({status:'success', message: 'The password was reseted successfully.'});
+        }
+        else {
+            res.status(400).send('The new password must be different than the old one.');
+        
     }
 
 

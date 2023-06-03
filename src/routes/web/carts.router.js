@@ -38,8 +38,9 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
             let newCart = cartmanager.validate(toFixCart);
             await cartmanager.update(cartId,newCart);
         }
-    req.logger.info("Accediendo al Carro")
-    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,style:"styles.css"})
+    req.logger.info("Accediendo al Carro");
+    const premium = (req.session.user.role == "premium");
+    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,premium,style:"styles.css"})
    }
 )
 router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, res) => {
@@ -54,7 +55,8 @@ router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, 
         amount: ticket.amount,
     }))
     req.logger.info("Viendo tickets del usuario")
-    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,Ptitle:title,userTickets,cart:cartId,style:"styles.css"})
+    const premium = (req.session.user.role == "premium");
+    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,Ptitle:title,userTickets,cart:cartId,premium,style:"styles.css"})
    }
 )
 
