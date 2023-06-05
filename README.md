@@ -61,6 +61,7 @@ La entrega actual corresponde a la clase 30.
 * Mock con faker-js
 * Logeo por niveles con Winston
 * Valdria la pena usar Artillery para testing de performance?
+* Documentacion con Swagger(swagger-jsdocs y swagger-ui-express)
 
 
 ##  Patrones de diseño

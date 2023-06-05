@@ -16,6 +16,11 @@ const dirname = path.dirname(filename);
 
 const manager = new CartManager(path.join(dirname,"../../data",'carrito.json'));
 
+router.get('/',async (req, res) => {
+    let result = await manager.getAll();
+    res.send(result);
+});
+
 router.post('/',async (req, res) => {
     const cartProducts = req.body.products;
     manager.create(cartProducts);
@@ -24,10 +29,6 @@ router.post('/',async (req, res) => {
     res.send({status: 'success',message: 'Cart added successfully'});
 });
 
-router.get('/',async (req, res) => {
-    let result = await manager.getAll();
-    res.send(result);
-})
 
 router.get('/:cid',async (req, res) => {
     const cartId = req.params.cid;
@@ -80,7 +81,7 @@ try {
     }
 });
 // DELETE api/carts/:cid/products/:pid deberá eliminar del carrito el producto seleccionado.
-router.delete('/:cid/products/:pid', async (req, res) => {
+router.delete('/:cid/product/:pid', async (req, res) => {
         const cartId = req.params.cid;
         let productId = req.params.pid;
         if (typeof(productId) != String ) {
@@ -108,6 +109,7 @@ router.delete('/:cid/products/:pid', async (req, res) => {
 router.put('/:cid', async (req, res) => {
         const cartId = req.params.cid;
         const products = req.body;
+        console.log(products);
         manager.update(cartId,products).then((cart) => {
             customLogger(req);
             req.logger.info('The cart with id ' + cartId + ' was updated successfully with the required products.');
@@ -131,19 +133,22 @@ router.put('/:cid', async (req, res) => {
             req.logger.info('Product ' + ProductId + ' added successfully to cart ' + cartId + '.');
             res.send({status: 'success',message: 'Product ' + ProductId + ' added successfully to cart ' + cartId + '.'});
         };
-    
     });
-    
+    //vacia el carrito
 router.delete('/:cid',async (req, res) => {
         const cartid = req.params.cid;
         const result = await manager.delete(cartid);
         customLogger(req);
         if (result === "A cart with that id does not exist.") { 
             req.logger.error('A cart with that id does not exist.');
-            res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
+            res.status(400).send({status: 'error', message: 'A cart with that id does not exist.'}) }
         else if (result === "The Cart id is invalid") { 
             req.logger.error('The Cart id is invalid.');
-            res.send({status: 'error', message: 'The Cart id is invalid.'}) }
+            res.status(400).send({status: 'error', message: 'The Cart id is invalid.'}) }
+        else if (result === "The cart was already empty.") {
+            req.logger.warning('The request was succesfull but the cart was already empty.');
+            res.send({status: 'success', message: 'The request was succesfull but the cart was already empty.'}) 
+        }
         else {
         req.logger.info('The cart with id ' + cartid + ' is now empty.');
         res.send({status: 'success',message: 'The cart with id ' + cartid + ' is now empty.'});
@@ -165,7 +170,7 @@ router.get('/:cid/purchase',async (req, res) => {
     if (result === "No pudo realizarse la compra, ningun producto de los su carro posee stock.") { 
         
         req.logger.warning("No pudo realizarse la compra, ningun producto de los su carro posee stock.");
-        res.send({status: 'error', message: "No pudo realizarse la compra, ningun producto de los su carro posee stock."}) }
+        res.status(400).send({status: 'error', message: "No pudo realizarse la compra, ningun producto de los su carro posee stock."}) }
     // else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
     else {
         let productos = result.canceledList.map(prod => 

@@ -1,0 +1,195 @@
+paths:
+  /api/products/:
+    get: 
+      summary: Se obtiene todos los productos.
+      tags:
+        - Products
+      responses:
+        "200":
+          description: Los productos fueron obtenidos satisfactoriamente.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/product'
+        "400":
+          description: Hubo un error en la peticion.
+        "500":
+          description: Error del servidor.
+    post: 
+      summary: Se ingresa un nuevo producto.
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/createProduct'
+      responses:
+        "200":
+          description: El producto fue creado satisfactoriamente.
+        "400":
+          description: Hubo un error en la peticion.
+        "500":
+          description: Error del servidor.
+  /api/products/{pid}:
+    get:
+      summary: Se obtiene los datos de un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto buscado
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Los productos fueron obtenidos satisfactoriamente.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/product'
+        "400":
+          description: El producto no pudo ser obtenido  por un error en el request.
+        "500":
+          description: El producto no pudo ser obtenido  por un error en el servidor.
+    put:
+      summary: Se obtiene los datos de un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto buscado
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: El producto fue actualizado satisfactoriamente.
+        "400":
+          description: El producto no pudo ser actualizado por un error en el request.
+        "500":
+          description: El producto no pudo ser actualizado  por un error en el servidor.
+    delete:
+      summary: Se borran los datos de un producto.
+      tags:
+        - Products
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a borrar
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: El producto fue borrado satisfactoriamente.
+        "400":
+          description: El producto no pudo ser borrado por un error en el request.
+        "500":
+          description: El producto no pudo ser borrado  por un error en el servidor.
+
+
+
+components:
+  schemas:
+    product:
+      type: object
+      properties:
+        _id:
+          type: ObjectID
+          description: id autogenerado por mongoDB
+        id:
+          type: Number
+          description: id autogenerado por la webapp
+        title:
+            type: String
+            description: Nombre del producto
+        description:
+            type: String,
+            description: Descripcion del producto
+        price:
+            type: Number,
+            description: Precio del producto
+        thumbnail:
+            type: String,
+            description: Link a la miniatura del producto
+        stock:
+            type: Number
+            description: Stock disponible del producto
+        code:
+            type: String
+            description: Codigo del producto
+        category:
+            type: String
+            description: Categoria del producto, tiene 3 valores posibles /:"Games","Clothing"o "Misc"
+        owner:
+            type: String,
+            description: Creador del producto
+        status: 
+            type: Boolean
+            description: Indica si el producto esta disponible o no
+      example:
+        _id: "ObjectId(6417476508f56d00a6f79c6f)"
+        id: 99
+        title: "Rummy"
+        description: "Juego de cartas similar a la canasta"
+        price: 4300
+        thumbnail: "https://tse2.mm.bing.net/th?id=OIP.O86-JTHBcISranxlOpjATQHaHa&pid=Api&P=0&h=180"
+        stock: 15
+        code: "RUMMY"
+        category: "Games"
+        owner: "admin"
+        status: true
+  requestBodies:
+    createProduct:
+      type: object
+      properties:
+        id:
+          type: Number
+          description: id autogenerado por la webapp
+        title:
+            type: String
+            description: Nombre del producto
+        description:
+            type: String,
+            description: Descripcion del producto
+        price:
+            type: Number,
+            description: Precio del producto
+        thumbnail:
+            type: String,
+            description: Link a la miniatura del producto
+        stock:
+            type: Number
+            description: Stock disponible del producto
+        code:
+            type: String
+            description: Codigo del producto
+        category:
+            type: String
+            description: Categoria del producto, tiene 3 valores posibles /:"Games","Clothing"o "Misc"
+        owner:
+            type: String,
+            description: Creador del producto
+        status: 
+            type: Boolean
+            description: Indica si el producto esta disponible o no
+      example:
+        id: 99
+        title: "Rummy"
+        description: "Juego de cartas similar a la canasta"
+        price: 4300
+        thumbnail: "https://tse2.mm.bing.net/th?id=OIP.O86-JTHBcISranxlOpjATQHaHa&pid=Api&P=0&h=180"
+        stock: 15
+        code: "RUMMY"
+        category: "Games"
+        owner: "admin"
+        status: true

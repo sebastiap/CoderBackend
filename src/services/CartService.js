@@ -96,8 +96,17 @@ export const create = async (products) => {
     }
 
     export const deleteService = async (cid) => {
+        let exist = await getByIdService(cid);
+        if (exist !== null) {
         let result = await empty(cid);
+
+        console.log(result.modifiedCount);
         if (result.modifiedCount != 1) {
+            console.log(exist);
+            return "The cart was already empty.";
+        }
+        }
+        else{
             return 4;
         }
         return result;

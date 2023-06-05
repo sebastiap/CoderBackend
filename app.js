@@ -32,7 +32,24 @@ import UserManager from "./src/controllers/UserManager.js";
 import initializePassport from "./src/config/passport.config.js";
 
 // Manejo de errores
-import errorHandler from "./src/controllers/errors/middleware.js"
+import errorHandler from "./src/controllers/errors/middleware.js";
+
+// Swagger - Documentacion
+import swaggerJSDoc from "swagger-jsdoc";
+import swaggerUiExpress from "swagger-ui-express";
+
+const swaggerOptions = {
+    definition:{
+        openapi:'3.0.1',
+        info:{
+            title:'Documentacion Spika Games',
+            description:'API pensada para ecommerce',
+        }
+    },
+    apis:[`${__dirname}/src/docs/**/*.yaml`]
+};
+const specs = swaggerJSDoc(swaggerOptions);
+
 
 const app = express();
 
@@ -53,8 +70,9 @@ app.use(session({
     let req = {};
     customLogger(req);
     req.logger.error("Cannot Connect to Database with MongoStore " + error);
-}
+};
 
+app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(specs));
 
 // configuracion de Passport
 initializePassport();
@@ -150,6 +168,7 @@ res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin
 
 import nodemailer from 'nodemailer';
 import { addLogger,customLogger } from "./src/logger/logger.js";
+
 
 const transport = nodemailer.createTransport({
     service:'gmail',

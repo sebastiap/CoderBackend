@@ -1,5 +1,5 @@
 import { create as createService,getAll as getAllService,PopulateService,getByIdService,addQuantityService,updateService,deleteService,validate as validateService} from "../services/CartService.js";
-
+import { customLogger } from "../logger/logger.js";
 export default class CartManager {
     constructor(path){
         this.cart = {};
@@ -89,6 +89,9 @@ export default class CartManager {
         try {
             if (cid.length != 24) { return 'The Cart id is invalid'}
             let result = await deleteService(cid);
+            if (result === 4){
+                return "A cart with that id does not exist.";
+            }
             return result;
         } catch (error) {
             return error;
@@ -97,6 +100,8 @@ export default class CartManager {
     }
 
     update= async (cid,newprods) =>{
+        let req = {};
+        customLogger(req);
         try {
             let result = await updateService(cid,newprods);
             return result;

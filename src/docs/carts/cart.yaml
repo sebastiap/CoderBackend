@@ -1,0 +1,302 @@
+paths:
+  /api/carts/:
+    get:
+      summary: Obtiene todos los carritos
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: Los carritos fueron obtenidos satisfactoriamente.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/cart'
+        "400":
+          description: Hubo un error en la peticion.
+        "500":
+          description: Error del servidor.
+    post: 
+      summary: Se ingresa un nuevo carrito.
+      tags:
+        - Carts
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/creatCart'
+      responses:
+        "200":
+          description: El carrito fue creado satisfactoriamente.
+        "400":
+          description: Hubo un error en la peticion.
+        "500":
+          description: Error del servidor.
+
+  /api/carts/{cid}:
+    get:
+      summary: Se obtiene los datos de un carrito.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito buscado
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: Los carritos fueron obtenidos satisfactoriamente.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/cart'
+        "400":
+          description: El carrito no pudo ser obtenido  por un error en el request.
+        "500":
+          description: El carrito no pudo ser obtenido  por un error en el servidor.
+    put:
+      summary: Actualiza el carrito con un arreglo de productos con el formato especificado arriba.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito buscado
+          schema:
+            $type: String 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/creatCart'
+      responses:
+        "200":
+          description: El carrito fue actualizado satisfactoriamente.
+        "400":
+          description: El carrito no pudo ser actualizado por un error en el request.
+        "500":
+          description: El carrito no pudo ser actualizado  por un error en el servidor.
+    delete:
+      summary: Se borran los datos de un carrito. Dejandolo vacio.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a borrar
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: El carrito fue borrado satisfactoriamente.
+        "400":
+          description: El carrito no pudo ser borrado por un error en el request.
+        "500":
+          description: El carrito no pudo ser borrado  por un error en el servidor.
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un solo producto al carrito deseado.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a borrar
+          schema:
+            $type: String 
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a agregar
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/addProductCart'
+      responses:
+        "200":
+          description: El producto fue agregado al carrito satisfactoriamente.
+        "400":
+          description: El carrito no pudo ser modificado por un error en el request.
+        "500":
+          description: El carrito no pudo ser modificado por un error en el servidor.
+      example:
+        quantity: 15
+    put:
+      summary: modifica la cantidad del producto seleccionado en el carrito pasado por id.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a borrar
+          schema:
+            $type: String 
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a agregar
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/addProductCart'
+      responses:
+        "200":
+          description: El producto fue agregado al carrito satisfactoriamente.
+        "400":
+          description: El carrito no pudo ser modificado por un error en el request.
+        "500":
+          description: El carrito no pudo ser modificado por un error en el servidor.
+      example:
+        quantity: 15
+      
+    delete:
+      summary: Elimina del carrito el producto seleccionado.
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a borrar
+          schema:
+            $type: String 
+        - name: pid
+          in: path
+          required: true
+          description: id del producto a agregar
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: El producto fue borrado al carrito satisfactoriamente.
+        "400":
+          description: El carrito no pudo ser borrado por un error en el request.
+        "500":
+          description: El carrito no pudo ser borrado por un error en el servidor.
+
+
+
+  /api/carts/{cid}/purchase:
+    get:
+      summary: envia un pedido para confirmar la compra de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: id del carrito a comprar
+          schema:
+            $type: String 
+      responses:
+        "200":
+          description: La compra fue realizada satisfactoriamente.
+          content: 
+            application/json:
+              schema:
+                type: array
+                items: 
+                  $ref: '#components/schemas/purchase'
+        "400":
+          description: Hubo un error en la peticion de la compra.
+        "500":
+          description: Error del servidor al procesar la compra.
+
+
+components:
+  schemas:
+    cart:
+      type: object
+      properties:
+        _id:
+          type: ObjectID
+          description: id autogenerado por mongoDB
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/product'
+          description: Un conjunto de Productos
+      example:
+        _id: "ObjectId(642b71ec8efbcd14dd97b80e)"
+        products: [{
+            product: "ObjectId(640efafa130d57a081c9cfda)",
+            quantity: 99
+            }]
+    product:
+      type: object
+      properties:
+        product:
+          type: mongoose.Schema.Types.ObjectId
+        quantity:
+          type: Number
+      example:
+        product: "ObjectId(640efafa130d57a081c9cfda)"
+        quantity: 99
+    purchase:
+      type: object
+      properties:
+        _id:
+          type: mongoose.Schema.Types.ObjectId
+        code:
+          type: String
+        purchase_datetime: 
+          type: Date
+        amount:
+          type: Number
+        purchaser:
+          type: String
+      example:
+        _id: "ObjectId(6417476508f56d00a6f79c6f)"
+        code: "C607476"
+        purchase_datetime: "2023-08-05T15:32:20.000+00:00"
+        amount: 2800
+        purchaser: "sebastiap@gmail.com"
+  requestBodies:
+    creatCart:
+      type: object
+      properties:
+        products: 
+          type: Array
+          description: Un conjunto de Producto
+      example:
+        product: "640bc2f9681bbd0c4a4a994c"
+        quantity: 99
+    addProductCart:
+      type: object
+      properties:
+        quantity: 
+          type: Number
+          description: Una cantidad de Producto a agregar
+      example:
+        quantity: 99
+  examples:
+    cartExample:
+      value:
+        _id: "ObjectId(642b71ec8efbcd14dd97b80e)"
+        products:
+          productExample:
+              $ref: '#/components/examples/objectExample'
+    productExample:
+      value:
+        product: "640bc2f9681bbd0c4a4a994c"
+        quantity: 99
