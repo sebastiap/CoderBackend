@@ -5,9 +5,13 @@ let pmail = document.getElementById("mail");
 let mail = "";
 if (pmail != undefined) {
   mail = String(pmail.innerHTML);
-}
+};
 
-
+const changeRole = async (id) => {
+  console.log(id);
+  console.log("change role ",String(id));
+  socket.emit("Cambiar_Rol_Usuario" , id);
+};
 const deleteCart = async (id) => {
   let qdata = {id:id};
   socket.emit("Borrar_Producto_Carro" , qdata);

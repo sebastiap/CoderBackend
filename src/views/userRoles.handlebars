@@ -1,0 +1,39 @@
+<div>
+<div class="container">
+    <div class="listDiv">
+        {{#if users}}
+        <h1 id="Ltitle">Lista de Usuarios del sitio </h1>
+        <div id="Listado">
+            {{#each users}}
+            <div class="productDiv">
+                {{#if this.email}}
+                <p class="title"><b>{{this.email}}</b></p>
+                 {{else}}
+                 <p class="title"><b>Logueado via GITHUB</b></p>
+                 {{/if }}
+                <p>{{this.first_name}}</p>
+                <p>{{this.last_name}}</p>
+                <p><b>Rol Actual:</b> {{this.role}}</p>
+                {{!-- <input  class="button" type="button" onclick='changeRole({{this.email}})' name="" value="Cambiar Rol"> --}}
+                <a href="http://localhost:8080/api/users/premium/{{this.id}}">Cambiar Rol</a>
+                {{!-- <a href="http://localhost:{{port}}/api/users/premium/{{this.id}}">Cambiar Rol</a> --}}
+                {{!-- <input  class="button" type="button" onclick='changeRole({{this.email}})' name="" value="Cambiar Rol"> --}}
+            </div>
+            {{/each }}
+
+
+        </div>
+        {{else }}
+        <h1 id="Ltitle"></h1>
+        <div id="Listado">
+        </div>
+        <div id="NoProdHero">
+        </div>
+        {{/if }}
+    </div>
+</div>
+</div>
+<script src="/socket.io/socket.io.js" ></script>
+<script src="/js/products.js" ></script>
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11" ></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>

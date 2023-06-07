@@ -333,11 +333,12 @@ io.on('connection',  (socket) => {
     socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
             let id = qdata.id;
+            //TODOZ arreglar esto
             axios.get('http://localhost:'+ config.port + '/api/products/'+id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
-            axios.delete(`http://localhost:${config.port}/api/carts/${cart}/products/${dataid}`)
+            axios.delete(`http://localhost:${config.port}/api/carts/${cart}/product/${dataid}`)
             .then(function () {
                     socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
                 })
@@ -394,4 +395,33 @@ io.on('connection',  (socket) => {
     }
     );
 
+
+    socket.on("Cambiar_Rol_Usuario" ,  (email) => {
+        try {
+            let newRole = "premium";
+            console.log('http://localhost:'+ config.port + '/api/users/'+ email);
+            axios.get('http://localhost:'+ config.port + '/api/users/'+ email).then( (user) => {
+            // console.log(user);
+            if (user.role == "premium")
+            {newRole = "User"}
+
+            // let dataid = product.data[0]._id;
+            // let cart = currentCart;
+            // if (cart == "Empty") { socket.emit('Refrescar'); return }
+            // let putData = {
+            //     "quantity":qdata.quantity
+            //     };
+            //   let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
+            //   axios.put(putURL,putData)
+            // .then(function () {
+            //         socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");
+            //     })
+            //     .catch(err => {console.log(err);}); 
+            })
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+    );
 });

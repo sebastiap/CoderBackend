@@ -2,13 +2,26 @@ import { Router } from "express";
 import { privateAccess,authorizationCall,formatearProductos } from "../../../utils.js";
 import config from "../../config/config.js";
 import TicketManager from "../../controllers/TicketManager.js";
+import UserManager from "../../controllers/UserManager.js";
 import Productmanager from "../../controllers/ProductManager.js";
 
 const ticketManager = new TicketManager;
 const productmanager = new Productmanager;
+const usermanager = new UserManager;
 
 const router = Router();
 // realTimeProducts
+router.get('/userroles',privateAccess,authorizationCall('admin'), async (req, res) => {
+    let users = [];
+    let usersUF = await usermanager.getAll();
+    users = usersUF.map((user) => ({"id":user._id,"first_name":user.first_name, "last_name":user.last_name,"email":user.email,"role":user.role}));
+    users = users.filter(user => user.role !== "admin");
+    console.log(config.port);
+    const usercart = req.session.user.cart;
+    const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
+    res.render('userRoles',{title:"Administracion de Usuarios",port:config.port,cart:usercart,admin:userisadmin,users,style:"styles.css"})
+   });
+
 router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
     const usercart = req.session.user.cart;
