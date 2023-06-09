@@ -101,7 +101,7 @@ try {
     }
     else {
         req.logger.info('A new product with code ' + product.code + ' was successfully created with id ' + product.id);
-        res.send({status: 'success', message:'A new product with code ' + product.code + ' was successfully created with id ' + product.id });
+        res.send({status: 'success', message:'A new product with code ' + product.code + ' was successfully created with id ' + product.id,newId:product.id });
     }
 } 
     catch (error) {

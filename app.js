@@ -399,24 +399,15 @@ io.on('connection',  (socket) => {
     socket.on("Cambiar_Rol_Usuario" ,  (email) => {
         try {
             let newRole = "premium";
-            console.log('http://localhost:'+ config.port + '/api/users/'+ email);
+            // console.log('http://localhost:'+ config.port + '/api/users/'+ email);
             axios.get('http://localhost:'+ config.port + '/api/users/'+ email).then( (user) => {
-            // console.log(user);
-            if (user.role == "premium")
-            {newRole = "User"}
-
-            // let dataid = product.data[0]._id;
-            // let cart = currentCart;
-            // if (cart == "Empty") { socket.emit('Refrescar'); return }
-            // let putData = {
-            //     "quantity":qdata.quantity
-            //     };
-            //   let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
-            //   axios.put(putURL,putData)
-            // .then(function () {
-            //         socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");
-            //     })
-            //     .catch(err => {console.log(err);}); 
+            console.log(user.data);
+            if (user.data.role == "premium")
+            {newRole = "User" }
+            axios.get("http://localhost:8080/api/users/premium/" + user.data._id).then((user) => {
+                socket.emit('Rol_Cambiado',"Se ha cambiado el rol del usuario a " + newRole);
+        }
+            )
             })
         }
         catch (error) {

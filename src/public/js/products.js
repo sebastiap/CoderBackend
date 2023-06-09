@@ -7,10 +7,8 @@ if (pmail != undefined) {
   mail = String(pmail.innerHTML);
 };
 
-const changeRole = async (id) => {
-  console.log(id);
-  console.log("change role ",String(id));
-  socket.emit("Cambiar_Rol_Usuario" , id);
+const changeRole = async (mail) => {
+  socket.emit("Cambiar_Rol_Usuario" , mail);
 };
 const deleteCart = async (id) => {
   let qdata = {id:id};
@@ -53,6 +51,18 @@ socket.on('Mensaje_Carro',message =>{
 
   Swal.fire({
     title: 'Actualizacion de Carro',
+    toast: true,
+    icon:"success",
+    text: message,
+    position:"top-end",
+    showConfirmButton: false,
+    timer:2000
+});
+});
+socket.on('Rol_Cambiado',message =>{
+
+  Swal.fire({
+    title: 'Cambio de Rol de Usuario',
     toast: true,
     icon:"success",
     text: message,

@@ -44,7 +44,7 @@ router.get('/premium/:uid', async (req, res) => {
         }
         else if (user.role == "premium"){
             newRole = "User"; 
-        }
+        } 
         else {
             // TODOZ ver error
             res.send({status: 'error',message: 'The user is an administrator. His role cannot be changed.'});

@@ -22,14 +22,14 @@ export default class ProductManager{
                 await this.get();
             }
             // TODOZ ver porque dejo de andar if (!this.isValid )
-            if (!product.title || !product.description || !product.price 
-                || !product.status || !product.stock
-                || !product.category || !product.code 
-                || product.title === undefined|| product.description === undefined || product.price === undefined
-                || product.stock === undefined
-                || product.code === undefined
-                )
-                { return 2; }
+            // if (!product.title || !product.description || !product.price 
+            //     || !product.status || !product.stock
+            //     || !product.category || !product.code 
+            //     || product.title === undefined|| product.description === undefined || product.price === undefined
+            //     || product.stock === undefined
+            //     || product.code === undefined
+            //     )
+            //     { return 2; }
 
             const existingProduct = await getByCodeService(product.code);
             if (existingProduct.length > 0){
