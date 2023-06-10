@@ -41,6 +41,33 @@ describe('Testing Router Productos',() => {
     })
 });
 describe('Testing Router Productos',() => {
+    describe('Testing PUT Product',()=> {
+        it('El endpoint /api/products/:pid debe permitir ingresar un nuevo producto',async () => {
+            const testProduct = {
+                "title":"Entradas Evento de Testing",
+                "description":"Entradas preventa para el evento Geekuin Septiembre 2023",
+                "price":4000,
+                "thumbnail":"https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Free_Geekguin.jpg/1200px-Free_Geekguin.jpg",
+                "code":"NEWTEST",
+                "stock":25,
+                "category":"Misc",
+                "status":false
+                }
+
+        const {statusCode, ok, body} = await requester.put('/api/products/'+idToDelete).send(testProduct);
+        console.log(statusCode, ok, body);
+        expect(statusCode).to.be.equal(200);
+        expect(body).to.have.property('message');
+        // expect(body).to.have.property('newCode');
+        // createdProduct = testProduct;
+
+        
+ 
+
+        })
+    })
+});
+describe('Testing Router Productos',() => {
     describe('Testing Delete Product',()=> {
         it('El endpoint /api/products/ debe permitir borrar el nuevo producto',async () => {
 
