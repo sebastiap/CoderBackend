@@ -13,8 +13,6 @@ let pmail = document.getElementById("mail");
 let mail = "";
 if (pmail != undefined) {
   mail = String(pmail.innerHTML);
-  console.log(pmail);
-  console.log(mail);
 }
 
 
@@ -24,7 +22,6 @@ const Edito = (id) => {
 
 const Borro = (id) => {
   let owner = "admin";
-  console.log(id);
   if (mail != "" ){
     owner = mail;
   }
@@ -73,7 +70,6 @@ socket.on("Listado de Productos Actualizados", data => {
     ActualizarLista(data);
   }
   else{
-    console.log(data);
     let newData = data.filter(data => data.owner === mail);
     ActualizarLista(newData);
   }
@@ -91,7 +87,6 @@ myform.addEventListener("submit", (e) => {
     if (pmail != undefined){
       creator = mail;
     };
-    console.log(creator);
     const producto = {"title": title.value, "description": description.value, "price": price.value , 
     "thumbnail": thumbnail.value, "stock": stock.value, "code": code.value,
     "category":category , "owner":creator,"status":true

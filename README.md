@@ -98,3 +98,7 @@ graph TD;
 Editar productos (Admin/premium)
 Premium users crean productos con su owner
 Realizar el despliegue de tu aplicativo en la plataforma de tu elección (Preferentemente Railway.app, pues es la abarcada en el curso) y corroborar que se puede llevar a cabo un proceso de compra completo.
+Lo de manejo de errores:
+
+No debe permitir crear un producto nuevo si faltan datos
+Tenes que quitar los console.log de tu proyecto y gestionar los errores con winston

@@ -58,6 +58,7 @@ socket.on('Mensaje_Carro',message =>{
     showConfirmButton: false,
     timer:2000
 });
+setTimeout(() => {window.location.reload()}, 1000);
 });
 socket.on('Rol_Cambiado',message =>{
 

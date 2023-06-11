@@ -66,7 +66,6 @@ router.get('/:pid',async(req,res) =>{
 router.post('/', async (req,res) => {
     const product = req.body;
 try {
-    // BORRAR console.log(product);
     let result = await manager.add(product);
     customLogger(req);
     if (result === dictErrores.PRODUCT_CODE_DUPLICATED){
@@ -172,7 +171,7 @@ catch (error) {
 }
 });
 
-// TODOZ Modificar el endpoint que elimina productos, para que, en caso de que el producto pertenezca a un usuario premium,
+// TODOZ X Modificar el endpoint que elimina productos, para que, en caso de que el producto pertenezca a un usuario premium,
 // le envíe un correo indicándole que el producto fue eliminado.
 router.delete('/:pid', async (req,res)=> {
     try {
@@ -188,29 +187,28 @@ router.delete('/:pid', async (req,res)=> {
                 message: 'A product with the specified id was not found.',
                 code:dictErrores.PRODUCT_NOT_FOUND
                 });
-}
- else{
-    if (product.owner !== "admin"){
-        console.log(product.owner)
-        let result = await transport.sendMail({
-            from:"CoderNode",
-            to:product.owner,
-            subject:"Su Producto ha sido eliminado",
-            html:`<div>
-            <h1>Producto eliminado</h1>
-            <p>Lamentamos informarle que su Producto ${product.title} ha sido eliminado por un administrador.</p>
-            <img src="cid:Logo"/>
-            <div>`,
-            attachments:[{
-                filename:"SPIKAGAMES.png",
-                path:__dirname + "/src/public/img/SPIKAGAMES.png",
-                cid:"Logo"
-            }]
-        });
-}
-    req.logger.info('Product with the specified id was successfully deleted');
-    res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
- }
+        }
+        else{
+            if (product.owner !== "admin"){
+                let result = await transport.sendMail({
+                    from:"CoderNode",
+                    to:product.owner,
+                    subject:"Su Producto ha sido eliminado",
+                    html:`<div>
+                    <h1>Producto eliminado</h1>
+                    <p>Lamentamos informarle que su Producto ${product.title} ha sido eliminado por un administrador.</p>
+                    <img src="cid:Logo"/>
+                    <div>`,
+                    attachments:[{
+                        filename:"SPIKAGAMES.png",
+                        path:__dirname + "/src/public/img/SPIKAGAMES.png",
+                        cid:"Logo"
+                    }]
+                });
+        }
+            req.logger.info('Product with the specified id was successfully deleted');
+            res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
+        }
 } 
 catch (error) {
     res.status(400).send({

@@ -109,7 +109,6 @@ router.delete('/:cid/product/:pid', async (req, res) => {
 router.put('/:cid', async (req, res) => {
         const cartId = req.params.cid;
         const products = req.body;
-        console.log(products);
         manager.update(cartId,products).then((cart) => {
             customLogger(req);
             req.logger.info('The cart with id ' + cartId + ' was updated successfully with the required products.');

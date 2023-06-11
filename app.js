@@ -108,9 +108,10 @@ global.currentCart = "Empty";
 async function makeConnection() {
 // Para sacar el warning
 mongoose.set('strictQuery', true);
+let req = {};
+customLogger(req);
 try {
     let req = {};
-    customLogger(req);
     let result = await mongoose.connect("mongodb+srv://"+ config.adminName+ ":" + config.adminPassword +"@" + config.mongoUrl +"?retryWrites=true&w=majority", error => {
         if (error) {
             req.logger.error("Cannot Connect to Database " + error);
@@ -122,7 +123,7 @@ try {
         req.logger.error("No Connection");
     }
 
-    console.log(err)
+    req.logger.error("Cannot Connect to Database " + err);
     // Send email
 }
 }
@@ -183,7 +184,6 @@ export const transport = nodemailer.createTransport({
 app.get('/mail', async (req, res) => {
 let now = Date.now();
 let mail = req.query.mail;
-console.log(mail);
 let result = await transport.sendMail({
     from:"CoderNode",
     to:mail,
@@ -240,8 +240,9 @@ const io = new Server(httpServer);
 io.on('connection',  (socket) => {
 
     socket.on('Client_Connect', message => {
-        // console.log(message);
-        // req.logger.info(message);
+        let req = {};
+        customLogger(req);
+        req.logger.info(message);
         manager.getFromSocket().then((res) => {
             // formatearProductos
         let mapProd = res.map(prod => (
@@ -253,24 +254,18 @@ io.on('connection',  (socket) => {
     });
 
     socket.on("Producto Borrado" ,async data =>{
-        console.log(data);
         let id = data.id;
         let owner = data.owner;
        let algo = await manager.getById(id).then(result =>{
-            console.log(result);
-            console.log(result[0].owner);
-            console.log("owner", owner);
             if (owner === "admin" || owner === result[0].owner) {
-                console.log("Puedo borrar!") 
                 if (owner !== "admin"){
-                    console.log(owner)
                     transport.sendMail({
                         from:"CoderNode",
                         to:owner,
                         subject:"Su Producto ha sido eliminado",
                         html:`<div>
                         <h1>Producto Eliminado</h1>
-                        <p>Lamentamos informarle que su Producto ${id} ha sido eliminado.</p>
+                        <p>Lamentamos informarle que su Producto con ${id} ha sido eliminado.</p>
                         <img src="cid:Logo"/>
                         <div>`,
                         attachments:[{
@@ -293,12 +288,9 @@ io.on('connection',  (socket) => {
     })
 
     socket.on("Ingresar Nuevo Producto", context => {
-        console.log("ESTE ES EL CONTEXTO", context);
         try {
             let producto = context.producto;
             let creator = context.creator;
-            console.log(creator);
-            // console.log(req.session.user);
             axios.post("http://localhost:"+ config.port + "/api/products/",producto)
             .then(function () {
                 manager.getFromSocket().then((res) => {
@@ -308,29 +300,25 @@ io.on('connection',  (socket) => {
                 });;
             })
             .catch(function (error) {
-                // req.logger.error("error_al_insertar" + error.response.data.message);
+                let req = {};
+                customLogger(req);
                 socket.emit("error_al_insertar", error.response.data.message);
                 if (error.response) {
-                  // The request was made and the server responded with a status code
-                  // that falls out of the range of 2xx
-                //   req.logger.error("error_al_insertar" + error.response.data.message);
-                //   req.logger.error("error_al_insertar" + error.response.data.message);
-                //   req.logger.error("error_al_insertar" + error.response.data.message);
-                  console.log(error.response.data);
-                  console.log(error.response.status);
-                  console.log(error.response.headers);
+                    req.logger.error(error.response.data);
+                    req.logger.error(error.response.status);
+                    req.logger.error(error.response.headers);
                 } else if (error.request) {
                   // The request was made but no response was received
-                  console.log(error.request);
+                  req.logger.error(error.request);
                 } else {
                   // Something happened in setting up the request that triggered an Error
-                  console.log('Error', error.message);
+                  req.logger.error(error.message);
                 }
-                console.log(error.config);
+                req.logger.error(error.config);
               });
             
         } catch (error) {
-            console.log(error.message);
+            req.logger.error(error.message);
         }
     })
 
@@ -351,26 +339,31 @@ io.on('connection',  (socket) => {
      // Cart Sockets
     socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
+            let req = {};
+            customLogger(req);
             let id = qdata.id;
-            //TODOZ arreglar esto
             axios.get('http://localhost:'+ config.port + '/api/products/'+id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
             axios.delete(`http://localhost:${config.port}/api/carts/${cart}/product/${dataid}`)
             .then(function () {
-                    socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
+                    socket.emit('Mensaje_Carro ',"Se ha quitado el producto del carro.");
                 })
-                .catch(err => {console.log(err);}); 
+                .catch(err => {req.logger.error(err);}); 
+                
             }
         ) ;
         }
         catch (error) {
-              console.log(error);
+            req.logger.error(error);
         }
         })
 
     socket.on("Agregar_Producto_Carro" ,  (qdata) => {
+        let req = {};
+        customLogger(req);
+
         try {
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
@@ -382,11 +375,12 @@ io.on('connection',  (socket) => {
             .then(function () {
                     socket.emit('Mensaje_Carro',`Se agrego el producto ${qdata.title} al carrito.`);
                 })
-                .catch(err => {console.log(err);}); 
+                
+                .catch(err => {req.logger.error(error);}); 
             }
 
         catch (error) {
-            console.log(error);
+            req.logger.error(error);  
         }
     }
     );
@@ -405,11 +399,16 @@ io.on('connection',  (socket) => {
             .then(function () {
                     socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");
                 })
-                .catch(err => {console.log(err);}); 
+                .catch(err => {            
+                    let req = {};
+                    customLogger(req);
+                        req.logger.error(error);  }); 
             })
         }
         catch (error) {
-            console.log(error);
+            let req = {};
+            customLogger(req);
+            req.logger.error(error);  
         }
     }
     );
@@ -418,9 +417,7 @@ io.on('connection',  (socket) => {
     socket.on("Cambiar_Rol_Usuario" ,  (email) => {
         try {
             let newRole = "premium";
-            // console.log('http://localhost:'+ config.port + '/api/users/'+ email);
             axios.get('http://localhost:'+ config.port + '/api/users/'+ email).then( (user) => {
-            console.log(user.data);
             if (user.data.role == "premium")
             {newRole = "User" }
             axios.get("http://localhost:8080/api/users/premium/" + user.data._id).then((user) => {
@@ -430,7 +427,10 @@ io.on('connection',  (socket) => {
             })
         }
         catch (error) {
-            console.log(error);
+            let req = {};
+            customLogger(req);
+            req.logger.error(error);  
+
         }
     }
     );

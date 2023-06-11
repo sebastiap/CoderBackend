@@ -1,4 +1,5 @@
 import {addService,getService,getByIdService,getByCodeService,getByUserService,getPaginatedService,updateService,deleteService} from "../services/ProductService.js";
+import { customLogger } from "../logger/logger.js";
 
 export default class ProductManager{
     constructor(path){
@@ -6,6 +7,8 @@ export default class ProductManager{
         this.idIndex = 0 ;
         this.path = path;
     }
+
+    get = {};
 
     isValid = (product) => {
         let value = true;
@@ -22,14 +25,14 @@ export default class ProductManager{
                 await this.get();
             }
             // TODOZ ver porque dejo de andar if (!this.isValid )
-            // if (!product.title || !product.description || !product.price 
-            //     || !product.status || !product.stock
-            //     || !product.category || !product.code 
-            //     || product.title === undefined|| product.description === undefined || product.price === undefined
-            //     || product.stock === undefined
-            //     || product.code === undefined
-            //     )
-            //     { return 2; }
+            if (!product.title || !product.description || !product.price 
+                || !product.status || !product.stock
+                || !product.category || !product.code 
+                || product.title === undefined|| product.description === undefined || product.price === undefined
+                || product.stock === undefined
+                || product.code === undefined
+                )
+                { return 2; }
 
             const existingProduct = await getByCodeService(product.code);
             if (existingProduct.length > 0){
@@ -44,13 +47,15 @@ export default class ProductManager{
 
 
         } catch (error) {
-            console.error("Error al insertar en MongoDB:" , error);
+            customLogger(req);
+            req.logger.error(error);
             return 3;
         }
 
     }
 
     get = async() => {
+        
         try{        
            let resultDB = await getService();
            let max = Math.max(...resultDB.map(o => o.id));
@@ -61,7 +66,8 @@ export default class ProductManager{
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                customLogger(req);
+                req.logger.error(error);
         }
 
     }
@@ -95,7 +101,8 @@ export default class ProductManager{
                      urlquery = "";
                 }
                 else{
-                    console.log('Some error ocurred or the query is not valid');
+                    customLogger(req);
+                    req.logger.error('Some error ocurred or the query is not valid');
                     status = false;
                     tquery = "";
                     payload = "Error";
@@ -121,7 +128,8 @@ export default class ProductManager{
         }
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                customLogger(req);
+                req.logger.error("Error al consultar en MongoDB:", error);
         }
 
     }
@@ -132,7 +140,8 @@ export default class ProductManager{
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                customLogger(req);
+                req.logger.error("Error al consultar en MongoDB:" , error);
         }
 
     }
@@ -142,7 +151,8 @@ export default class ProductManager{
            return resultDB;
         }
             catch(error){ 
-                console.log("Error al consultar en MongoDB:" , error); 
+                customLogger(req);
+                req.logger.error("Error al consultar en MongoDB:" , error);
         }
 
     }

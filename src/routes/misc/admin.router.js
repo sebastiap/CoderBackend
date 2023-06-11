@@ -18,7 +18,6 @@ router.get('/userroles',privateAccess,authorizationCall('admin'), async (req, re
     let usersUF = await usermanager.getAll();
     users = usersUF.map((user) => ({"id":user._id,"first_name":user.first_name, "last_name":user.last_name,"email":user.email,"role":user.role}));
     users = users.filter(user => user.role !== "admin");
-    console.log(config.port);
     const usercart = req.session.user.cart;
     const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
     res.render('userRoles',{title:"Administracion de Usuarios",port:config.port,cart:usercart,admin:userisadmin,users,style:"styles.css"})

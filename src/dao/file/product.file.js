@@ -36,8 +36,6 @@ export default class ProductManager{
             }
             // Agrega el producto al arreglo de productos
             products.push(product);
-
-            // console.log("Se agrego correctamente el producto con id", product.id);
             req.logger.info("Se agrego correctamente el producto con id" + product.id);
             await fs.promises.writeFile(this.path,JSON.stringify(products));
             return product;
@@ -99,7 +97,6 @@ export default class ProductManager{
          // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
         // fs.truncateSync(this.path + archivo);
         await fs.writeFileSync(this.path,JSON.stringify(allProducts));
-        // console.log("Se actualizo satisfactoriamente el producto con id", id);
         req.logger.info("Se actualizo satisfactoriamente el producto con id" + id);
 
         return allProducts;
@@ -145,17 +142,13 @@ export default class ProductManager{
 
     deletefromSocket = (id) => {
         const allProducts = this.getProductsSocket();
-
-        // console.log("Productos al momento de eliminar :", allProducts)
         const SearchedProductindex = allProducts.findIndex((prod)=> prod.id === id);
-        // console.log("Encontre para eliminar :", SearchedProductindex)
         if (SearchedProductindex ==-1 ) {
             console.error('No existe un producto con ese id');
             return 4;
         }
         allProducts.splice(SearchedProductindex, 1);
         console.log("Se elimino satisfactoriamente el producto con id", id);
-        // console.log("Los productos que quedaron son :", allProducts);
 
         fs.writeFileSync(this.path,JSON.stringify(allProducts));
         return allProducts;

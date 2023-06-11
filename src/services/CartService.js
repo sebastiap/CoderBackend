@@ -99,10 +99,7 @@ export const create = async (products) => {
         let exist = await getByIdService(cid);
         if (exist !== null) {
         let result = await empty(cid);
-
-        console.log(result.modifiedCount);
         if (result.modifiedCount != 1) {
-            console.log(exist);
             return "The cart was already empty.";
         }
         }

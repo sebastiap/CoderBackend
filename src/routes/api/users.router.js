@@ -69,7 +69,6 @@ router.get('/:mail',async (req, res) => {
 router.get('/premium/:uid', async (req, res) => {
         const userId = req.params.uid;
         let user = await manager.getById(userId);
-        console.log(user);
         let newRole
         if (user.role == "User"){
             newRole = "premium"; 
@@ -78,8 +77,8 @@ router.get('/premium/:uid', async (req, res) => {
             newRole = "User"; 
         } 
         else {
-            // TODOZ ver error
-            res.send({status: 'error',message: 'The user is an administrator. His role cannot be changed.'});
+            res.status(400).send({status: 'error',message: 'The user is an administrator. His role cannot be changed.'});
+            return;
         }
         manager.updateRole(user.email,newRole).then((user) => {
             res.send({status: 'success',message: 'The user with id ' + userId + ' was updated successfully. Now his role is ' + newRole});
@@ -91,13 +90,9 @@ router.get('/premium/:uid', async (req, res) => {
 router.delete('/',async (req, res) => {
         const allUsers = await manager.getAll();
         let users = allUsers.map((user) => ({"email":user.email,"last_conection": user.last_conection ?? "0"}));
-        // users.forEach(element => {
-        //     manager.updateLC(element.email, Date.now());
-        // });
         let limit = Date.now() - 172800000; // 2dias
         // let limit = Date.now() - 3600000; // 1hora 
         let usersToDelete = users.filter(user => user.last_conection <  limit );
-        console.log(usersToDelete);
 
         await usersToDelete.foreach(element => 
             {
