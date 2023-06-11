@@ -10,7 +10,7 @@ import dictErrores from "../../controllers/errors/enums.js";
 import { customLogger } from "../../logger/logger.js";
 import {generateduplicatedProductInfo,generateInvalidProductInfo,generateDatabaseErrorInfo,generateProdNotFoundInfo} from "../../controllers/errors/info.js";
 
-
+import {transport} from "../../../app.js"
 const router = Router();
 
 // Se agrega esto para asegurarnos que corra donde corra este codigo
@@ -172,11 +172,14 @@ catch (error) {
 }
 });
 
+// TODOZ Modificar el endpoint que elimina productos, para que, en caso de que el producto pertenezca a un usuario premium,
+// le envíe un correo indicándole que el producto fue eliminado.
 router.delete('/:pid', async (req,res)=> {
     try {
         customLogger(req);
         const id = parseInt(req.params.pid);
-        let result = await manager.delete(id);
+        let product = await manager.getById(id);
+        // let result = await manager.delete(id);
         if (result === dictErrores.PRODUCT_NOT_FOUND) {
             req.logger.error('A product with the specified id was not found.')
             throw CustomError.createError({
@@ -185,9 +188,26 @@ router.delete('/:pid', async (req,res)=> {
                 message: 'A product with the specified id was not found.',
                 code:dictErrores.PRODUCT_NOT_FOUND
                 });
-    // res.status(400).send({status:'error', message:'Some error occurred'});
 }
  else{
+    if (product.owner !== "admin"){
+        console.log(product.owner)
+        let result = await transport.sendMail({
+            from:"CoderNode",
+            to:product.owner,
+            subject:"Su Producto ha sido eliminado",
+            html:`<div>
+            <h1>Producto eliminado</h1>
+            <p>Lamentamos informarle que su Producto ${product.title} ha sido eliminado por un administrador.</p>
+            <img src="cid:Logo"/>
+            <div>`,
+            attachments:[{
+                filename:"SPIKAGAMES.png",
+                path:__dirname + "/src/public/img/SPIKAGAMES.png",
+                cid:"Logo"
+            }]
+        });
+}
     req.logger.info('Product with the specified id was successfully deleted');
     res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
  }

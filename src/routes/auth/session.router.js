@@ -66,6 +66,7 @@ router.post('/login',passportCall('login'), async (req, res) => {
 
          };
         customLogger(req);
+        let result = await manager.updateLC(req.user.email, Date.now());
         req.logger.info('user was logged in successfully.');
         res.send({status:'success', message: 'user was logged in successfully.'});
 });
@@ -98,13 +99,18 @@ router.post('/reset', async (req, res) => {
     }
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', async (req, res) => {
+    // console.log(req.session);
+    let user = req.session.user;
     req.session.destroy(err => {
         if (err) {return res.status(500).send({status:'error', message})}
     });
+    // user.last_connection = "ahora";
     customLogger(req);
     req.logger.info('User logout successfully.');
     currentCart = "Empty";
+    let result = await manager.updateLC(user.email, Date.now());
+    console.log(result);
     res.redirect('/');
 });
 

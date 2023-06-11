@@ -96,3 +96,5 @@ graph TD;
 ```
 ## Pendientes
 Editar productos (Admin/premium)
+Premium users crean productos con su owner
+Realizar el despliegue de tu aplicativo en la plataforma de tu elección (Preferentemente Railway.app, pues es la abarcada en el curso) y corroborar que se puede llevar a cabo un proceso de compra completo.

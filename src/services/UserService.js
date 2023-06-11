@@ -1,4 +1,4 @@
-import {create,getAll,getById,getOne,update,updateRole} from '../dao/mongo/user.mongo.js'
+import {create,getAll,getById,getOne,update,updateRole,updateLC,drop} from '../dao/mongo/user.mongo.js'
 import userDTO from './dto/user.dto.js';
 
 export const createService = async (newUser) => {
@@ -30,10 +30,19 @@ export const createService = async (newUser) => {
         const result = await updateRole(email,role);
             return result;
     }
+    export const updateLCService = async(email,role) => {
+        const result = await updateLC(email,role);
+            return result;
+    }
 
     export const validateService = (suser) => {
         let validator = new userDTO(suser);
         let validatedUser = validator.formatUser();
         return validatedUser;
+
+    }
+    export const deleteService = async (email) => {
+        const result = await drop(email);
+            return result;
 
     }

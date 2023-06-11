@@ -69,8 +69,13 @@ const socket = io();
 socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
-  if (pmail == undefined){
+  if (mail == undefined){
     ActualizarLista(data);
+  }
+  else{
+    console.log(data);
+    let newData = data.filter(data => data.owner === mail);
+    ActualizarLista(newData);
   }
 
 

@@ -33,4 +33,12 @@ export const updateRole = async(email,role) => {
         const result = await userModel.updateOne({email},{role:role});
             return result;
     }
+export const updateLC = async(email,LC) => {
+        const result = await userModel.updateOne({email},{last_conection:LC});
+            return result;
+    }
+export const drop = async(email,LC) => {
+        const result = await userModel.deleteOne({email});
+            return result;
+    }
   

@@ -10,7 +10,9 @@ const productmanager = new Productmanager;
 const usermanager = new UserManager;
 
 const router = Router();
-// realTimeProducts
+// Crear una vista para poder visualizar, modificar el rol 
+// y eliminar un usuario. Esta vista únicamente será accesible para el administrador del ecommerce
+
 router.get('/userroles',privateAccess,authorizationCall('admin'), async (req, res) => {
     let users = [];
     let usersUF = await usermanager.getAll();

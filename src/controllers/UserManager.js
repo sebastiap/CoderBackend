@@ -1,4 +1,4 @@
-import { createService,getAllService,getOneService,getByIdService,updateService,validateService,updateRoleService } from "../services/UserService.js";
+import { createService,getAllService,getOneService,getByIdService,updateService,validateService,updateRoleService,updateLCService,deleteService } from "../services/UserService.js";
 import config from "../config/config.js"
 export default class UserManager {
     constructor(path){
@@ -65,8 +65,16 @@ export default class UserManager {
                 const uuser = await updateRoleService( email,role ); 
                     return uuser;
             }
+    updateLC = async(email,LC) => {
+                const uuser = await updateLCService( email,LC ); 
+                    return uuser;
+            }
     validate = (suser) => {
             const uuser =  validateService( suser ); 
+                return uuser;
+            }
+    delete = (email) => {
+            const uuser =  deleteService( email ); 
                 return uuser;
             }
 

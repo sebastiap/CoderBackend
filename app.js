@@ -2,7 +2,7 @@ import express from "express";
 import session from "express-session";
 import passport from "passport";
 import MongoStore from "connect-mongo";
-import {generateProducts,validarURL,privateAccess,authorizationCall} from "./utils.js" ;
+import {generateProducts,validarURL,privateAccess,authorizationCall, formatearProductos} from "./utils.js" ;
 
 import config from "./src/config/config.js"
 
@@ -170,7 +170,7 @@ import nodemailer from 'nodemailer';
 import { addLogger,customLogger } from "./src/logger/logger.js";
 
 
-const transport = nodemailer.createTransport({
+export const transport = nodemailer.createTransport({
     service:'gmail',
     port:587,
     auth:{
@@ -243,8 +243,9 @@ io.on('connection',  (socket) => {
         // console.log(message);
         // req.logger.info(message);
         manager.getFromSocket().then((res) => {
+            // formatearProductos
         let mapProd = res.map(prod => (
-            {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id}));
+            {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id,owner:prod.owner}));
         let productos = validarURL(mapProd);
 
         socket.emit('Listado de Productos Actualizados',productos);
@@ -261,6 +262,24 @@ io.on('connection',  (socket) => {
             console.log("owner", owner);
             if (owner === "admin" || owner === result[0].owner) {
                 console.log("Puedo borrar!") 
+                if (owner !== "admin"){
+                    console.log(owner)
+                    transport.sendMail({
+                        from:"CoderNode",
+                        to:owner,
+                        subject:"Su Producto ha sido eliminado",
+                        html:`<div>
+                        <h1>Producto Eliminado</h1>
+                        <p>Lamentamos informarle que su Producto ${id} ha sido eliminado.</p>
+                        <img src="cid:Logo"/>
+                        <div>`,
+                        attachments:[{
+                            filename:"SPIKAGAMES.png",
+                            path:__dirname + "/src/public/img/SPIKAGAMES.png",
+                            cid:"Logo"
+                        }]
+                    });
+            }
                     manager.delete(id).then(result =>{
                             let result2 = manager.getFromSocket().then((res) => {
                                     let valor = validarURL(res);
