@@ -23,7 +23,8 @@ describe('Testing Router Productos',() => {
                 "code":"TEST",
                 "stock":25,
                 "category":"Misc",
-                "status":false
+                "status":true,
+                "owner":"admin"
                 }
 
         const {statusCode, ok, body} = await requester.post('/api/products/').send(testProduct);
@@ -33,6 +34,7 @@ describe('Testing Router Productos',() => {
         expect(body).to.have.property('newId');
         createdProduct = testProduct;
         idToDelete = body.newId;
+        console.log(idToDelete);
 
         
  
@@ -51,7 +53,8 @@ describe('Testing Router Productos',() => {
                 "code":"NEWTEST",
                 "stock":25,
                 "category":"Misc",
-                "status":false
+                "status":true,
+                "owner":"admin"
                 }
 
         const {statusCode, ok, body} = await requester.put('/api/products/'+idToDelete).send(testProduct);
@@ -70,7 +73,7 @@ describe('Testing Router Productos',() => {
 describe('Testing Router Productos',() => {
     describe('Testing Delete Product',()=> {
         it('El endpoint /api/products/ debe permitir borrar el nuevo producto',async () => {
-
+        console.log(idToDelete);
         const {statusCode, ok, body} = await requester.delete('/api/products/'+idToDelete);
         console.log(statusCode, ok, body);
         expect(statusCode).to.be.equal(200);
