@@ -32,7 +32,7 @@ En este modelo contamos con 3 capas base:
  * La capa de Vista o Renderizacion
 
 ## Entrega Actual 
-La entrega actual corresponde a la clase 30.
+La entrega actual corresponde al curso completo.
 
 ## Contenido - Practica Integradora
 

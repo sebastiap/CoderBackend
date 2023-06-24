@@ -67,11 +67,22 @@ router.get('/:mail',async (req, res) => {
 
 // TODOZ X Mover la ruta suelta /api/users/premium/:uid a un router específico para usuarios en /api/users/
 router.get('/premium/:uid', async (req, res) => {
+    console.log("HOLA");
         const userId = req.params.uid;
         let user = await manager.getById(userId);
         let newRole
+        user.documents =  [{name:"Identificación"}, {name:"Comprobante de domicilio"}, {name:"Comprobante de estado de cuenta"}];
+        let userDocuments = user.documents.map(doc => (doc.name));
+        // let userDocuments = ["Identificación","Comprobante de estado de cuenta","AlGO MAS","Comprobante de domicilio"];
+        console.log(userDocuments);
+
         if (user.role == "User"){
-            newRole = "premium"; 
+            if (userDocuments.includes("Identificación") && userDocuments.includes("Comprobante de domicilio") &&  userDocuments.includes("Comprobante de estado de cuenta")){
+                newRole = "premium"; 
+            }
+            else {
+                // newRole = "premiun";
+            }
         }
         else if (user.role == "premium"){
             newRole = "User"; 
