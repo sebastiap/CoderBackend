@@ -62,6 +62,7 @@ La entrega actual corresponde al curso completo.
 * Logeo por niveles con Winston
 * Valdria la pena usar Artillery para testing de performance?
 * Documentacion con Swagger(swagger-jsdocs y swagger-ui-express)
+* Subida de archivo de Multer
 
 
 ##  Patrones de diseño

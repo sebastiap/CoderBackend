@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 
 import nodemailer from 'nodemailer';
 import config from "../../config/config.js";
+import uploader from "../../../utils.js"
 
 const transport = nodemailer.createTransport({
     service:'gmail',
@@ -35,7 +36,19 @@ const manager = new UserManager(path.join(dirname,"../../data",'carrito.json'));
 // (Sólo si quiere pasar de user a premium, no al revés)
 
 
+router.post('/:uid/documents',uploader.single('file'),async (req, res) => {
+    const userId = req.params.uid;
+    if (!req.file){
+        return res.status(400).send({status: 'error', message: 'No se pudo guardar el archivo.'});
+    }
+    console.log(req.file);
+    let user = req.body;
+    user.profile = req.file.path;
+    // users.push(users)
+    res.send({status: 'success', message: 'Se ha logrado con exito guardar el archivo'})
 
+}
+);
 
 // TODOZ Desde el router de /api/users, crear tres rutas:
 // X GET  /  deberá obtener todos los usuarios, éste sólo debe devolver los datos principales como nombre, correo, tipo de cuenta (rol)
@@ -67,7 +80,6 @@ router.get('/:mail',async (req, res) => {
 
 // TODOZ X Mover la ruta suelta /api/users/premium/:uid a un router específico para usuarios en /api/users/
 router.get('/premium/:uid', async (req, res) => {
-    console.log("HOLA");
         const userId = req.params.uid;
         let user = await manager.getById(userId);
         let newRole

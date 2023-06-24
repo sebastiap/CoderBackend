@@ -8,6 +8,18 @@ const __dirname = path.dirname(filename);
 import bcrypt from "bcrypt";
 import passport from 'passport';
 import {faker} from '@faker-js/faker';
+import multer from 'multer';
+
+const storage = multer.diskStorage({
+    destination: function(req, res, cb) {
+        cb(null, __dirname+'/public/img')
+    },
+    filename: function(req, file, cb) {
+        cb(null, file.originalname)
+    }
+});
+
+export const uploader = multer({storage});
 
 //Funciones Genericas
 export const validarUrlIndividual = (product) => {
