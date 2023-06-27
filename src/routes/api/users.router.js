@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 
 import nodemailer from 'nodemailer';
 import config from "../../config/config.js";
-import uploader from "../../../utils.js"
+import {uploader} from "../../../utils.js";
 
 const transport = nodemailer.createTransport({
     service:'gmail',
@@ -35,17 +35,25 @@ const manager = new UserManager(path.join(dirname,"../../data",'carrito.json'));
 //devolver un error indicando que el usuario no ha terminado de procesar su documentación. 
 // (Sólo si quiere pasar de user a premium, no al revés)
 
-
-router.post('/:uid/documents',uploader.single('file'),async (req, res) => {
-    const userId = req.params.uid;
-    if (!req.file){
-        return res.status(400).send({status: 'error', message: 'No se pudo guardar el archivo.'});
+// TODOZ NO FUNCA
+router.post('/:uid/documents',uploader.single('file'), (req, res) => {
+    console.log("PASE");
+    try {
+        console.log("PASE");
+        const userId = req.params.uid;
+        if (!req.file){
+            return res.status(400).send({status: 'error', message: 'No se pudo guardar el archivo.'});
+        }
+        console.log(req.file);
+        let user = req.body;
+        user.profile = req.file.path;
+        // users.push(users)
+        res.send({status: 'success', message: 'Se ha logrado con exito guardar el archivo'})
+    } catch (error) {
+        console.log("error");
+        console.log(error);
     }
-    console.log(req.file);
-    let user = req.body;
-    user.profile = req.file.path;
-    // users.push(users)
-    res.send({status: 'success', message: 'Se ha logrado con exito guardar el archivo'})
+
 
 }
 );

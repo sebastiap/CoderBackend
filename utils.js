@@ -19,6 +19,7 @@ const storage = multer.diskStorage({
     }
 });
 
+// TODOZ hacer andar multer?
 export const uploader = multer({storage});
 
 //Funciones Genericas
