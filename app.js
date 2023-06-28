@@ -191,7 +191,7 @@ let result = await transport.sendMail({
     html:`<div>
     <h1>Recuperar Password</h1>
     <h1>Ingrese al siguiente link para resetear su password. Este link tiene validez por una hora.</h1>
-    <a href="http://localhost:${config.port}/auth/reset/${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
+    <a href="${config.localhost}:${config.port}/auth/reset/${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
     Presione para resetear su password
     <img src="cid:Logo"/>
     <div>`,

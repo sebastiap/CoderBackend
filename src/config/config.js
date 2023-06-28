@@ -21,5 +21,6 @@ export default {
     githubSecret:process.env.GITHUBSECRET,
     mail:process.env.MAIL,
     mailPassword:process.env.MAILPWD,
-    environment:environment
+    environment:environment,
+    localhost:process.env.LOCALHOST
 }
