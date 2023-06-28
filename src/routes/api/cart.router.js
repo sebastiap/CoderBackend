@@ -180,7 +180,7 @@ router.get('/:cid/purchase',async (req, res) => {
         if (productos.length > 0){
         req.logger.warning("Productos que no pudieron ser comprados : "+ productos.length ); 
         }
-        res.render('purchase',{title:"Compra Exitosa!",port:config.port,cart:cartid,left:productos,ticketData,style:"styles.css"})
+        res.render('purchase',{title:"Compra Exitosa!",host:config.localhost,port:config.port,cart:cartid,left:productos,ticketData,style:"styles.css"})
     // res.send({status: 'success',message: 'The purchase was successful.'});
     }
     return result;

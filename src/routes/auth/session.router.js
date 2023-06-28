@@ -12,11 +12,11 @@ export default router;
 
 
 router.get('/login',publicAccess, async (req, res) => {
-    res.render('auth/login',{title:"Spika Games - Login",port:config.port,style:"login.css"})
+    res.render('auth/login',{title:"Spika Games - Login",host:config.localhost,port:config.port,style:"login.css"})
    });
 router.get('/reset',publicAccess, async (req, res) => {
     let reset = false;
-    res.render('auth/reset',{title:"Resetear Password",port:config.port,reset,style:"login.css"})
+    res.render('auth/reset',{title:"Resetear Password",host:config.localhost,port:config.port,reset,style:"login.css"})
    });
 
 router.get('/reset/:time',publicAccess, async (req, res) => {
@@ -25,16 +25,16 @@ router.get('/reset/:time',publicAccess, async (req, res) => {
     let limit = Number(time) + 3600000; 
     if (now < limit){
         let reset = true;
-        res.render('auth/reset',{title:"Resetear Password",port:config.port,reset,style:"login.css"})
+        res.render('auth/reset',{title:"Resetear Password",host:config.localhost,port:config.port,reset,style:"login.css"})
     }
     else
     {
         let timeerror = "El link utilizado ha expirado. Intenta nuevamente."
-        res.render('auth/reset',{title:"Resetear Password",port:config.port,reset:false,timeerror,style:"login.css"})
+        res.render('auth/reset',{title:"Resetear Password",host:config.localhost,port:config.port,reset:false,timeerror,style:"login.css"})
     }
 });
 router.get('/register',publicAccess, async (req, res) => {
-    res.render('auth/register',{title:"Spika Games - Registro",port:config.port,style:"login.css"})
+    res.render('auth/register',{title:"Spika Games - Registro",host:config.localhost,port:config.port,style:"login.css"})
    });
 
 router.get('/fail-register',publicAccess, async (req, res) => {

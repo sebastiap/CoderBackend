@@ -37,7 +37,7 @@ router.get("/",privateAccess,authorizationCall('User'),async(req,res) =>{
             code: prod.code,category: prod.category,id:prod.id,status:prod.status}));
     let pageConfig = {page:page, query: query, prev:prev,next:next,cart:cart ,nextLink:productosDB.nextLink, prevLink:productosDB.prevLink};
     const premium = (req.session.user.role == "premium");
-    res.render('products',{title:"Nuestros Productos",port:config.port,productos,pageConfig,user:req.session.user,cart:cart,premium,style:"styles.css"});
+    res.render('products',{title:"Nuestros Productos",host:config.localhost,port:config.port,productos,pageConfig,user:req.session.user,cart:cart,premium,style:"styles.css"});
 })
 
 

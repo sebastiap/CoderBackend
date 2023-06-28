@@ -162,7 +162,7 @@ else {
 const usercart = req.session.user.cart;
 const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
 const premium = (req.session.user.role == "premium");
-res.render('home',{title:"Home",port:config.port,cart:usercart,admin:userisadmin,premium,productos,messages,style:"styles.css"})
+res.render('home',{title:"Home",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,premium,productos,messages,style:"styles.css"})
 
 }
 );
@@ -231,7 +231,7 @@ app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {
     //restringir a admin?
     const usercart = req.session.user.cart;
     const premium = (req.session.user.role == "premium");
-    res.render('chat',{title:"Bienvenido al Chat",port:config.port,premium,cart:usercart,messages,style:"styles.css"})
+    res.render('chat',{title:"Bienvenido al Chat",host:config.localhost,port:config.port,premium,cart:usercart,messages,style:"styles.css"})
    })
 
 // Socket
@@ -291,7 +291,7 @@ io.on('connection',  (socket) => {
         try {
             let producto = context.producto;
             let creator = context.creator;
-            axios.post("http://localhost:"+ config.port + "/api/products/",producto)
+            axios.post(config.localhost + ":" + config.port + "/api/products/",producto)
             .then(function () {
                 manager.getFromSocket().then((res) => {
                     let valor = validarURL(res);
