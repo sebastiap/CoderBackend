@@ -342,11 +342,11 @@ io.on('connection',  (socket) => {
             let req = {};
             customLogger(req);
             let id = qdata.id;
-            axios.get('http://localhost:'+ config.port + '/api/products/'+id).then( (product) => {
+            axios.get(config.localhost + ':'+ config.port + '/api/products/'+id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
-            axios.delete(`http://localhost:${config.port}/api/carts/${cart}/product/${dataid}`)
+            axios.delete(`${config.localhost}:${config.port}/api/carts/${cart}/product/${dataid}`)
             .then(function () {
                     socket.emit('Mensaje_Carro ',"Se ha quitado el producto del carro.");
                 })
@@ -367,7 +367,7 @@ io.on('connection',  (socket) => {
         try {
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
-            let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/${qdata.product}`
+            let putURL = `${config.localhost}:${config.port}/api/carts/${cart}/products/${qdata.product}`
             let putData = {
                 "quantity":qdata.quantity
                 };
