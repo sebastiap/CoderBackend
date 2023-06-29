@@ -40,7 +40,7 @@ router.get('/:cid',privateAccess,authorizationCall('User'), async (req, res) => 
         }
     req.logger.info("Accediendo al Carro");
     const premium = (req.session.user.role == "premium");
-    res.render('carts',{title:"Spika Games - Carro de Compras",port:config.port,cartProducts,cart:cartId,premium,style:"styles.css"})
+    res.render('carts',{title:"Spika Games - Carro de Compras",host:config.localhost,port:config.port,cartProducts,cart:cartId,premium,style:"styles.css"})
    }
 )
 router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, res) => {
@@ -56,7 +56,7 @@ router.get('/:cid/tickets',privateAccess,authorizationCall('User'), async (req, 
     }))
     req.logger.info("Viendo tickets del usuario")
     const premium = (req.session.user.role == "premium");
-    res.render('tickets',{title:"Spika Games - Compras Realizadas",port:config.port,Ptitle:title,userTickets,cart:cartId,premium,style:"styles.css"})
+    res.render('tickets',{title:"Spika Games - Compras Realizadas",host:config.localhost,port:config.port,Ptitle:title,userTickets,cart:cartId,premium,style:"styles.css"})
    }
 )
 

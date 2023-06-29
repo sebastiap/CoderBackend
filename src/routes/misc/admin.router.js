@@ -20,14 +20,14 @@ router.get('/userroles',privateAccess,authorizationCall('admin'), async (req, re
     users = users.filter(user => user.role !== "admin");
     const usercart = req.session.user.cart;
     const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-    res.render('userRoles',{title:"Administracion de Usuarios",port:config.port,cart:usercart,admin:userisadmin,users,style:"styles.css"})
+    res.render('userRoles',{title:"Administracion de Usuarios",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,users,style:"styles.css"})
    });
 
 router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
     let productos = [];
     const usercart = req.session.user.cart;
     const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-    res.render('realTimeProducts',{title:"Administracion de Productos",port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
+    res.render('realTimeProducts',{title:"Administracion de Productos",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
    });
 
 router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async (req, res) => {
@@ -38,7 +38,7 @@ router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async 
     let productosDB = await productmanager.getByUser(req.session.user.email);
     productos = formatearProductos(productosDB);
     const premium = (req.session.user.role == "premium");
-    res.render('premiumProducts',{title:"Administracion de Productos Premium",port:config.port,cart:usercart,admin:userisadmin,premium,productos,mail,style:"styles.css"})
+    res.render('premiumProducts',{title:"Administracion de Productos Premium",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,premium,productos,mail,style:"styles.css"})
    });
 
    router.get('/tickets',privateAccess,authorizationCall('admin'), async (req, res) => {
@@ -52,7 +52,7 @@ router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async 
         amount: ticket.amount,
         user:ticket.purchaser
     }))
-    res.render('tickets',{title:"Spika Games - Compras de Usuarios",port:config.port,Ptitle:title,userTickets,cart:usercart,admin:userisadmin,style:"styles.css"})
+    res.render('tickets',{title:"Spika Games - Compras de Usuarios",host:config.localhost,port:config.port,Ptitle:title,userTickets,cart:usercart,admin:userisadmin,style:"styles.css"})
    });
 
 export default router;
