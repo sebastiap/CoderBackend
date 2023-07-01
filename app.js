@@ -363,7 +363,7 @@ io.on('connection',  (socket) => {
     socket.on("Agregar_Producto_Carro" ,  (qdata) => {
         let req = {};
         customLogger(req);
-        console.log("Agregar_Producto_Carro");
+        console.log("Agregar_Producto_Carro"); 
 
         try {
             let cart = currentCart;
