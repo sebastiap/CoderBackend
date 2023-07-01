@@ -21,7 +21,8 @@ const QuantityChange = async (id,q) => {
 
 const AddtoCart = async (productId) => {
   let stringId = productId;
-  let productToAdd = await axios.get('http://localhost:'+ port + '/api/products/'+stringId);
+  let productToAdd = await axios.get(config.localhost +':'+ port + '/api/products/'+stringId);
+  // let productToAdd = await axios.get(config.localhost +'http://localhost:'+ port + '/api/products/'+stringId);
   let dataid = productToAdd.data[0]._id;
   let owner = productToAdd.data[0].owner;
 

@@ -49,14 +49,14 @@
     </div>
     <div class="formDiv sortDiv">
         <div>
-            <a id="aport" href="http://localhost:{{port}}/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
-            <a href="http://localhost:{{port}}/products/?query=Games&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
-            <a href="http://localhost:{{port}}/products/?query=Clothing&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
-            <a href="http://localhost:{{port}}/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
+            <a id="aport" href="{{localhost}}:{{port}}/products/"><input  class="button" type="button" onclick="" name="" value="Todos"></a>
+            <a href="{{localhost}}:{{port}}/products/?query=Games&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Games"></a>
+            <a href="{{localhost}}:{{port}}/products/?query=Clothing&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Clothing"></a>
+            <a href="{{localhost}}:{{port}}/products/?query=Misc&sort={{pageConfig.sort}}&page=1"><input  class="button" type="button" onclick="" name="" value="Misc"></a>
         </div>
         <div>
-            <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
-            <a href="http://localhost:{{port}}/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
+            <a href="{{localhost}}:{{port}}/products/?query={{pageConfig.query}}&sort=ASC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Ascendente"></a>
+            <a href="{{localhost}}:{{port}}/products/?query={{pageConfig.query}}&sort=DESC&page={{pageConfig.page}}"><input  class="pagebutton" type="button" onclick="" name="" value="Orden Descendente"></a>
         </div>
     </div>
 </div>
