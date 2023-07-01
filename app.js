@@ -348,7 +348,7 @@ io.on('connection',  (socket) => {
             if (cart == "Empty") { socket.emit('Refrescar'); return }
             axios.delete(`${config.localhost}:${config.port}/api/carts/${cart}/product/${dataid}`)
             .then(function () {
-                    socket.emit('Mensaje_Carro ',"Se ha quitado el producto del carro.");
+                    socket.emit('Mensaje_Carro',"Se ha quitado el producto del carro.");
                 })
                 .catch(err => {req.logger.error(err);}); 
                 
@@ -387,14 +387,16 @@ io.on('connection',  (socket) => {
 
     socket.on("Cambiar_Cantidad_Carro" ,  (qdata) => {
         try {
-            axios.get('http://localhost:'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
+            axios.get(config.localhost + ':'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
+            // axios.get('http://localhost:'+ config.port + '/api/products/'+ qdata.id).then( (product) => {
             let dataid = product.data[0]._id;
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
             let putData = {
                 "quantity":qdata.quantity
                 };
-              let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
+            //   let putURL = `http://localhost:${config.port}/api/carts/${cart}/products/`+dataid;
+              let putURL = `${config.localhost}:${config.port}/api/carts/${cart}/products/`+dataid;
               axios.put(putURL,putData)
             .then(function () {
                     socket.emit('Mensaje_Carro',"Se ha agregado una unidad.");

@@ -66,7 +66,8 @@ const socket = io();
 socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
-  if (mail == undefined){
+  console.log(mail);
+  if (mail == undefined || mail.length == 0) {
     ActualizarLista(data);
   }
   else{
