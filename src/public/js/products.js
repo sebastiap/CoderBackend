@@ -1,6 +1,5 @@
 const socket = io();
 var url_string = window.location;
-console.log(window.location);
 var port = url_string.port;
 var origin = url_string.origin;
 let pmail = document.getElementById("mail");
@@ -12,6 +11,21 @@ if (pmail != undefined) {
 const changeRole = async (mail) => {
   socket.emit("Cambiar_Rol_Usuario" , mail);
 };
+const deleteUser = async (mail) => {
+  Swal.fire({
+    title: "Eliminar Usuario",
+    text: "Estas seguro que desea borrar el usuario?",
+    confirmButtonText: 'Eliminar',
+    cancelButtonText: 'Cancelar',
+    allowOutsideClick: false,
+    showCancelButton: true,
+}).then((result) => {
+  if (result.isConfirmed){
+    socket.emit("Borrar_Usuario" , mail);
+  }
+});
+};
+
 const deleteCart = async (id) => {
   let qdata = {id:id};
   socket.emit("Borrar_Producto_Carro" , qdata);
@@ -68,6 +82,18 @@ socket.on('Rol_Cambiado',message =>{
 
   Swal.fire({
     title: 'Cambio de Rol de Usuario',
+    toast: true,
+    icon:"success",
+    text: message,
+    position:"top-end",
+    showConfirmButton: false,
+    timer:2000
+});
+});
+socket.on('Usuario_Eliminado',message =>{
+
+  Swal.fire({
+    title: 'Usuario Eliminado por Administrador',
     toast: true,
     icon:"success",
     text: message,

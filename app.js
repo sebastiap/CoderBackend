@@ -437,4 +437,20 @@ io.on('connection',  (socket) => {
         }
     }
     );
+    socket.on("Borrar_Usuario" ,  (email) => {
+        try {
+            // axios.get(config.localhost + ':'+ config.port + '/api/users/'+ email).then( (user) => {
+            axios.delete(config.localhost + ":"+ config.port + "/api/users/" + email).then((user) => {
+                socket.emit('Usuario_Eliminado',"Se ha eliminado el usuario " + email);
+        }
+            )
+            }
+        catch (error) {
+            let req = {};
+            customLogger(req);
+            req.logger.error(error);  
+
+        }
+    }
+    );
 });

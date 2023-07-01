@@ -16,13 +16,6 @@ export default class UserManager {
         }
     }
 
-    // clasify = (user) => {
-    //     let role = "User";
-    //     let adminrole = this.isAdmin(user);
-    //     if (adminrole) {role = adminrole}
-    //     return role;
-    // }
-
     isAdmin = (username,password) => {
         let role = "User";
         if (username.slice(0,5) === 'admin'){

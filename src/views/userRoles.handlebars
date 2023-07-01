@@ -16,8 +16,10 @@
                 <p><b>Rol Actual:</b> {{this.role}}</p>
                 {{#if this.email}}
                 <input  class="button" type="button" onclick="changeRole('{{this.email}}')" name="" value="Cambiar Rol">
+                <input  class="button" type="button" onclick="deleteUser('{{this.email}}')" name="" value="Eliminar Usuario">
                 {{else}}
                 <a href="/api/users/premium/{{this.id}}">Cambiar Rol</a>
+                <input  class="button" type="button" onclick="deleteUser('{{this.email}}')" name="" value="Eliminar Usuario">
                 {{/if }}
             </div>
             {{/each }}

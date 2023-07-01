@@ -71,7 +71,7 @@ router.get('/',async (req, res) => {
     else {
         res.status(200).send({status: 'ok',message: 'A lot of users', payload:result})
     }
-    // res.send("result");
+    res.send("result");
 });
 
 router.get('/:mail',async (req, res) => {
@@ -94,7 +94,6 @@ router.get('/premium/:uid', async (req, res) => {
         user.documents =  [{name:"Identificación"}, {name:"Comprobante de domicilio"}, {name:"Comprobante de estado de cuenta"}];
         let userDocuments = user.documents.map(doc => (doc.name));
         // let userDocuments = ["Identificación","Comprobante de estado de cuenta","AlGO MAS","Comprobante de domicilio"];
-        console.log(userDocuments);
 
         if (user.role == "User"){
             if (userDocuments.includes("Identificación") && userDocuments.includes("Comprobante de domicilio") &&  userDocuments.includes("Comprobante de estado de cuenta")){
@@ -149,13 +148,13 @@ router.delete('/',async (req, res) => {
         res.status(200).send({status: 'OK',message: 'Usuarios inactivos', payload:usersToDelete})
     // }
 });
-router.delete('/:cid',async (req, res) => {
-        const cartid = req.params.cid;
-        const result = await manager.delete(cartid);
-        if (result === "A cart with that id does not exist.") { res.send({status: 'error', message: 'A cart with that id does not exist.'}) }
-        else if (result === "The Cart id is invalid") { res.send({status: 'error', message: 'The Cart id is invalid.'}) }
+router.delete('/:email',async (req, res) => {
+        const email = req.params.email;
+        const result = await manager.delete(email);
+        if (result === "A user with that id does not exist.") { res.send({status: 'error', message: 'A user with that id does not exist.'}) }
+        else if (result === "The User id is invalid") { res.send({status: 'error', message: 'The User id is invalid.'}) }
         else {
-        res.send({status: 'success',message: 'The cart with id ' + cartid + ' is now empty.'});
+        res.send({status: 'success',message: 'The user with id ' + email + ' was deleted.'});
         return result;
 }});
     
