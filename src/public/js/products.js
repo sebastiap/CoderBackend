@@ -1,6 +1,8 @@
 const socket = io();
 var url_string = window.location;
+console.log(window.location);
 var port = url_string.port;
+var origin = url_string.origin;
 let pmail = document.getElementById("mail");
 let mail = "";
 if (pmail != undefined) {
@@ -19,9 +21,10 @@ const QuantityChange = async (id,q) => {
   socket.emit("Cambiar_Cantidad_Carro" , qdata);
 };
 
-const AddtoCart = async (productId) => {
+const AddtoCart = async (productId) => { 
   let stringId = productId;
-  let productToAdd = await axios.get(config.localhost +':'+ port + '/api/products/'+stringId);
+  // let productToAdd = await axios.get(localhost +':'+ port + '/api/products/'+stringId);
+  let productToAdd = await axios.get(origin + '/api/products/'+stringId);
   // let productToAdd = await axios.get(config.localhost +'http://localhost:'+ port + '/api/products/'+stringId);
   let dataid = productToAdd.data[0]._id;
   let owner = productToAdd.data[0].owner;
