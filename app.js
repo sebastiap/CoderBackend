@@ -422,7 +422,7 @@ io.on('connection',  (socket) => {
             axios.get(config.localhost + ':'+ config.port + '/api/users/'+ email).then( (user) => {
             if (user.data.role == "premium")
             {newRole = "User" }
-            axios.get(config.localhost + ":8080/api/users/premium/" + user.data._id).then((user) => {
+            axios.get(config.localhost + ":"+ config.port + "/api/users/premium/" + user.data._id).then((user) => {
                 socket.emit('Rol_Cambiado',"Se ha cambiado el rol del usuario a " + newRole);
         }
             )
