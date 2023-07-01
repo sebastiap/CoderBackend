@@ -363,11 +363,12 @@ io.on('connection',  (socket) => {
     socket.on("Agregar_Producto_Carro" ,  (qdata) => {
         let req = {};
         customLogger(req);
+        console.log("Agregar_Producto_Carro");
 
         try {
             let cart = currentCart;
             if (cart == "Empty") { socket.emit('Refrescar'); return }
-            let putURL = `${config.localhost}:${config.port}/api/carts/${cart}/products/${qdata.product}`
+            let putURL = `${config.localhost}:${config.port}/api/carts/${cart}/products/${qdata.product}`;
             let putData = {
                 "quantity":qdata.quantity
                 };
