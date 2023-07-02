@@ -180,8 +180,6 @@ router.delete('/:pid', async (req,res)=> {
         const id = parseInt(req.params.pid);
         let product = await manager.getById(id);
         let result = await manager.delete(id);
-        // let result = 1;
-        console.log("LLEGUE ACA?");
         if (result === dictErrores.PRODUCT_NOT_FOUND) {
             req.logger.error('A product with the specified id was not found.')
             throw CustomError.createError({
@@ -192,9 +190,7 @@ router.delete('/:pid', async (req,res)=> {
                 });
         }
         else{
-            console.log("LLEGUE ACA??",product);
             if (product[0].owner !== "admin"){
-                console.log("LLEGUE ACA???",product[0].owner);
                 let result2 = await transport.sendMail({
                     from:"CoderNode",
                     to:product[0].owner,
@@ -211,7 +207,6 @@ router.delete('/:pid', async (req,res)=> {
                     }]
                 });
         }
-        console.log("LLEGUE ACA????");
             req.logger.info('Product with the specified id was successfully deleted');
             res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
         }
