@@ -85,7 +85,8 @@ const initializePassport = () => {
         clientID:config.githubId, 
         clientSecret:config.githubSecret,
         // callbackURL:'http://localhost:'+ config.port + '/auth/github-callback'
-        callbackURL: config.localhost +':'+ config.port + '/auth/github-callback'
+        callbackURL: config.localhost +':'+ config.port + '/auth/github-callback',
+        redirect_uri:config.localhost +':'+ config.port + '/auth/github-callback'
     }, async (accessToken,refreshToken,profile,done) => {
         try {
             const user = await manager.getOne(profile._json.email);
