@@ -256,35 +256,15 @@ io.on('connection',  (socket) => {
     socket.on("Producto Borrado" ,async data =>{
         let id = data.id;
         let owner = data.owner;
-       let algo = await manager.getById(id).then(result =>{
-            if (owner === "admin" || owner === result[0].owner) {
-                if (owner !== "admin"){
-                    transport.sendMail({
-                        from:"CoderNode",
-                        to:owner,
-                        subject:"Su Producto ha sido eliminado",
-                        html:`<div>
-                        <h1>Producto Eliminado</h1>
-                        <p>Lamentamos informarle que su Producto con ${id} ha sido eliminado.</p>
-                        <img src="cid:Logo"/>
-                        <div>`,
-                        attachments:[{
-                            filename:"SPIKAGAMES.png",
-                            path:__dirname + "/src/public/img/SPIKAGAMES.png",
-                            cid:"Logo"
-                        }]
-                    });
-            }
-                    manager.delete(id).then(result =>{
-                            let result2 = manager.getFromSocket().then((res) => {
-                                    let valor = validarURL(res);
-                                    socket.emit('Listado de Productos Actualizados',valor);
-                                    socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${id}`);
+        axios.delete(`${config.localhost}:${config.port}/api/products/${id}`).then(result =>{
+            console.log("LLEGUE ACA AL MENOS");
+                                    let result2 = manager.getFromSocket().then((res) => {
+                                            let valor = validarURL(res);
+                                            socket.emit('Listado de Productos Actualizados',valor);
+                                            socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${id}`);
+                                        });
+                                        return result2;
                                 });
-                                return result2;
-                        })
-                    }
-    });     
     })
 
     socket.on("Ingresar Nuevo Producto", context => {
@@ -438,8 +418,7 @@ io.on('connection',  (socket) => {
     }
     );
     socket.on("Borrar_Usuario" ,  (email) => {
-        try {
-            // axios.get(config.localhost + ':'+ config.port + '/api/users/'+ email).then( (user) => {
+        try { 
             axios.delete(config.localhost + ":"+ config.port + "/api/users/" + email).then((user) => {
                 socket.emit('Usuario_Eliminado',"Se ha eliminado el usuario " + email);
         }

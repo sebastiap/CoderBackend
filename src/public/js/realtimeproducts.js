@@ -12,7 +12,9 @@ let mensajeConfirmacion = document.getElementById("mensajeConfirmacion");
 let pmail = document.getElementById("mail");
 let mail = "";
 if (pmail != undefined) {
-  mail = String(pmail.innerHTML);
+  let oper = String(pmail.innerHTML);
+  mail = oper.trim();
+  console.log(mail);
 }
 
 
@@ -43,9 +45,11 @@ const ActualizarLista = (lista) => {
     <p><b>Stock Disponible::</b> ${producto.stock}</p>
     </p><input class="button" type="button" onclick="Borro(${producto.id})" name="" value="Borrar"></div>`});
     if (lista.length > 0) 
-    {ltitle.innerHTML = 'Lista de Productos Actuales';
+    {
+    ltitle.innerHTML = 'Lista de Productos Actuales';
     div.innerHTML = `   ${contenido}  `;
-    npdiv.innerHTML = '<div></div>'}
+    // npdiv.innerHTML = '<div></div>';
+  }
     else {
       ltitle.innerHTML = 'No hay productos disponibles en este momento.';
       div.innerHTML = '';
@@ -66,7 +70,6 @@ const socket = io();
 socket.emit('Client_Connect', "Cliente Conectado");
 
 socket.on("Listado de Productos Actualizados", data => {
-  console.log(mail);
   if (mail == undefined || mail.length == 0) {
     ActualizarLista(data);
   }

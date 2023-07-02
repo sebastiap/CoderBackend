@@ -1,4 +1,5 @@
 import { Router } from "express";
+import __dirname from '../../../utils.js';
 import ProductManager from "../../controllers/ProductManager.js";
 import path from 'path';
 import { fileURLToPath } from "url";
@@ -175,11 +176,11 @@ catch (error) {
 // le envíe un correo indicándole que el producto fue eliminado.
 router.delete('/:pid', async (req,res)=> {
     try {
-        
         customLogger(req);
         const id = parseInt(req.params.pid);
         let product = await manager.getById(id);
         let result = await manager.delete(id);
+        // let result = 1;
         console.log("LLEGUE ACA?");
         if (result === dictErrores.PRODUCT_NOT_FOUND) {
             req.logger.error('A product with the specified id was not found.')
@@ -191,12 +192,12 @@ router.delete('/:pid', async (req,res)=> {
                 });
         }
         else{
-            console.log("LLEGUE ACA??");
-            if (product.owner !== "admin"){
-                console.log("LLEGUE ACA???");
+            console.log("LLEGUE ACA??",product);
+            if (product[0].owner !== "admin"){
+                console.log("LLEGUE ACA???",product[0].owner);
                 let result2 = await transport.sendMail({
                     from:"CoderNode",
-                    to:product.owner,
+                    to:product[0].owner,
                     subject:"Su Producto ha sido eliminado",
                     html:`<div>
                     <h1>Producto eliminado</h1>
@@ -210,7 +211,7 @@ router.delete('/:pid', async (req,res)=> {
                     }]
                 });
         }
-
+        console.log("LLEGUE ACA????");
             req.logger.info('Product with the specified id was successfully deleted');
             res.send({status: 'success', message: 'Product with the specified id was successfully deleted'});
         }
