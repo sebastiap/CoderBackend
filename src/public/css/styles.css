@@ -156,6 +156,10 @@ to{
     display: flex;
     justify-content: center;
 }
+
+.margined{
+    margin-bottom: 3vh;
+}
 #NoProdHero .noPdiv {
 display: flex;
 flex-direction: row;
@@ -234,6 +238,7 @@ margin-bottom: 5vh;
     margin-bottom: 3em;
 }
 
+
 .button {
     padding: 10px 24px;
     background-color: slateblue;
@@ -247,6 +252,12 @@ margin-bottom: 5vh;
     border-color:  black;
     color: white;
     /* border-radius: 20%; */
+}
+
+.bigbutton{
+    height:20vh;
+    width:50vh;
+    font-size: 3rem;
 }
 
 .pagebutton{

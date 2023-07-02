@@ -91,7 +91,8 @@ const initializePassport = () => {
             const user = await manager.getOne(profile._json.email);
             // const user = await UserManager.findOne({email:profile._json.email})
             if (!user) {
-                const resultCart = await cartModel.create({"products":[]});
+
+                const resultCart = await cartmanager.aproveCreation("User",{"products":[]});
                 const newUser = {
                     first_name:profile._json.name,
                     last_name:'',
@@ -107,6 +108,7 @@ const initializePassport = () => {
                 done(null,user);
             }
         } catch (error) {
+            console.log(error);
             done(error);
             
         }
