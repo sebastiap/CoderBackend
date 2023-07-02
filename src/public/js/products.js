@@ -89,6 +89,7 @@ socket.on('Rol_Cambiado',message =>{
     showConfirmButton: false,
     timer:2000
 });
+setTimeout(() => {window.location.reload()}, 1000);
 });
 socket.on('Usuario_Eliminado',message =>{
 
