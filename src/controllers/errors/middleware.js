@@ -1,8 +1,6 @@
 import errorDictionary from './enums.js'
 
-//middleware de errores
 export default (error,req,res,next) => {
-    // if (error != undefined) {
 
     switch(error.code){
         case errorDictionary.PRODUCT_CODE_DUPLICATED:
@@ -23,7 +21,6 @@ export default (error,req,res,next) => {
                 error:"unhandled error"});
             break;
     }
-// }
     next()
 
 }

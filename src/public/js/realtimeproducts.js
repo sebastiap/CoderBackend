@@ -48,7 +48,6 @@ const ActualizarLista = (lista) => {
     {
     ltitle.innerHTML = 'Lista de Productos Actuales';
     div.innerHTML = `   ${contenido}  `;
-    // npdiv.innerHTML = '<div></div>';
   }
     else {
       ltitle.innerHTML = 'No hay productos disponibles en este momento.';

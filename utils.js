@@ -1,7 +1,5 @@
 import path from 'path';
 import { fileURLToPath } from "url";
-// Se agrega esto para asegurarnos que corra donde corra este codigo
-// se utilize el path relativo a donde este corriendo
 const filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(filename);
 
@@ -21,7 +19,6 @@ const storage = multer.diskStorage({
 
 export const uploader = multer({storage});
 
-//Funciones Genericas
 export const validarUrlIndividual = (product) => {
     if (!product.thumbnail || product.thumbnail.length < 10 || product.thumbnail == "" || product.thumbnail == "Sin imagen" || typeof product.thumbnail != "string") {
         product.thumbnail = "https://picsum.photos/200/300";
@@ -34,7 +31,6 @@ export const formatearProductos = (productos) => {
 }
 
 export const validarURL = (listadoProductos) => {
-    //Validar por formulario o que la URL empiece con http
     listadoProductos.map((product => { 
         validarUrlIndividual(product);
     }
@@ -44,16 +40,13 @@ export const validarURL = (listadoProductos) => {
 
 }
 
-//Funciones de encriptacion
 export const createHash = (password) => 
 bcrypt.hashSync(password,bcrypt.genSaltSync(10));
 
 export const isValidPassword  = (user,password ) => 
-// bcrypt.compare(user_entered_password, database_encrypted_password)
     bcrypt.compareSync(password,user.password);
 
 
-// Funciones de Validacion de Acceso
 export const publicAccess = (req, res,next) => {
     if (req.session.user) return res.redirect('/products/');
     next();

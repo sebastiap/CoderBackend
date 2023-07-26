@@ -1,4 +1,4 @@
-import { create as createService,getAll as getAllService,getByIdService,getByUserService } from "../services/TicketService.js";
+import { create as createService,getAll as getAllService,getByIdService,getByUserService } from "../services/ticket.service.js";
 export default class TicketManager {
     constructor(path){
         this.idIndex = 0 ;

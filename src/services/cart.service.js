@@ -37,38 +37,12 @@ export const create = async (products) => {
     }
 
 
-    // export const addProductService = async (cid,productId, quantity) => {
-    //     const cartToUpdate = await getOne(cid);
-    //     let productToAdd;
-    //     let productos = cartToUpdate.products;
-
-    //     getProduct(productId).then((productExist) => {
-    //     if (productExist < 0) {
-    //         return 4;
-    //     }
-    //     })
-    //     const SearchedProductindex = productos.findIndex((prod)=> JSON.stringify(prod.product) == productId);
-    //     if (SearchedProductindex < 0 ) {
-    //     productToAdd = {product:productId, quantity:quantity};
-    //     }
-    //     else {
-    //         let newQuantity = productos[SearchedProductindex].quantity + quantity;
-    //         productToAdd = {product: productId, quantity: newQuantity};
-    //         productos.splice(SearchedProductindex,1);
-    //     }
-    //     productos.push(productToAdd);
-    //     let result = await addProductToCart(cid,cartToUpdate);
-    //     if (result.modifiedCount != 1) {
-    //         return 4;
-    //     }
-    //     return 1;
-    // }
+    
 
     export const addQuantityService = async (cid,productId, quantity) => {
 
         const cartToUpdate = await getByIdService(cid);
         if (cartToUpdate === "Cart not found" || cartToUpdate === null){ return 5 }
-        // "A cart with that id does not exist."
         let productToAdd;
         let productos = cartToUpdate.products;
 

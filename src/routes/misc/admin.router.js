@@ -1,58 +1,17 @@
 import { Router } from "express";
 import { privateAccess,authorizationCall,formatearProductos } from "../../../utils.js";
-import config from "../../config/config.js";
-import TicketManager from "../../controllers/TicketManager.js";
-import UserManager from "../../controllers/UserManager.js";
-import Productmanager from "../../controllers/ProductManager.js";
 
-const ticketManager = new TicketManager;
-const productmanager = new Productmanager;
-const usermanager = new UserManager;
+import UserController from "../../controllers/user.controller.js";
+
+const controller = new UserController;
 
 const router = Router();
-// Crear una vista para poder visualizar, modificar el rol 
-// y eliminar un usuario. Esta vista únicamente será accesible para el administrador del ecommerce
+router.get('/userroles',privateAccess,authorizationCall('admin'),controller.getAllforAdmin);
 
-router.get('/userroles',privateAccess,authorizationCall('admin'), async (req, res) => {
-    let users = [];
-    let usersUF = await usermanager.getAll();
-    users = usersUF.map((user) => ({"id":user._id,"first_name":user.first_name, "last_name":user.last_name,"email":user.email,"role":user.role}));
-    users = users.filter(user => user.role !== "admin");
-    const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-    res.render('userRoles',{title:"Administracion de Usuarios",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,users,style:"styles.css"})
-   });
+router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), controller.realtimeproducts);
 
-router.get('/realtimeproducts',privateAccess,authorizationCall('admin'), async (req, res) => {
-    let productos = [];
-    const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-    res.render('realTimeProducts',{title:"Administracion de Productos",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,productos,style:"styles.css"})
-   });
+router.get('/premiumproducts',privateAccess,authorizationCall('premium'), controller.premiumproducts);
 
-router.get('/premiumproducts',privateAccess,authorizationCall('premium'), async (req, res) => {
-    let productos = [];
-    const usercart = req.session.user.cart;
-    const userisadmin = false;
-    const mail = req.session.user.email;
-    let productosDB = await productmanager.getByUser(req.session.user.email);
-    productos = formatearProductos(productosDB);
-    const premium = (req.session.user.role == "premium");
-    res.render('premiumProducts',{title:"Administracion de Productos Premium",host:config.localhost,port:config.port,cart:usercart,admin:userisadmin,premium,productos,mail,style:"styles.css"})
-   });
-
-   router.get('/tickets',privateAccess,authorizationCall('admin'), async (req, res) => {
-    let unformatTickets = await ticketManager.getAll();
-    const usercart = req.session.user.cart;
-    const userisadmin = (req.session.user.role == 'admin' || req.session.user.role == 'superadmin');
-    let title = "Compras Realizadas en el sitio, de todos los usuarios";
-    let userTickets = unformatTickets.map(ticket => ({
-        code: ticket.code,
-        purchase_datetime: ticket.purchase_datetime,
-        amount: ticket.amount,
-        user:ticket.purchaser
-    }))
-    res.render('tickets',{title:"Spika Games - Compras de Usuarios",host:config.localhost,port:config.port,Ptitle:title,userTickets,cart:usercart,admin:userisadmin,style:"styles.css"})
-   });
+router.get('/tickets',privateAccess,authorizationCall('admin'), controller.tickets);
 
 export default router;

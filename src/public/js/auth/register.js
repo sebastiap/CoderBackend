@@ -1,8 +1,6 @@
 const form = document.getElementById('registerForm');
 const errorMessage = document.getElementById('mensajeError');
 
-
-
 const validateEmail = (email) => {
     return String(email)
       .toLowerCase()
@@ -58,7 +56,6 @@ form.addEventListener('submit', function(e) {
         }
     }).then(result => {
         if(result.status === 200) {
-            //esta es la version del frontend del redirect
             window.location.replace('/auth/login');
         }
         else if (result.status === 400) {

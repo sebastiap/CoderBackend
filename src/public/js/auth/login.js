@@ -17,7 +17,6 @@ form.addEventListener('submit', function(e) {
         }
     }).then(result => {
         if(result.status === 200) {
-            //esta es la version del frontend del redirect
             window.location.replace('/');
         }
         else if (result.status === 400) {

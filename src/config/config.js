@@ -1,8 +1,6 @@
 import dotenv from 'dotenv';
 import {Command, program} from 'commander'
 
-// dotenv.config();
-// const Program = new Command();
 program.option('--mode <mode>','variable para identificar el ambiente');
 program.parse();
 const environment = program.opts().mode;

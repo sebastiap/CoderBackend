@@ -1,5 +1,3 @@
-// Forma to de messages user
-// {user:correoDelUsuario, message: mensaje del usuario}
 const socket = io();
 const coloresChat =["#C1666B","green","slateblue","#48A9A6","red","blue","aliceblue"]
 let user;

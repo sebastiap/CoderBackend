@@ -11,7 +11,6 @@ const userSchema = mongoose.Schema({
         type:mongoose.Schema.Types.ObjectId,
         ref:'carts'
     },
-    // documents:[{name:String,reference:String}],
     role:{type:String, default:"User"},
     last_conection:String
 })

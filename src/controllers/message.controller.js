@@ -1,4 +1,4 @@
-import {postService,getLastService} from "../services/MessageService.js"
+import {postService,getLastService} from "../services/message.service.js"
 
 export default class messageManager{
     constructor(){

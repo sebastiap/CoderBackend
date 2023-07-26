@@ -1,8 +1,5 @@
 import fs  from 'fs';
 
-//Esto es solo para borrarlo rapido y testear
-// fs.writeFileSync(archivo,"[]");
-
 export default class ProductManager{
     constructor(path){
         this.products = [];
@@ -12,7 +9,6 @@ export default class ProductManager{
     }
     
     add = async(product) => {
-        // Valida que no se repita el campo "code"
         try {
             let products = await this.getProducts();
             if (products.length === 0) {
@@ -34,7 +30,6 @@ export default class ProductManager{
                 console.error("Producto invalido. Falta ingresar algun campo.");
                 return 2;
             }
-            // Agrega el producto al arreglo de productos
             products.push(product);
             req.logger.info("Se agrego correctamente el producto con id" + product.id);
             await fs.promises.writeFile(this.path,JSON.stringify(products));
@@ -73,7 +68,6 @@ export default class ProductManager{
         
         const SearchedProduct = allProducts.find((prod)=> prod.id === id);
 
-        // Muestra un error en la consola en caso de no encontrar ningún coincidencia
         if (!SearchedProduct) {
             console.error('Not found');
             return;
@@ -91,11 +85,7 @@ export default class ProductManager{
             return 4;
         }
         product.id = id;
-        // Otra forma seria con spread operator 
-        // product = {id:id,...product}
         allProducts[SearchedProductindex] = product;
-         // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
-        // fs.truncateSync(this.path + archivo);
         await fs.writeFileSync(this.path,JSON.stringify(allProducts));
         req.logger.info("Se actualizo satisfactoriamente el producto con id" + id);
 
@@ -115,13 +105,10 @@ export default class ProductManager{
         allProducts.splice(SearchedProductindex, 1);
         console.log("Se elimino satisfactoriamente el producto con id", id);
 
-        // Para evitar problemas cuando el tamaño del archivo se reduce, lo trunco y lo recreo.
-        // fs.truncateSync(this.path + archivo);
         await fs.writeFileSync(this.path,JSON.stringify(allProducts));
         return allProducts;
     }
 
-    // SocketSyncMethods
     getSocket = async () => {
         try{        
             if (fs.existsSync(this.path)) {
@@ -160,16 +147,13 @@ export default class ProductManager{
 const test = async () => {
 
 
-// Se creará una instancia de la clase “ProductManager”
 let productos = new ProductManager;
-//Se llamará “getProducts” recién creada la instancia, debe devolver un arreglo vacío []
 let compra = await productos.getProducts();
 
 
 console.log("\n* Se creará una instancia de la clase 'ProductManager' y Se llamará “getProducts” recién creada la instancia, debe devolver un arreglo vacío []");
 console.log("Productos:", compra,"\n");
 
-// Se llamará al método “addProduct” con los campos:
 let ProductoPrueba = {
     title : 'producto prueba',
     description : 'Este es un producto prueba',
@@ -178,16 +162,13 @@ let ProductoPrueba = {
     code : 'abc123',
     stock : 25,
 }
-// El objeto debe agregarse satisfactoriamente con un id generado automáticamente SIN REPETIRSE
 console.log("* Se llamará al método “addProduct”, el objeto debe agregarse satisfactoriamente con un id generado automáticamente SIN REPETIRSE");
 await productos.addProduct(ProductoPrueba);
 
-//Se llamará el método “getProducts” nuevamente, esta vez debe aparecer el producto recién agregado
 compra =  await productos.getProducts();
 console.log("\n* Se llamará el método “getProducts” nuevamente, esta vez debe aparecer el producto recién agregado \n");
 console.log("Productos:", compra);
 
-//Se evaluará que getProductById devuelva error si no encuentra el producto o el producto en caso de encontrarlo
 console.log("\n* Si busco un producto no existente... ");
 await productos.getProductById(10);
 
@@ -246,16 +227,14 @@ console.log("Productos:", compra);
 
 console.log("\n* Se llamará al método “deleteProduct”, se evaluará que realmente se elimine el producto \n");
 console.log("\n* Se eliminara el producto de id 2 \n");
-// await productos.deleteProduct(2);
+
 
 console.log("\n* Se llamará nuevamente al método “deleteProduct”, se evaluará que arroje un error en caso de no existir el producto \n");
 console.log("\n* Se intentara eliminar el producto de id 15 \n");
-// await productos.deleteProduct(15);
+
 
 console.log("\n* Se llamará el método “getProducts” para verificar el estado final. \n");
 compra =  await productos.getProducts();
 console.log("Productos:", compra);
 }
 
-// Solo para probar y cargar el archivo
-// test();

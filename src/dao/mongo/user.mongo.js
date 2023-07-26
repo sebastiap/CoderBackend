@@ -1,4 +1,3 @@
-// import {ticketModel} from '../models/ticket.model.js'
 import {userModel} from '../models/user.model.js'
 
 export const create = async (newUser) => {

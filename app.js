@@ -6,35 +6,36 @@ import {generateProducts,validarURL,privateAccess,authorizationCall, formatearPr
 
 import config from "./src/config/config.js"
 
-// Mis routers
-import ApiProductRouter,{manager} from "./src/routes/api/apiproduct.router.js";
+import ApiProductRouter,{controller} from "./src/routes/api/apiproduct.router.js";
 import ProductRouter from "./src/routes/web/product.router.js";
-import ApiCartRouter from "./src/routes/api/cart.router.js"
-import ApiUsersRouter from "./src/routes/api/users.router.js"
-import CartRouter from "./src/routes/web/carts.router.js"
-import AuthRouter from "./src/routes/auth/session.router.js"
+import ApiCartRouter from "./src/routes/api/cart.router.js";
+import ApiUsersRouter from "./src/routes/api/users.router.js";
+import ApiSessionRouter from "./src/routes/api/session.router.js";
+import CartRouter from "./src/routes/web/carts.router.js";
+import AuthRouter from "./src/routes/auth/session.router.js";
 import viewsrouter from './src/routes/views.router.js';
-import adminrouter from './src/routes/misc/admin.router.js'
+import ChatRouter from './src/routes/misc/chat.router.js';
+import MockingRouter from './src/routes/misc/mocking.router.js';
+import LoggingRouter from './src/routes/misc/logging.router.js';
+import MailRouter from './src/routes/misc/mail.router.js';
+import AdminRouter from './src/routes/misc/admin.router.js';
 
 import __dirname from './utils.js';
-// Handlebars
+
 import handlebars from "express-handlebars";
-// WebSockets
+
 import { Server } from "socket.io";
 import axios from "axios";
 
-//Mongoose para conectarme en Mongo Atlas
 import mongoose from "mongoose";
 
-// Manejo de los mensajes del chat
-import messageManager from "./src/controllers/MessageManager.js";
-import UserManager from "./src/controllers/UserManager.js";
+import messageController from "./src/controllers/message.controller.js";
+import UserManager from "./src/controllers/user.controller.js";
 import initializePassport from "./src/config/passport.config.js";
 
-// Manejo de errores
+
 import errorHandler from "./src/controllers/errors/middleware.js";
 
-// Swagger - Documentacion
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUiExpress from "swagger-ui-express";
 
@@ -74,7 +75,6 @@ app.use(session({
 
 app.use('/apidocs',swaggerUiExpress.serve,swaggerUiExpress.setup(specs));
 
-// configuracion de Passport
 initializePassport();
 app.use(passport.initialize());
 app.use(passport.session());
@@ -86,10 +86,15 @@ app.use(express.urlencoded({extended:true}));
 app.use('/api/products',ApiProductRouter);
 app.use('/api/carts',ApiCartRouter);
 app.use('/api/users',ApiUsersRouter);
+app.use('/api/session',ApiSessionRouter);
 app.use('/products',ProductRouter);
 app.use('/carts',CartRouter);
+app.use('/chat',ChatRouter);
+app.use('/mockingproducts',MockingRouter);
+app.use('/logger-test',LoggingRouter);
 app.use('/auth',AuthRouter);
-app.use('/admin',adminrouter);
+app.use('/mail',MailRouter);
+app.use('/admin',AdminRouter);
 
 const httpServer = app.listen(config.port, ()=> console.log('Listening on port ' + config.port));
 
@@ -106,7 +111,6 @@ global.currentCart = "Empty";
 
 
 async function makeConnection() {
-// Para sacar el warning
 mongoose.set('strictQuery', true);
 let req = {};
 customLogger(req);
@@ -124,33 +128,20 @@ try {
     }
 
     req.logger.error("Cannot Connect to Database " + err);
-    // Send email
 }
 }
 makeConnection();
 
-// Chat Variables
 let messages  = [];
 let productos = [];
-let msgmanager = new messageManager();
+let msgcontroller = new messageController();
 
-// Crear un endpoint /loggerTest que permita probar todos los logs
-app.get('/loggerTest', async (req, res) => {
-    req.logger.debug('DEBUG');
-    req.logger.http('http');
-    req.logger.info('INFO');
-    req.logger.warning('WARNING');
-    req.logger.error('error');
-    req.logger.fatal('fatal');
-    res.send({status: "success", message:"Se logueo un error de cada nivel"});
-    });
 
-// Home
 app.get('/', privateAccess, async (req, res) => {
 
-let result = await manager.getPaginated({limit: 8});
+let result = await controller.getPaginated({limit: 8});
 let productosDB = result.payload; 
-let messagesDB = await msgmanager.getLast5();
+let messagesDB = await msgcontroller.getLast5();
 if (productosDB !== undefined) {
 
     productos = validarURL(productosDB.map(prod => ({title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id})));
@@ -180,61 +171,6 @@ export const transport = nodemailer.createTransport({
     }
 })
 
-// Mail
-app.get('/mail', async (req, res) => {
-let now = Date.now();
-let mail = req.query.mail;
-let result = await transport.sendMail({
-    from:"CoderNode",
-    to:mail,
-    subject:"Link de Recuperacion de Password",
-    html:`<div>
-    <h1>Recuperar Password</h1>
-    <h1>Ingrese al siguiente link para resetear su password. Este link tiene validez por una hora.</h1>
-    <a href="${config.localhost}:${config.port}/auth/reset/${now}"><img src="https://thumbs.dreamstime.com/b/reset-del-bot%C3%B3n-79321501.jpg" alt="image description"></a>
-    Presione para resetear su password
-    <img src="cid:Logo"/>
-    <div>`,
-    attachments:[{
-        filename:"SPIKAGAMES.png",
-        path:__dirname + "/src/public/img/SPIKAGAMES.png",
-        cid:"Logo"
-    }]
-});
-res.send({status: 'success',message: 'Se envio un mail con un link para resetear su contraseña.' })
-
-   })
-
-// current
-const userManager = new UserManager;
-
-app.get('/mockingproducts',privateAccess, async (req, res) => {
-    let products = [];
-    for(let i=0 ; i < 100 ;i++){
-        products.push(generateProducts())
-    }
-    res.send({status: 'success',
-    count:products.length,
-    data:products,
-    message: 'User currently logged is: '})
-   })
-
-
-app.get('/api/session/current',privateAccess, async (req, res) => {
-    const usercart = req.session.user;
-    let viewUser = userManager.validate(usercart);
-    res.send({status: 'success',message: 'User currently logged is: ' + viewUser.name + `(${viewUser.age}) ` +' and is logged with the mail ' + viewUser.mail })
-   })
-
-// Chat
-app.get('/chat',privateAccess,authorizationCall('User'), async (req, res) => {
-    //restringir a admin?
-    const usercart = req.session.user.cart;
-    const premium = (req.session.user.role == "premium");
-    res.render('chat',{title:"Bienvenido al Chat",host:config.localhost,port:config.port,premium,cart:usercart,messages,style:"styles.css"})
-   })
-
-// Socket
 const io = new Server(httpServer);
 
 io.on('connection',  (socket) => {
@@ -243,8 +179,7 @@ io.on('connection',  (socket) => {
         let req = {};
         customLogger(req);
         req.logger.info(message);
-        manager.getFromSocket().then((res) => {
-            // formatearProductos
+        controller.getFromSocket().then((res) => {
         let mapProd = res.map(prod => (
             {title: prod.title,description: prod.description,price: prod.price,thumbnail:prod.thumbnail,stock:prod.stock,code: prod.code,category: prod.category,id:prod.id,owner:prod.owner}));
         let productos = validarURL(mapProd);
@@ -258,7 +193,7 @@ io.on('connection',  (socket) => {
         let owner = data.owner;
         axios.delete(`${config.localhost}:${config.port}/api/products/${id}`).then(result =>{
             console.log("LLEGUE ACA AL MENOS");
-                                    let result2 = manager.getFromSocket().then((res) => {
+                                    let result2 = controller.getFromSocket().then((res) => {
                                             let valor = validarURL(res);
                                             socket.emit('Listado de Productos Actualizados',valor);
                                             socket.emit('Borrado confirmado',`Se ha borrado satisfactoriamente el producto ${id}`);
@@ -273,7 +208,7 @@ io.on('connection',  (socket) => {
             let creator = context.creator;
             axios.post(config.localhost + ":" + config.port + "/api/products/",producto)
             .then(function () {
-                manager.getFromSocket().then((res) => {
+                controller.getFromSocket().then((res) => {
                     let valor = validarURL(res);
                     socket.emit('Producto_Agregado',"Se ha insertado el nuevo producto exitosamente.");
                     socket.emit('Listado de Productos Actualizados',valor);
@@ -288,10 +223,8 @@ io.on('connection',  (socket) => {
                     req.logger.error(error.response.status);
                     req.logger.error(error.response.headers);
                 } else if (error.request) {
-                  // The request was made but no response was received
                   req.logger.error(error.request);
                 } else {
-                  // Something happened in setting up the request that triggered an Error
                   req.logger.error(error.message);
                 }
                 req.logger.error(error.config);
@@ -302,10 +235,9 @@ io.on('connection',  (socket) => {
         }
     })
 
-    // Chat Sockets
     socket.on("message", (data) => {
         messages.push(data);
-        msgmanager.post(data);
+        msgcontroller.post(data);
         io.emit("message_logs",messages)
     })
 
@@ -315,8 +247,6 @@ io.on('connection',  (socket) => {
         io.emit("new_user_connected",user);
     })
 
-
-     // Cart Sockets
     socket.on("Borrar_Producto_Carro", (qdata) => {
             try {
             let req = {};

@@ -49,11 +49,6 @@ else {
     })
 }
 
-
-// entorno productivo debería loggear sólo a partir de nivel info.
-// el logger deberá enviar en un transporte de archivos a partir del nivel de error en un nombre “errors.log”
-// Agregar logs de valor alto en los puntos importantes de tu servidor (errores, advertencias, etc) y modificar los console.log() habituales que tenemos para que muestren todo a partir de winston.
-
 export const addLogger = (req,res,next) =>
 {
     req.logger = logger;

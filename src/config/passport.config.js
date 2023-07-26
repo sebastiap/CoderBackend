@@ -1,11 +1,11 @@
 import passport from "passport";
 import GithubStrategy from 'passport-github2';
 import local from 'passport-local';
-import UserManager from "../controllers/UserManager.js";
+import UserManager from "../controllers/user.controller.js";
 import {createHash,isValidPassword} from "../../utils.js"
 
 import config from "./config.js";
-import CartManager from "../controllers/CartManager.js";
+import CartManager from "../controllers/cart.controller.js";
 
 const LocalStrategy = local.Strategy;
 const manager = new UserManager;
@@ -35,7 +35,6 @@ const initializePassport = () => {
                  email,
                  age,
                  password:createHash(password),
-                //  cart:cartId
             }
             if (resultCart){
                 const cartId = resultCart._id;
@@ -84,12 +83,10 @@ const initializePassport = () => {
     passport.use('github', new GithubStrategy({
         clientID:config.githubId, 
         clientSecret:config.githubSecret,
-        // callbackURL:'http://localhost:'+ config.port + '/auth/github-callback'
         callbackURL: config.localhost +':'+ config.port + '/auth/github-callback'
     }, async (accessToken,refreshToken,profile,done) => {
         try {
             const user = await manager.getOne(profile._json.email);
-            // const user = await UserManager.findOne({email:profile._json.email})
             if (!user) {
 
                 const resultCart = await cartmanager.aproveCreation("User",{"products":[]});

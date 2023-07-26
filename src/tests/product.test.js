@@ -61,11 +61,6 @@ describe('Testing Router Productos',() => {
         console.log(statusCode, ok, body);
         expect(statusCode).to.be.equal(200);
         expect(body).to.have.property('message');
-        // expect(body).to.have.property('newCode');
-        // createdProduct = testProduct;
-
-        
- 
 
         })
     })

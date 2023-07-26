@@ -1,6 +1,3 @@
-// import { getLast,create } from "../dao/mongo/message.mongo.js";
-
-
 import config from '../config/config.js';
 let persMode;
 const persistance = config.persistance;

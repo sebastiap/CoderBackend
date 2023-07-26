@@ -9,8 +9,6 @@ form.addEventListener("submit", (e) => {
     const obj = {};
     data.forEach((value,key) => obj[key] = value);
     if (passlabel !== undefined && passlabel !== null){
-
-    // data.forEach((value,key) => obj[key] = value);
     let newObj = JSON.stringify(obj);
         fetch('/auth/reset', {
             method: 'POST',
